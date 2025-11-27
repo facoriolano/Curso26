@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fé Power-Up: Curso de Crisma (Estilo Duolingo)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Configuração de Fontes e Cores para Estilo Duolingo */
+        :root {
+            --duo-green: #58cc02;
+            --duo-dark-green: #40a000;
+            --duo-blue: #1cb0f6;
+            --duo-yellow: #ffc800;
+            --duo-red: #ff4b4b;
+            --duo-light-gray: #f7f7f7;
+            --duo-dark-gray: #777;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--duo-light-gray);
+            transition: background-color 0.3s;
+            /* Evita o pull-to-refresh no celular para parecer app nativo */
+            overscroll-behavior-y: none;
+        }
+
+        /* Classes personalizadas para o visual Duolingo */
+        .duo-header {
+            background-color: white;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        .duo-lesson-card {
+            background-color: white;
+            border-bottom: 4px solid #ddd;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+        }
+        .duo-lesson-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .duo-start-btn {
+            background-color: var(--duo-green);
+            border-bottom: 4px solid var(--duo-dark-green);
+            transition: background-color 0.1s, transform 0.1s;
+        }
+        .duo-start-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 0px;
+            margin-top: 4px;
+        }
+        .duo-start-btn:hover {
+            background-color: var(--duo-dark-green);
+        }
+        .duo-start-btn:disabled {
+            background-color: #e5e5e5;
+            border-bottom-color: #ccc;
+            cursor: not-allowed;
+        }
+        .duo-option-btn {
+            background-color: white;
+            border: 2px solid #e5e5e5;
+            border-bottom: 4px solid #e5e5e5;
+            transition: all 0.1s;
+        }
+        .duo-option-btn:active {
+            border-bottom-width: 2px;
+            transform: translateY(2px);
+        }
+        .duo-option-btn:hover:not(:disabled) {
+            background-color: #f7f7f7;
+            border-color: var(--duo-blue);
+        }
+        .duo-selected {
+            border-color: var(--duo-blue) !important;
+            background-color: #ddf4ff !important;
+            color: var(--duo-blue);
+        }
+        .duo-correct {
+            background-color: #d7ffb8 !important;
+            border-color: var(--duo-green) !important;
+            color: var(--duo-dark-green);
+        }
+        .duo-wrong {
+            background-color: #ffdde0 !important;
+            border-color: var(--duo-red) !important;
+            color: var(--duo-red);
+        }
+        .duo-quiz-footer {
+            background-color: white;
+            border-top: 2px solid #e5e5e5;
+        }
+        .duo-progress-bar-fill {
+            background-color: var(--duo-green);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .duo-xp-badge {
+            background-color: var(--duo-yellow);
+            color: #8a6d00;
+            border: 2px solid #e6b800;
+        }
+        
+        /* Animação de entrada */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUpFade 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <!-- Conteúdo principal -->
+    <div id="app" class="flex flex-col flex-grow">
+        <!-- Tela de Carregamento -->
+        <div id="loading-screen" class="flex flex-col items-center justify-center flex-grow text-center p-8">
+            <svg class="animate-spin h-10 w-10 text-duo-green mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p id="loading-message" class="text-xl font-bold text-gray-700">Carregando...</p>
+            <p class="text-sm text-gray-400 mt-2">Versão 2.1 - Offline Safe</p>
+        </div>
+    </div>
+
+    <!-- Modal de Mensagem -->
+    <div id="message-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm transform transition-all scale-100">
+            <h3 id="modal-title" class="text-xl font-bold mb-3 text-gray-800"></h3>
+            <p id="modal-content" class="text-gray-600 mb-6"></p>
+            <button onclick="document.getElementById('message-modal').classList.add('hidden')" class="w-full duo-start-btn text-white font-bold py-3 rounded-xl uppercase tracking-wider">Entendi</button>
+        </div>
+    </div>
+
+    <!-- Firebase Imports e Lógica Principal -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variáveis globais injetadas (ou undefined se rodar local)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'crisma-local-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let db, auth;
+        let unsubscribeUser;
+        let isOfflineMode = false;
+
+        window.initializeFirebase = async () => {
+            // Se não houver config do Firebase, ativa o MODO LOCAL (LocalStorage)
+            if (!firebaseConfig) {
+                console.warn("Configuração do Firebase não encontrada. Iniciando em Modo Local (Offline/Demo).");
+                isOfflineMode = true;
+                
+                // Simula um delay de login
+                setTimeout(() => {
+                    const localId = localStorage.getItem('crisma_user_id') || 'user_local_' + Date.now();
+                    localStorage.setItem('crisma_user_id', localId);
+                    window.App.init(null, localId, true);
+                }, 800);
+                return;
+            }
+
+            try {
+                const firebaseApp = initializeApp(firebaseConfig);
+                db = getFirestore(firebaseApp);
+                auth = getAuth(firebaseApp);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        window.App.init(db, user.uid, false);
+                    } else {
+                        if (initialAuthToken) {
+                            signInWithCustomToken(auth, initialAuthToken).catch(err => console.error(err));
+                        } else {
+                            signInAnonymously(auth).catch(err => console.error(err));
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Erro Firebase:", error);
+                document.getElementById('loading-message').textContent = "Erro de conexão. Verifique o console.";
+            }
+        };
+
+        // Função para obter referência (Mock ou Real)
+        window.startProgressListener = function(userId) {
+            if (isOfflineMode) {
+                // Modo LocalStorage
+                const saved = localStorage.getItem(`crisma_progress_${userId}`);
+                if (saved) {
+                    window.App.setUserProgress(JSON.parse(saved));
+                } else {
+                    window.App.setUserProgress({ score: 0, completedLessons: {} });
+                }
+                return;
+            }
+
+            // Modo Firebase
+            if (unsubscribeUser) unsubscribeUser();
+            const docRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'crisma');
+            
+            unsubscribeUser = onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    window.App.setUserProgress(docSnap.data());
+                } else {
+                    window.App.setUserProgress({ score: 0, completedLessons: {} });
+                }
+            }, (error) => console.error(error));
+        };
+
+        window.saveProgress = async (progress) => {
+            if (isOfflineMode) {
+                localStorage.setItem(`crisma_progress_${window.App.userId}`, JSON.stringify(progress));
+                console.log("Progresso salvo localmente.");
+                return;
+            }
+            
+            if (!window.App.userId || !db) return;
+            const docRef = doc(db, 'artifacts', appId, 'users', window.App.userId, 'progress', 'crisma');
+            try {
+                await setDoc(docRef, progress, { merge: true });
+            } catch (e) {
+                console.error("Erro ao salvar:", e);
+            }
+        };
+
+        // Inicia
+        window.onload = initializeFirebase;
+    </script>
+
+    <script type="text/javascript">
+        // Helper para gerar questões placeholder de forma segura (objetos únicos)
+        const generatePlaceholderQuestions = (lessonId) => {
+            return Array.from({ length: 10 }, (_, i) => ({
+                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}?`,
+                a: "Resposta Correta",
+                o: ["Opção Errada 1", "Opção Errada 2", "Opção Errada 3"]
+            }));
+        };
+
+        // Estrutura de Dados do Curso
+        const courseData = {
+            1: {
+                id: 1,
+                title: "Oração - Nossa Fé nos Reuniu",
+                bible_ref: "Hebreus 11,6-12",
+                points: 200,
+                content: [
+                    "**O que é Oração?** É o diálogo de amor entre Deus e o homem. É elevar a mente e o coração a Deus.",
+                    "**A Base da Fé.** 'Sem fé, é impossível agradar a Deus, pois quem dele se aproxima precisa crer que ele existe.' (Hb 11,6).",
+                    "**Tipos de Oração:** Vocal (Pai Nosso) e Mental (meditação e reflexão silenciosa).",
+                    "**O Exemplo de Abraão:** Ele obedeceu pela fé, partindo sem saber para onde ia. Nossa oração deve ser uma entrega total."
+                ],
+                quiz_questions: [
+                    { q: "Qual o tema principal de Hebreus 11,6?", a: "A importância da Fé", o: ["A criação do mundo", "A vida dos anjos", "A vinda de Cristo"] },
+                    { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos rapidamente", "Pedir coisas materiais", "Pensar em problemas"] },
+                    { q: "Segundo Hb 11,6, o que é impossível sem fé?", a: "Agradar a Deus", o: ["Comer e beber", "Trabalhar", "Dormir"] },
+                    { q: "A oração é a elevação da mente e do...", a: "Coração a Deus", o: ["Corpo ao céu", "Mão ao livro", "Pé ao chão"] }
+                    // ... (demais perguntas mantidas do original ou reduzidas para teste)
+                ]
+            },
+            2: {
+                id: 2,
+                title: "Quem é Deus - A Santíssima Trindade",
+                bible_ref: "1 João 4,12-16",
+                points: 200,
+                content: [
+                    "**O Mistério Central:** Um só Deus em três Pessoas: Pai, Filho e Espírito Santo.",
+                    "**As Pessoas:** O Pai é o Criador; o Filho (Jesus) é o Salvador; o Espírito Santo é o Santificador.",
+                    "**Deus é Amor:** A Trindade é uma comunidade perfeita de amor.",
+                    "**Oração:** O Espírito Santo nos faz gritar 'Abbá, Pai!' e nos leva a Jesus."
+                ],
+                quiz_questions: [
+                    { q: "Quantas Pessoas existem na Santíssima Trindade?", a: "Três", o: ["Uma", "Duas", "Quatro"] },
+                    { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação do homem", "A ressurreição de Maria", "A existência dos anjos"] },
+                    { q: "Qual o papel do Filho (Jesus)?", a: "O Salvador", o: ["O Criador", "O Consolador", "O Guia"] },
+                    { q: "O que significa 'Deus é Amor' em 1 Jo 4,16?", a: "A essência de Deus é o Amor", o: ["Deus só ama os bons", "Amor é apenas um sentimento", "Deus é um juiz severo"] }
+                ]
+            },
+            3: { id: 3, title: "Jesus - Quem é o Filho de Deus?", bible_ref: "João 14,8-11", points: 200, content: ["Jesus é Verdadeiro Deus e Verdadeiro Homem.", "Ele é o Caminho, a Verdade e a Vida."], quiz_questions: generatePlaceholderQuestions(3) },
+            4: { id: 4, title: "Por que Jesus foi Crucificado?", bible_ref: "Lucas 23,33-47", points: 200, content: ["Jesus morreu pelos nossos pecados.", "Foi um ato livre de amor."], quiz_questions: generatePlaceholderQuestions(4) },
+            5: { id: 5, title: "Ressurreição de Jesus", bible_ref: "João 20,1-10", points: 200, content: ["O Túmulo Vazio prova a ressurreição.", "A fé cristã depende disso."], quiz_questions: generatePlaceholderQuestions(5) },
+            // Gerar placeholders seguros para 6 a 28
+            ...Array.from({length: 23}, (_, i) => i + 6).reduce((acc, id) => {
+                acc[id] = {
+                    id: id,
+                    title: `Aula ${id}: Tema em Construção`,
+                    bible_ref: "Bíblia Sagrada",
+                    points: 200,
+                    content: [`Conteúdo da aula ${id} parte 1...`, `Conteúdo da aula ${id} parte 2...`],
+                    quiz_questions: generatePlaceholderQuestions(id)
+                };
+                return acc;
+            }, {})
+        };
+
+        // Adiciona títulos específicos para os placeholders importantes (Testes e Revisões)
+        courseData[13].title = "🏆 PROVA INTERMEDIÁRIA";
+        courseData[28].title = "🏆 PROVA FINAL";
+
+
+        // --- APLICAÇÃO ---
+        window.App = {
+            db: null,
+            userId: null,
+            isOffline: false,
+            userProgress: {
+                score: 0,
+                completedLessons: {},
+                completedQuizzes: {},
+            },
+            state: {
+                currentScreen: 'map',
+                currentLessonId: null,
+                currentQuizData: [],
+                currentQuizIndex: 0,
+                currentQuizScore: 0,
+                selectedOption: null,
+                isChecking: false,
+                hearts: 5,
+            },
+
+            init(dbInstance, userId, isOffline) {
+                this.db = dbInstance;
+                this.userId = userId;
+                this.isOffline = isOffline;
+                
+                const loadingMsg = document.getElementById('loading-message');
+                if (loadingMsg) loadingMsg.textContent = "Sincronizando perfil...";
+
+                window.startProgressListener(userId);
+            },
+
+            setUserProgress(progress) {
+                this.userProgress = {
+                    score: 0,
+                    completedLessons: {},
+                    completedQuizzes: {},
+                    ...progress // Sobrescreve defaults com dados salvos
+                };
+                // Garante que score seja número
+                this.userProgress.score = Number(this.userProgress.score) || 0;
+                this.render();
+            },
+
+            // Navegação e Renderização Central
+            render() {
+                const appDiv = document.getElementById('app');
+                appDiv.innerHTML = '';
+                appDiv.appendChild(this.renderHeader());
+
+                let content;
+                switch (this.state.currentScreen) {
+                    case 'lesson': content = this.renderLessonContent(); break;
+                    case 'quiz':
+                    case 'review':
+                    case 'test': content = this.renderQuizScreen(); break;
+                    case 'result': content = this.renderResultScreen(); break;
+                    default: content = this.renderMap();
+                }
+                appDiv.appendChild(content);
+            },
+
+            // --- HEADER ---
+            renderHeader() {
+                const header = document.createElement('header');
+                header.className = 'duo-header p-3 sticky top-0 z-20 shadow-sm';
+                
+                const isMap = this.state.currentScreen === 'map';
+                const showHearts = this.state.currentScreen.includes('quiz') || this.state.currentScreen.includes('review') || this.state.currentScreen.includes('test');
+
+                header.innerHTML = `
+                    <div class="max-w-4xl mx-auto flex justify-between items-center px-2">
+                        <button ${!isMap ? `onclick="window.App.navigateTo('map')"` : ''} class="text-gray-400 ${!isMap ? 'hover:text-gray-600' : 'cursor-default'} transition flex items-center">
+                            ${!isMap ? `<svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>` : ''}
+                            <span class="font-extrabold text-xl tracking-tight text-duo-green">Fé Power-Up</span>
+                        </button>
+                        
+                        <div class="flex items-center space-x-4">
+                            ${this.isOffline ? '<span class="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">Offline</span>' : ''}
+                            
+                            <div class="flex items-center space-x-1">
+                                <span class="text-sm font-bold text-yellow-600 duo-xp-badge px-3 py-1 rounded-full shadow-sm flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span id="current-score">${this.userProgress.score}</span>
+                                </span>
+                            </div>
+
+                            ${showHearts ? `
+                                <div class="flex items-center text-duo-red font-bold animate-pulse">
+                                    <svg class="w-6 h-6 fill-current mr-1" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                    <span>${this.state.hearts}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                return header;
+            },
+
+            // --- MAPA ---
+            renderMap() {
+                this.state.currentScreen = 'map';
+                const mapContainer = document.createElement('div');
+                mapContainer.className = 'flex flex-col items-center p-4 max-w-lg mx-auto w-full space-y-4 pb-12';
+                
+                // Ordena as chaves para renderizar de 1 a 28 (ou inverso se preferir)
+                const lessonIds = Object.keys(courseData).map(Number).sort((a, b) => a - b);
+                
+                lessonIds.forEach(id => {
+                    const lesson = courseData[id];
+                    const isCompleted = !!this.userProgress.completedLessons[id];
+                    // Lição anterior completa ou é a primeira
+                    const isUnlocked = id === 1 || !!this.userProgress.completedLessons[id - 1]; 
+                    
+                    // Ícones e Estilos
+                    const isTest = [13, 28].includes(id);
+                    const icon = isTest ? '🏆' : (isCompleted ? 'check' : 'star');
+                    
+                    let bgClass = isUnlocked ? (isCompleted ? 'bg-duo-yellow border-yellow-600' : 'bg-duo-green border-duo-dark-green') : 'bg-gray-200 border-gray-300';
+                    if (isCompleted) bgClass = 'bg-duo-yellow border-yellow-600'; // Dourado se completo
+                    if (isTest && isUnlocked && !isCompleted) bgClass = 'bg-duo-red border-red-700';
+
+                    const btn = document.createElement('button');
+                    btn.className = `relative w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl shadow-lg transition-transform transform active:scale-95 ${bgClass} ${!isUnlocked ? 'cursor-not-allowed opacity-60' : 'hover:brightness-110'}`;
+                    btn.disabled = !isUnlocked;
+                    
+                    // Ícone SVG ou Emoji
+                    if (isCompleted) {
+                        btn.innerHTML = `<svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (isTest) {
+                        btn.innerHTML = `<span class="text-3xl">🏆</span>`;
+                    } else {
+                        btn.innerHTML = `<svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>`;
+                    }
+
+                    btn.onclick = () => {
+                        if (isUnlocked) {
+                            if (isCompleted && !isTest) {
+                                // Se já completou, pergunta se quer revisar
+                                if(confirm("Refazer esta aula para praticar?")) this.startLesson(id);
+                            } else if (isTest) {
+                                this.startReviewOrTest(id);
+                            } else {
+                                this.startLesson(id);
+                            }
+                        }
+                    };
+
+                    // Label abaixo do botão
+                    const wrapper = document.createElement('div');
+                    wrapper.className = `flex flex-col items-center mb-6 w-full ${isUnlocked ? '' : 'grayscale'}`;
+                    
+                    // Posicionamento Zigue-Zague simples usando margem
+                    const offset = (id % 2 === 0) ? 'ml-16' : 'mr-16';
+                    wrapper.classList.add(offset);
+
+                    wrapper.appendChild(btn);
+                    
+                    const label = document.createElement('div');
+                    label.className = "mt-2 bg-white px-3 py-1 rounded-lg text-xs font-bold text-gray-600 shadow-sm border border-gray-200 text-center max-w-[150px]";
+                    label.innerText = lesson.title;
+                    wrapper.appendChild(label);
+
+                    mapContainer.appendChild(wrapper);
+                });
+
+                return mapContainer;
+            },
+
+            // --- QUIZ & LOGIC ---
+            navigateTo(screen, lessonId = null) {
+                this.state.currentScreen = screen;
+                this.state.currentLessonId = lessonId;
+                this.state.currentQuizIndex = 0;
+                this.state.currentQuizScore = 0;
+                this.state.selectedOption = null;
+                this.state.isChecking = false;
+                this.state.hearts = 5;
+                this.render();
+            },
+
+            startLesson(lessonId) {
+                this.navigateTo('lesson', lessonId);
+            },
+
+            startQuiz(lessonId) {
+                // Mistura as perguntas e pega no máximo 10 para o quiz não ficar eterno
+                const allQuestions = courseData[lessonId].quiz_questions || [];
+                // Se tiver poucas perguntas (ex: placeholders), usa todas
+                const limit = allQuestions.length > 5 ? allQuestions.length : 5;
+                this.state.currentQuizData = this.shuffleArray([...allQuestions]).slice(0, limit);
+                this.navigateTo('quiz', lessonId);
+            },
+
+            startReviewOrTest(lessonId) {
+                let questions = [];
+                // Lógica simples: Prova pega random das anteriores
+                if ([13, 28].includes(lessonId)) {
+                    const start = lessonId === 13 ? 1 : 14;
+                    const end = lessonId === 13 ? 12 : 27;
+                    for(let i = start; i <= end; i++) {
+                        if(courseData[i] && courseData[i].quiz_questions) {
+                            questions.push(...courseData[i].quiz_questions);
+                        }
+                    }
+                } else {
+                    // Fallback normal
+                    questions = courseData[lessonId].quiz_questions;
+                }
+                
+                if(questions.length === 0) questions = generatePlaceholderQuestions(lessonId);
+
+                this.state.currentQuizData = this.shuffleArray(questions).slice(0, 15); // Prova com 15 perguntas
+                this.navigateTo('test', lessonId);
+            },
+
+            selectOption(option) {
+                if (!this.state.isChecking) {
+                    this.state.selectedOption = option;
+                    // Atualiza apenas a UI dos botões para performance
+                    const buttons = document.querySelectorAll('.duo-option-btn');
+                    buttons.forEach(btn => {
+                        btn.classList.remove('duo-selected', 'bg-blue-50', 'border-duo-blue');
+                        if (btn.innerText === option) {
+                            btn.classList.add('duo-selected');
+                        }
+                    });
+                    // Habilita o botão de verificar
+                    const checkBtn = document.getElementById('check-btn');
+                    if(checkBtn) {
+                        checkBtn.disabled = false;
+                        checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }
+            },
+
+            checkAnswer() {
+                if (!this.state.selectedOption || this.state.isChecking) return;
+                
+                this.state.isChecking = true;
+                const currentQuestion = this.state.currentQuizData[this.state.currentQuizIndex];
+                const isCorrect = currentQuestion.a === this.state.selectedOption;
+
+                // Sons (opcional, mas adiciona "feel")
+                // const audio = new Audio(isCorrect ? 'correct.mp3' : 'wrong.mp3'); audio.play().catch(e=>{});
+
+                if (isCorrect) this.state.currentQuizScore++;
+                else this.state.hearts--;
+
+                this.render(); // Re-renderiza para mostrar o feedback (cores)
+
+                // Footer de Feedback
+                const feedbackDiv = document.getElementById('feedback-footer');
+                if(feedbackDiv) {
+                    feedbackDiv.className = `fixed bottom-0 left-0 right-0 p-4 animate-slide-up ${isCorrect ? 'bg-[#d7ffb8] border-t-2 border-[#58cc02]' : 'bg-[#ffdfe0] border-t-2 border-[#ff4b4b]'}`;
+                    feedbackDiv.innerHTML = `
+                        <div class="max-w-4xl mx-auto flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-xl ${isCorrect ? 'text-duo-dark-green' : 'text-duo-red'} mb-1">
+                                    ${isCorrect ? 'Mandou bem!' : 'Resposta incorreta...'}
+                                </span>
+                                ${!isCorrect ? `<span class="text-sm text-gray-700">A resposta certa é: <strong>${currentQuestion.a}</strong></span>` : ''}
+                            </div>
+                            <button onclick="window.App.nextQuestion()" class="duo-start-btn px-6 py-3 rounded-xl text-white font-bold uppercase tracking-wide shadow-md ${isCorrect ? 'bg-duo-green' : 'bg-duo-red border-red-600 hover:bg-red-500'}">
+                                Continuar
+                            </button>
+                        </div>
+                    `;
+                }
+            },
+
+            nextQuestion() {
+                if (this.state.hearts <= 0) {
+                    this.finishQuiz(false);
+                    return;
+                }
+
+                this.state.currentQuizIndex++;
+                if (this.state.currentQuizIndex >= this.state.currentQuizData.length) {
+                    this.finishQuiz(true);
+                } else {
+                    this.state.selectedOption = null;
+                    this.state.isChecking = false;
+                    this.render();
+                }
+            },
+
+            finishQuiz(completed) {
+                const lessonId = this.state.currentLessonId;
+                const total = this.state.currentQuizData.length;
+                const score = this.state.currentQuizScore;
+                const passThreshold = Math.ceil(total * 0.6); // 60% para passar
+                const passed = completed && score >= passThreshold;
+
+                if (passed) {
+                    // Salva progresso
+                    if (!this.userProgress.completedLessons[lessonId]) {
+                        this.userProgress.score += courseData[lessonId].points;
+                        this.userProgress.completedLessons[lessonId] = true;
+                    }
+                    // Atualiza pontuação do quiz se for melhor
+                    const best = this.userProgress.completedQuizzes[lessonId] || 0;
+                    if (score > best) {
+                        this.userProgress.completedQuizzes[lessonId] = score;
+                    }
+                    window.saveProgress(this.userProgress);
+                }
+
+                this.state.currentScreen = 'result';
+                this.state.resultData = { passed, score, total, xp: passed ? courseData[lessonId].points : 0 };
+                this.render();
+            },
+
+            // --- RENDERIZADORES DE TELA ---
+            
+            renderQuizScreen() {
+                const container = document.createElement('div');
+                container.className = 'flex flex-col flex-grow max-w-2xl mx-auto w-full pb-24'; // pb-24 espaço para footer
+
+                const question = this.state.currentQuizData[this.state.currentQuizIndex];
+                if (!question) return container; // Evita erro se array vazio
+
+                // Barra de Progresso
+                const progressPct = (this.state.currentQuizIndex / this.state.currentQuizData.length) * 100;
+                container.innerHTML = `
+                    <div class="w-full h-3 bg-gray-200 mt-4 rounded-full overflow-hidden mx-4 max-w-[90%] self-center">
+                        <div class="duo-progress-bar-fill h-full rounded-full" style="width: ${progressPct}%"></div>
+                    </div>
+                `;
+
+                // Pergunta
+                const content = document.createElement('div');
+                content.className = 'flex-grow flex flex-col items-center justify-center p-6 text-center';
+                
+                content.innerHTML = `
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-10 text-left w-full">${question.q}</h2>
+                    <div class="w-full space-y-4"></div>
+                `;
+
+                // Opções
+                const optionsDiv = content.querySelector('div');
+                const allOptions = this.shuffleArray([question.a, ...question.o]);
+
+                allOptions.forEach(opt => {
+                    const btn = document.createElement('button');
+                    // Lógica de classe CSS complexa para estados (correto, errado, selecionado)
+                    let classes = "duo-option-btn w-full text-left p-4 rounded-2xl font-semibold text-gray-700 text-lg md:text-xl";
+                    
+                    if (this.state.isChecking) {
+                        btn.disabled = true;
+                        if (opt === question.a) classes += " duo-correct";
+                        else if (opt === this.state.selectedOption) classes += " duo-wrong";
+                        else classes += " opacity-60";
+                    } else if (opt === this.state.selectedOption) {
+                        classes += " duo-selected";
+                    }
+
+                    btn.className = classes;
+                    btn.textContent = opt;
+                    btn.onclick = () => window.App.selectOption(opt);
+                    optionsDiv.appendChild(btn);
+                });
+
+                container.appendChild(content);
+
+                // Footer Inicial (Botão Verificar)
+                if (!this.state.isChecking) {
+                    const footer = document.createElement('div');
+                    footer.className = "fixed bottom-0 left-0 right-0 p-4 border-t bg-white";
+                    footer.innerHTML = `
+                        <div class="max-w-2xl mx-auto">
+                            <button id="check-btn" onclick="window.App.checkAnswer()" disabled class="duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-md opacity-50 cursor-not-allowed transition-all">
+                                Verificar
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(footer);
+                } else {
+                    // Placeholder para o footer de feedback injetado pelo checkAnswer
+                    const feedbackPlace = document.createElement('div');
+                    feedbackPlace.id = 'feedback-footer';
+                    container.appendChild(feedbackPlace);
+                    // Re-aciona o feedback visual imediatamente se re-renderizar
+                    setTimeout(() => window.App.checkAnswer(), 0);
+                }
+
+                return container;
+            },
+
+            renderResultScreen() {
+                const { passed, score, total, xp } = this.state.resultData;
+                const div = document.createElement('div');
+                div.className = "flex flex-col items-center justify-center flex-grow p-6 text-center animate-slide-up";
+                
+                div.innerHTML = `
+                    <div class="text-8xl mb-6">${passed ? '🎉' : '💔'}</div>
+                    <h2 class="text-3xl font-bold text-duo-dark-green mb-2">${passed ? 'Lição Concluída!' : 'Não desista!'}</h2>
+                    <p class="text-gray-500 text-lg mb-8">Você acertou ${score} de ${total} questões.</p>
+                    
+                    ${passed ? `
+                        <div class="flex space-x-4 mb-8">
+                            <div class="bg-yellow-100 border-2 border-yellow-400 p-4 rounded-xl w-32">
+                                <p class="text-yellow-700 font-bold text-xs uppercase">Total XP</p>
+                                <p class="text-yellow-600 font-bold text-2xl">+${xp}</p>
+                            </div>
+                            <div class="bg-blue-100 border-2 border-blue-400 p-4 rounded-xl w-32">
+                                <p class="text-blue-700 font-bold text-xs uppercase">Acertos</p>
+                                <p class="text-blue-600 font-bold text-2xl">${Math.round((score/total)*100)}%</p>
+                            </div>
+                        </div>
+                    ` : `
+                        <p class="mb-8 text-red-500 font-semibold">Tente novamente para avançar.</p>
+                    `}
+
+                    <button onclick="window.App.navigateTo('map')" class="duo-start-btn w-full max-w-xs py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">
+                        Continuar
+                    </button>
+                `;
+                return div;
+            },
+
+            renderLessonContent() {
+                const lesson = courseData[this.state.currentLessonId];
+                const container = document.createElement('div');
+                container.className = "flex flex-col flex-grow w-full max-w-xl mx-auto p-4 pb-32"; // Padding bottom grande para o botão fixo
+
+                container.innerHTML = `
+                    <div class="text-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-800">${lesson.title}</h1>
+                        <p class="text-sm text-gray-500 uppercase tracking-wide font-bold mt-1">${lesson.bible_ref}</p>
+                    </div>
+                    <div id="cards-area" class="space-y-6"></div>
+                `;
+                
+                // Variável local para controlar os cards mostrados
+                let cardIndex = 0;
+                
+                // Função interna para mostrar próximo card
+                const showNext = () => {
+                    const area = container.querySelector('#cards-area');
+                    const btn = document.getElementById('lesson-action-btn');
+                    
+                    if (cardIndex < lesson.content.length) {
+                        const cardText = lesson.content[cardIndex];
+                        const card = document.createElement('div');
+                        
+                        // Parse simples de Markdown (**bold**)
+                        const formattedText = cardText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>');
+                        
+                        card.className = "bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-sm animate-slide-up flex gap-4 items-start";
+                        card.innerHTML = `
+                            <div class="text-3xl">📖</div> <!-- Ícone genérico -->
+                            <div class="text-lg text-gray-700 leading-relaxed">${formattedText}</div>
+                        `;
+                        
+                        area.appendChild(card);
+                        // Scroll suave para o novo card
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        cardIndex++;
+                        
+                        // Atualiza texto do botão
+                        if (cardIndex === lesson.content.length) {
+                            btn.innerText = "COMEÇAR O DESAFIO";
+                            btn.className = "duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-lg animate-pulse";
+                            btn.onclick = () => this.startQuiz(lesson.id);
+                        } else {
+                            btn.innerText = "CONTINUAR";
+                        }
+                    }
+                };
+
+                // Cria o footer fixo com o botão
+                const footer = document.createElement('div');
+                footer.className = "fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-10";
+                footer.innerHTML = `
+                    <div class="max-w-xl mx-auto">
+                        <button id="lesson-action-btn" class="duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-md">
+                            Começar
+                        </button>
+                    </div>
+                `;
+                
+                // Adiciona listener ao botão
+                const btn = footer.querySelector('button');
+                btn.onclick = showNext;
+
+                // Monta a tela
+                setTimeout(() => {
+                    document.getElementById('app').appendChild(footer);
+                    showNext(); // Mostra o primeiro card automaticamente
+                }, 50);
+
+                return container;
+            },
+
+            // Utilitários
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        };
+    </script>
+</body>
+</html>
