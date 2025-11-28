@@ -123,8 +123,7 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p id="loading-message" class="text-xl font-bold text-gray-700">Carregando...</p>
-            <p class="text-sm text-gray-400 mt-2">Versão 2.1 - Offline Safe</p>
+            <p id="loading-message" class="text-xl font-bold text-gray-700">Conectando ao Curso 2026...</p>
         </div>
     </div>
 
@@ -143,22 +142,32 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Variáveis globais injetadas (ou undefined se rodar local)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'crisma-local-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // ==========================================
+        // CONFIGURAÇÃO DO FIREBASE (JÁ INSERIDA)
+        // ==========================================
+        const appId = 'crisma-2026';
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoR6nlyCfsozUpwLo7iB8bUgQ-fdQ_14o",
+            authDomain: "curso26-bcabf.firebaseapp.com",
+            projectId: "curso26-bcabf",
+            storageBucket: "curso26-bcabf.firebasestorage.app",
+            messagingSenderId: "691991061470",
+            appId: "1:691991061470:web:7a5fa026c4f836069d734f"
+        };
+
+        const initialAuthToken = null;
+        // ==========================================
         
         let db, auth;
         let unsubscribeUser;
         let isOfflineMode = false;
 
         window.initializeFirebase = async () => {
-            // Se não houver config do Firebase, ativa o MODO LOCAL (LocalStorage)
+            // Se não houver config, entra em modo offline (mas agora você tem config!)
             if (!firebaseConfig) {
                 console.warn("Configuração do Firebase não encontrada. Iniciando em Modo Local (Offline/Demo).");
                 isOfflineMode = true;
-                
-                // Simula um delay de login
                 setTimeout(() => {
                     const localId = localStorage.getItem('crisma_user_id') || 'user_local_' + Date.now();
                     localStorage.setItem('crisma_user_id', localId);
@@ -174,18 +183,26 @@
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
+                        // Usuário logado
                         window.App.init(db, user.uid, false);
                     } else {
-                        if (initialAuthToken) {
-                            signInWithCustomToken(auth, initialAuthToken).catch(err => console.error(err));
-                        } else {
-                            signInAnonymously(auth).catch(err => console.error(err));
-                        }
+                        // Tenta logar anonimamente
+                        signInAnonymously(auth).catch(err => {
+                            console.error("Erro no login anônimo:", err);
+                            // Fallback para modo offline se der erro de rede
+                            isOfflineMode = true;
+                             const localId = localStorage.getItem('crisma_user_id') || 'user_local_' + Date.now();
+                             window.App.init(null, localId, true);
+                        });
                     }
                 });
             } catch (error) {
-                console.error("Erro Firebase:", error);
-                document.getElementById('loading-message').textContent = "Erro de conexão. Verifique o console.";
+                console.error("Erro Geral Firebase:", error);
+                document.getElementById('loading-message').textContent = "Modo Offline Ativado (Erro de Conexão)";
+                // Fallback de segurança
+                isOfflineMode = true;
+                const localId = 'user_offline_fallback';
+                window.App.init(null, localId, true);
             }
         };
 
@@ -202,17 +219,24 @@
                 return;
             }
 
-            // Modo Firebase
+            // Modo Firebase Real
             if (unsubscribeUser) unsubscribeUser();
+            
+            // Caminho no banco: artifacts/crisma-2026/users/{userId}/progress/crisma
             const docRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'crisma');
             
             unsubscribeUser = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     window.App.setUserProgress(docSnap.data());
                 } else {
+                    // Se não existe, cria o primeiro registro
                     window.App.setUserProgress({ score: 0, completedLessons: {} });
                 }
-            }, (error) => console.error(error));
+            }, (error) => {
+                console.error("Erro ao ler progresso:", error);
+                // Se falhar a leitura (ex: permissão), tenta usar local
+                isOfflineMode = true;
+            });
         };
 
         window.saveProgress = async (progress) => {
@@ -226,8 +250,11 @@
             const docRef = doc(db, 'artifacts', appId, 'users', window.App.userId, 'progress', 'crisma');
             try {
                 await setDoc(docRef, progress, { merge: true });
+                console.log("Progresso salvo na nuvem!");
             } catch (e) {
-                console.error("Erro ao salvar:", e);
+                console.error("Erro ao salvar na nuvem:", e);
+                // Salva backup local se falhar a nuvem
+                localStorage.setItem(`crisma_progress_${window.App.userId}`, JSON.stringify(progress));
             }
         };
 
@@ -263,7 +290,6 @@
                     { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos rapidamente", "Pedir coisas materiais", "Pensar em problemas"] },
                     { q: "Segundo Hb 11,6, o que é impossível sem fé?", a: "Agradar a Deus", o: ["Comer e beber", "Trabalhar", "Dormir"] },
                     { q: "A oração é a elevação da mente e do...", a: "Coração a Deus", o: ["Corpo ao céu", "Mão ao livro", "Pé ao chão"] }
-                    // ... (demais perguntas mantidas do original ou reduzidas para teste)
                 ]
             },
             2: {
@@ -333,7 +359,13 @@
                 this.isOffline = isOffline;
                 
                 const loadingMsg = document.getElementById('loading-message');
-                if (loadingMsg) loadingMsg.textContent = "Sincronizando perfil...";
+                if (loadingMsg) {
+                    if (isOffline) {
+                        loadingMsg.textContent = "Modo Offline (Sem Internet)";
+                    } else {
+                        loadingMsg.textContent = "Pronto! Iniciando...";
+                    }
+                }
 
                 window.startProgressListener(userId);
             },
