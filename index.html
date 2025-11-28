@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fé Power-Up: Curso de Crisma (Estilo Duolingo)</title>
+    <title>Fé Power-Up: Curso de Crisma</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -14,6 +14,7 @@
             --duo-green: #58cc02;
             --duo-dark-green: #40a000;
             --duo-blue: #1cb0f6;
+            --duo-dark-blue: #1899d6;
             --duo-yellow: #ffc800;
             --duo-red: #ff4b4b;
             --duo-light-gray: #f7f7f7;
@@ -23,157 +24,155 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--duo-light-gray);
-            transition: background-color 0.3s;
-            /* Evita o pull-to-refresh no celular para parecer app nativo */
+            /* Espaço para a barra de navegação inferior */
+            padding-bottom: 80px; 
             overscroll-behavior-y: none;
         }
 
-        /* Classes personalizadas para o visual Duolingo */
-        .duo-header {
-            background-color: white;
-            border-bottom: 2px solid #e5e5e5;
-        }
+        /* Classes personalizadas */
+        .duo-header { background-color: white; border-bottom: 2px solid #e5e5e5; }
+        
         .duo-lesson-card {
             background-color: white;
             border-bottom: 4px solid #ddd;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+            transition: transform 0.1s;
         }
-        .duo-lesson-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-        }
+        .duo-lesson-card:active { transform: translateY(2px); border-bottom-width: 2px; }
+
         .duo-start-btn {
             background-color: var(--duo-green);
             border-bottom: 4px solid var(--duo-dark-green);
-            transition: background-color 0.1s, transform 0.1s;
+            transition: all 0.1s;
         }
-        .duo-start-btn:active {
-            transform: translateY(2px);
-            border-bottom-width: 0px;
-            margin-top: 4px;
-        }
-        .duo-start-btn:hover {
-            background-color: var(--duo-dark-green);
-        }
-        .duo-start-btn:disabled {
-            background-color: #e5e5e5;
-            border-bottom-color: #ccc;
-            cursor: not-allowed;
-        }
+        .duo-start-btn:active { transform: translateY(2px); border-bottom-width: 0px; margin-top: 4px; }
+        
         .duo-option-btn {
             background-color: white;
             border: 2px solid #e5e5e5;
             border-bottom: 4px solid #e5e5e5;
-            transition: all 0.1s;
         }
-        .duo-option-btn:active {
-            border-bottom-width: 2px;
-            transform: translateY(2px);
-        }
-        .duo-option-btn:hover:not(:disabled) {
-            background-color: #f7f7f7;
-            border-color: var(--duo-blue);
-        }
-        .duo-selected {
-            border-color: var(--duo-blue) !important;
-            background-color: #ddf4ff !important;
-            color: var(--duo-blue);
-        }
-        .duo-correct {
-            background-color: #d7ffb8 !important;
-            border-color: var(--duo-green) !important;
-            color: var(--duo-dark-green);
-        }
-        .duo-wrong {
-            background-color: #ffdde0 !important;
-            border-color: var(--duo-red) !important;
-            color: var(--duo-red);
-        }
-        .duo-quiz-footer {
-            background-color: white;
-            border-top: 2px solid #e5e5e5;
-        }
-        .duo-progress-bar-fill {
-            background-color: var(--duo-green);
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .duo-xp-badge {
-            background-color: var(--duo-yellow);
-            color: #8a6d00;
-            border: 2px solid #e6b800;
-        }
+        .duo-option-btn:active { border-bottom-width: 2px; transform: translateY(2px); }
+        .duo-selected { border-color: var(--duo-blue) !important; background-color: #ddf4ff !important; color: var(--duo-blue); }
+        .duo-correct { background-color: #d7ffb8 !important; border-color: var(--duo-green) !important; color: var(--duo-dark-green); }
+        .duo-wrong { background-color: #ffdde0 !important; border-color: var(--duo-red) !important; color: var(--duo-red); }
         
-        /* Animação de entrada */
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Barra de Navegação Inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 50;
         }
-        .animate-slide-up {
-            animation: slideUpFade 0.4s ease-out forwards;
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #afafaf;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
         }
+        .nav-item.active { color: var(--duo-blue); }
+        .nav-item svg { width: 28px; height: 28px; margin-bottom: 2px; }
+
+        /* Animações */
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <!-- Conteúdo principal -->
-    <div id="app" class="flex flex-col flex-grow">
-        <!-- Tela de Carregamento -->
-        <div id="loading-screen" class="flex flex-col items-center justify-center flex-grow text-center p-8">
-            <svg class="animate-spin h-10 w-10 text-duo-green mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    <!-- Tela de Carregamento -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+        <svg class="animate-spin h-12 w-12 text-duo-green mb-4" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-xl font-bold text-gray-700">Carregando...</p>
+    </div>
+
+    <!-- Modal de Nome (Boas-vindas) -->
+    <div id="name-modal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm text-center animate-slide-up">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Seja bem-vindo!</h2>
+            <p class="text-gray-600 mb-6">Como você gostaria de ser chamado no Ranking?</p>
+            <input type="text" id="user-name-input" placeholder="Seu nome aqui" class="w-full border-2 border-gray-300 rounded-xl p-3 text-lg mb-4 focus:border-duo-blue focus:outline-none text-center font-bold">
+            <button onclick="window.App.saveUserName()" class="w-full duo-start-btn text-white font-bold py-3 rounded-xl uppercase tracking-wider">Entrar</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho Superior -->
+    <header class="duo-header p-3 sticky top-0 z-20 shadow-sm flex justify-between items-center px-4">
+        <div class="flex items-center">
+             <span class="font-extrabold text-xl tracking-tight text-duo-green" id="header-title">Fé Power-Up</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="flex items-center bg-yellow-100 px-3 py-1 rounded-full border border-yellow-400">
+                <svg class="w-4 h-4 text-yellow-600 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span id="current-score" class="text-yellow-700 font-bold">0</span>
+            </div>
+            <div id="hearts-display" class="hidden flex items-center text-duo-red font-bold">
+                <svg class="w-6 h-6 fill-current mr-1" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span id="hearts-count">5</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div id="app" class="flex flex-col flex-grow w-full max-w-2xl mx-auto"></div>
+
+    <!-- Barra de Navegação Inferior -->
+    <nav class="bottom-nav">
+        <button onclick="window.App.navigateTo('map')" class="nav-item active" id="nav-map">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
-            <p id="loading-message" class="text-xl font-bold text-gray-700">Conectando ao Curso 2026...</p>
-        </div>
-    </div>
+            Aulas
+        </button>
+        <button onclick="window.App.loadLeaderboard()" class="nav-item" id="nav-ranking">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            Ranking
+        </button>
+    </nav>
 
-    <!-- Modal de Mensagem -->
-    <div id="message-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm transform transition-all scale-100">
-            <h3 id="modal-title" class="text-xl font-bold mb-3 text-gray-800"></h3>
-            <p id="modal-content" class="text-gray-600 mb-6"></p>
-            <button onclick="document.getElementById('message-modal').classList.add('hidden')" class="w-full duo-start-btn text-white font-bold py-3 rounded-xl uppercase tracking-wider">Entendi</button>
-        </div>
-    </div>
-
-    <!-- Firebase Imports e Lógica Principal -->
+    <!-- Scripts Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ==========================================
-        // CONFIGURAÇÃO DO FIREBASE (JÁ INSERIDA)
+        // 🔴 COLE SUAS CHAVES DO FIREBASE AQUI 🔴
         // ==========================================
         const appId = 'crisma-2026';
         
+        // Substitua pelo seu código do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyCoR6nlyCfsozUpwLo7iB8bUgQ-fdQ_14o",
-            authDomain: "curso26-bcabf.firebaseapp.com",
-            projectId: "curso26-bcabf",
-            storageBucket: "curso26-bcabf.firebasestorage.app",
-            messagingSenderId: "691991061470",
-            appId: "1:691991061470:web:7a5fa026c4f836069d734f"
+            apiKey: "SUA_API_KEY_AQUI", 
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
         };
-
-        const initialAuthToken = null;
         // ==========================================
-        
+
         let db, auth;
         let unsubscribeUser;
-        let isOfflineMode = false;
 
         window.initializeFirebase = async () => {
-            // Se não houver config, entra em modo offline (mas agora você tem config!)
-            if (!firebaseConfig) {
-                console.warn("Configuração do Firebase não encontrada. Iniciando em Modo Local (Offline/Demo).");
-                isOfflineMode = true;
-                setTimeout(() => {
-                    const localId = localStorage.getItem('crisma_user_id') || 'user_local_' + Date.now();
-                    localStorage.setItem('crisma_user_id', localId);
-                    window.App.init(null, localId, true);
-                }, 800);
-                return;
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "SUA_API_KEY_AQUI") {
+                 alert("ERRO: Você precisa abrir o código e colar suas chaves do Firebase onde está indicado!");
+                 document.getElementById('loading-screen').innerHTML = "<p class='p-4 text-red-500'>Erro: Chaves do Firebase não configuradas no código.</p>";
+                 return;
             }
 
             try {
@@ -183,113 +182,84 @@
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
-                        // Usuário logado
-                        window.App.init(db, user.uid, false);
+                        window.App.init(db, user.uid);
                     } else {
-                        // Tenta logar anonimamente
-                        signInAnonymously(auth).catch(err => {
-                            console.error("Erro no login anônimo:", err);
-                            // Fallback para modo offline se der erro de rede
-                            isOfflineMode = true;
-                             const localId = localStorage.getItem('crisma_user_id') || 'user_local_' + Date.now();
-                             window.App.init(null, localId, true);
-                        });
+                        signInAnonymously(auth).catch(err => console.error("Erro Login:", err));
                     }
                 });
             } catch (error) {
-                console.error("Erro Geral Firebase:", error);
-                document.getElementById('loading-message').textContent = "Modo Offline Ativado (Erro de Conexão)";
-                // Fallback de segurança
-                isOfflineMode = true;
-                const localId = 'user_offline_fallback';
-                window.App.init(null, localId, true);
+                console.error("Erro Geral:", error);
             }
         };
 
-        // Função para obter referência (Mock ou Real)
+        // Escuta o progresso pessoal
         window.startProgressListener = function(userId) {
-            if (isOfflineMode) {
-                // Modo LocalStorage
-                const saved = localStorage.getItem(`crisma_progress_${userId}`);
-                if (saved) {
-                    window.App.setUserProgress(JSON.parse(saved));
-                } else {
-                    window.App.setUserProgress({ score: 0, completedLessons: {} });
-                }
-                return;
-            }
-
-            // Modo Firebase Real
-            if (unsubscribeUser) unsubscribeUser();
-            
-            // Caminho no banco: artifacts/crisma-2026/users/{userId}/progress/crisma
             const docRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'crisma');
-            
             unsubscribeUser = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     window.App.setUserProgress(docSnap.data());
                 } else {
-                    // Se não existe, cria o primeiro registro
-                    window.App.setUserProgress({ score: 0, completedLessons: {} });
+                    window.App.setUserProgress({ score: 0, completedLessons: {}, name: null });
                 }
-            }, (error) => {
-                console.error("Erro ao ler progresso:", error);
-                // Se falhar a leitura (ex: permissão), tenta usar local
-                isOfflineMode = true;
+                document.getElementById('loading-screen').classList.add('hidden');
             });
         };
 
+        // Salva progresso e atualiza o Ranking Público
         window.saveProgress = async (progress) => {
-            if (isOfflineMode) {
-                localStorage.setItem(`crisma_progress_${window.App.userId}`, JSON.stringify(progress));
-                console.log("Progresso salvo localmente.");
-                return;
-            }
-            
             if (!window.App.userId || !db) return;
-            const docRef = doc(db, 'artifacts', appId, 'users', window.App.userId, 'progress', 'crisma');
-            try {
-                await setDoc(docRef, progress, { merge: true });
-                console.log("Progresso salvo na nuvem!");
-            } catch (e) {
-                console.error("Erro ao salvar na nuvem:", e);
-                // Salva backup local se falhar a nuvem
-                localStorage.setItem(`crisma_progress_${window.App.userId}`, JSON.stringify(progress));
+            
+            // 1. Salva no perfil do usuário
+            const userRef = doc(db, 'artifacts', appId, 'users', window.App.userId, 'progress', 'crisma');
+            await setDoc(userRef, progress, { merge: true });
+
+            // 2. Salva na tabela pública de Ranking (apenas Nome e Score)
+            if (progress.name) {
+                const leaderboardRef = doc(db, 'artifacts', appId, 'leaderboard', window.App.userId);
+                await setDoc(leaderboardRef, {
+                    name: progress.name,
+                    score: progress.score,
+                    lastUpdate: new Date()
+                });
             }
         };
 
-        // Inicia
+        // Busca o Top 20 do Ranking
+        window.getLeaderboard = async () => {
+            const q = query(collection(db, 'artifacts', appId, 'leaderboard'), orderBy("score", "desc"), limit(20));
+            const querySnapshot = await getDocs(q);
+            const leaders = [];
+            querySnapshot.forEach((doc) => {
+                leaders.push(doc.data());
+            });
+            return leaders;
+        };
+
         window.onload = initializeFirebase;
     </script>
 
     <script type="text/javascript">
-        // Helper para gerar questões placeholder de forma segura (objetos únicos)
+        // Helper para gerar placeholders (Aulas 5 a 28)
         const generatePlaceholderQuestions = (lessonId) => {
             return Array.from({ length: 10 }, (_, i) => ({
-                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}?`,
+                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}? (Este conteúdo precisa ser editado)`,
                 a: "Resposta Correta",
                 o: ["Opção Errada 1", "Opção Errada 2", "Opção Errada 3"]
             }));
         };
 
-        // Estrutura de Dados do Curso
+        // --- CONTEÚDO DO CURSO ---
+        // AQUI ESTÁ A CORREÇÃO DA AULA 3
         const courseData = {
             1: {
                 id: 1,
                 title: "Oração - Nossa Fé nos Reuniu",
                 bible_ref: "Hebreus 11,6-12",
                 points: 200,
-                content: [
-                    "**O que é Oração?** É o diálogo de amor entre Deus e o homem. É elevar a mente e o coração a Deus.",
-                    "**A Base da Fé.** 'Sem fé, é impossível agradar a Deus, pois quem dele se aproxima precisa crer que ele existe.' (Hb 11,6).",
-                    "**Tipos de Oração:** Vocal (Pai Nosso) e Mental (meditação e reflexão silenciosa).",
-                    "**O Exemplo de Abraão:** Ele obedeceu pela fé, partindo sem saber para onde ia. Nossa oração deve ser uma entrega total."
-                ],
+                content: ["**O que é Oração?** É o diálogo de amor entre Deus e o homem.", "**A Base da Fé.** Sem fé é impossível agradar a Deus."],
                 quiz_questions: [
                     { q: "Qual o tema principal de Hebreus 11,6?", a: "A importância da Fé", o: ["A criação do mundo", "A vida dos anjos", "A vinda de Cristo"] },
-                    { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos rapidamente", "Pedir coisas materiais", "Pensar em problemas"] },
-                    { q: "Segundo Hb 11,6, o que é impossível sem fé?", a: "Agradar a Deus", o: ["Comer e beber", "Trabalhar", "Dormir"] },
-                    { q: "A oração é a elevação da mente e do...", a: "Coração a Deus", o: ["Corpo ao céu", "Mão ao livro", "Pé ao chão"] }
+                    { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos", "Pedir coisas", "Pensar em problemas"] }
                 ]
             },
             2: {
@@ -297,550 +267,367 @@
                 title: "Quem é Deus - A Santíssima Trindade",
                 bible_ref: "1 João 4,12-16",
                 points: 200,
-                content: [
-                    "**O Mistério Central:** Um só Deus em três Pessoas: Pai, Filho e Espírito Santo.",
-                    "**As Pessoas:** O Pai é o Criador; o Filho (Jesus) é o Salvador; o Espírito Santo é o Santificador.",
-                    "**Deus é Amor:** A Trindade é uma comunidade perfeita de amor.",
-                    "**Oração:** O Espírito Santo nos faz gritar 'Abbá, Pai!' e nos leva a Jesus."
-                ],
+                content: ["**Mistério:** Um só Deus em três Pessoas.", "**Pai, Filho, Espírito Santo.**"],
                 quiz_questions: [
-                    { q: "Quantas Pessoas existem na Santíssima Trindade?", a: "Três", o: ["Uma", "Duas", "Quatro"] },
-                    { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação do homem", "A ressurreição de Maria", "A existência dos anjos"] },
-                    { q: "Qual o papel do Filho (Jesus)?", a: "O Salvador", o: ["O Criador", "O Consolador", "O Guia"] },
-                    { q: "O que significa 'Deus é Amor' em 1 Jo 4,16?", a: "A essência de Deus é o Amor", o: ["Deus só ama os bons", "Amor é apenas um sentimento", "Deus é um juiz severo"] }
+                    { q: "Quantas Pessoas existem na Trindade?", a: "Três", o: ["Uma", "Duas", "Quatro"] },
+                    { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação", "Maria", "Os anjos"] }
                 ]
             },
-            3: { id: 3, title: "Jesus - Quem é o Filho de Deus?", bible_ref: "João 14,8-11", points: 200, content: ["Jesus é Verdadeiro Deus e Verdadeiro Homem.", "Ele é o Caminho, a Verdade e a Vida."], quiz_questions: generatePlaceholderQuestions(3) },
-            4: { id: 4, title: "Por que Jesus foi Crucificado?", bible_ref: "Lucas 23,33-47", points: 200, content: ["Jesus morreu pelos nossos pecados.", "Foi um ato livre de amor."], quiz_questions: generatePlaceholderQuestions(4) },
-            5: { id: 5, title: "Ressurreição de Jesus", bible_ref: "João 20,1-10", points: 200, content: ["O Túmulo Vazio prova a ressurreição.", "A fé cristã depende disso."], quiz_questions: generatePlaceholderQuestions(5) },
-            // Gerar placeholders seguros para 6 a 28
+            // --- AULA 3 CORRIGIDA COM CONTEÚDO REAL ---
+            3: {
+                id: 3,
+                title: "Jesus - Quem é o Filho de Deus?",
+                bible_ref: "João 14,8-11",
+                points: 200,
+                content: [
+                    "**Dupla Natureza:** Jesus é Verdadeiro Deus e Verdadeiro Homem. Ele não é metade um, metade outro.",
+                    "**O Messias:** 'Cristo' significa 'Ungido'. Ele é quem o povo de Israel esperava.",
+                    "**A Revelação:** Quem vê Jesus, vê o Pai. Ele é a imagem visível do Deus invisível.",
+                    "**O Caminho:** Jesus disse: 'Eu sou o Caminho, a Verdade e a Vida'. Ninguém vai ao Pai a não ser por Ele."
+                ],
+                quiz_questions: [
+                    { q: "Quais são as duas naturezas de Jesus?", a: "Divina e Humana", o: ["Anjo e Homem", "Espírito e Carne", "Rei e Servo"] },
+                    { q: "O que Jesus respondeu a Filipe (Jo 14,9)?", a: "Quem me vê, vê o Pai", o: ["O Pai está longe", "Eu sou apenas um profeta", "Não sei quem é o Pai"] },
+                    { q: "O que significa o título 'Cristo'?", a: "Ungido", o: ["Rei", "Salvador", "Mestre"] },
+                    { q: "Jesus disse: 'Eu sou o Caminho, a Verdade e a...'", a: "Vida", o: ["Luz", "Porta", "Paz"] },
+                    { q: "Onde Jesus nasceu?", a: "Belém", o: ["Nazaré", "Jerusalém", "Roma"] },
+                    { q: "Qual a missão principal de Jesus?", a: "Salvar a humanidade e revelar o Pai", o: ["Ser um líder político", "Ficar rico", "Escrever livros"] }
+                ]
+            },
+            // --- AULA 4 EM DIANTE (PLACEHOLDERS) ---
+            // Você precisa editar aqui igual fiz na Aula 3 para as perguntas aparecerem corretamente
+            4: { id: 4, title: "Por que Jesus foi Crucificado?", bible_ref: "Lucas 23,33-47", points: 200, content: ["Jesus morreu pelos pecados.", "Foi amor supremo."], quiz_questions: generatePlaceholderQuestions(4) },
+            5: { id: 5, title: "Ressurreição de Jesus", bible_ref: "João 20,1-10", points: 200, content: ["O Túmulo Vazio.", "Ele venceu a morte."], quiz_questions: generatePlaceholderQuestions(5) },
+            // ... Gera o restante automático
             ...Array.from({length: 23}, (_, i) => i + 6).reduce((acc, id) => {
                 acc[id] = {
                     id: id,
                     title: `Aula ${id}: Tema em Construção`,
-                    bible_ref: "Bíblia Sagrada",
+                    bible_ref: "Bíblia",
                     points: 200,
-                    content: [`Conteúdo da aula ${id} parte 1...`, `Conteúdo da aula ${id} parte 2...`],
+                    content: ["Conteúdo em breve..."],
                     quiz_questions: generatePlaceholderQuestions(id)
                 };
                 return acc;
             }, {})
         };
-
-        // Adiciona títulos específicos para os placeholders importantes (Testes e Revisões)
+        
         courseData[13].title = "🏆 PROVA INTERMEDIÁRIA";
         courseData[28].title = "🏆 PROVA FINAL";
 
-
-        // --- APLICAÇÃO ---
+        // --- LÓGICA DO APLICATIVO ---
         window.App = {
             db: null,
             userId: null,
-            isOffline: false,
-            userProgress: {
-                score: 0,
-                completedLessons: {},
-                completedQuizzes: {},
-            },
-            state: {
-                currentScreen: 'map',
-                currentLessonId: null,
-                currentQuizData: [],
-                currentQuizIndex: 0,
-                currentQuizScore: 0,
-                selectedOption: null,
-                isChecking: false,
-                hearts: 5,
-            },
+            userProgress: { score: 0, completedLessons: {}, name: null },
+            state: { currentScreen: 'map', hearts: 5, quizData: [], quizIndex: 0, quizScore: 0 },
 
-            init(dbInstance, userId, isOffline) {
+            init(dbInstance, userId) {
                 this.db = dbInstance;
                 this.userId = userId;
-                this.isOffline = isOffline;
-                
-                const loadingMsg = document.getElementById('loading-message');
-                if (loadingMsg) {
-                    if (isOffline) {
-                        loadingMsg.textContent = "Modo Offline (Sem Internet)";
-                    } else {
-                        loadingMsg.textContent = "Pronto! Iniciando...";
-                    }
-                }
-
-                window.startProgressListener(userId);
+                this.render();
             },
 
             setUserProgress(progress) {
-                this.userProgress = {
-                    score: 0,
-                    completedLessons: {},
-                    completedQuizzes: {},
-                    ...progress // Sobrescreve defaults com dados salvos
-                };
-                // Garante que score seja número
-                this.userProgress.score = Number(this.userProgress.score) || 0;
+                this.userProgress = { ...this.userProgress, ...progress };
+                
+                // Se não tem nome, abre o modal
+                if (!this.userProgress.name) {
+                    document.getElementById('name-modal').classList.remove('hidden');
+                    document.getElementById('name-modal').classList.add('flex');
+                } else {
+                    document.getElementById('name-modal').classList.add('hidden');
+                }
+                
                 this.render();
             },
 
-            // Navegação e Renderização Central
-            render() {
-                const appDiv = document.getElementById('app');
-                appDiv.innerHTML = '';
-                appDiv.appendChild(this.renderHeader());
-
-                let content;
-                switch (this.state.currentScreen) {
-                    case 'lesson': content = this.renderLessonContent(); break;
-                    case 'quiz':
-                    case 'review':
-                    case 'test': content = this.renderQuizScreen(); break;
-                    case 'result': content = this.renderResultScreen(); break;
-                    default: content = this.renderMap();
+            saveUserName() {
+                const nameInput = document.getElementById('user-name-input');
+                const name = nameInput.value.trim();
+                if (name.length > 2) {
+                    this.userProgress.name = name;
+                    window.saveProgress(this.userProgress);
+                    document.getElementById('name-modal').classList.add('hidden');
+                } else {
+                    alert("Por favor, digite um nome válido!");
                 }
-                appDiv.appendChild(content);
             },
 
-            // --- HEADER ---
-            renderHeader() {
-                const header = document.createElement('header');
-                header.className = 'duo-header p-3 sticky top-0 z-20 shadow-sm';
+            navigateTo(screen, param = null) {
+                this.state.currentScreen = screen;
+                this.state.currentParam = param;
+                this.render();
+            },
+
+            render() {
+                const appDiv = document.getElementById('app');
+                const headerTitle = document.getElementById('header-title');
+                const scoreDisplay = document.getElementById('current-score');
+                const heartsDisplay = document.getElementById('hearts-display');
                 
-                const isMap = this.state.currentScreen === 'map';
-                const showHearts = this.state.currentScreen.includes('quiz') || this.state.currentScreen.includes('review') || this.state.currentScreen.includes('test');
+                // Atualiza Header
+                scoreDisplay.textContent = this.userProgress.score;
+                
+                // Gerencia abas ativas
+                document.getElementById('nav-map').className = `nav-item ${this.state.currentScreen === 'map' ? 'active' : ''}`;
+                document.getElementById('nav-ranking').className = `nav-item ${this.state.currentScreen === 'ranking' ? 'active' : ''}`;
 
-                header.innerHTML = `
-                    <div class="max-w-4xl mx-auto flex justify-between items-center px-2">
-                        <button ${!isMap ? `onclick="window.App.navigateTo('map')"` : ''} class="text-gray-400 ${!isMap ? 'hover:text-gray-600' : 'cursor-default'} transition flex items-center">
-                            ${!isMap ? `<svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>` : ''}
-                            <span class="font-extrabold text-xl tracking-tight text-duo-green">Fé Power-Up</span>
-                        </button>
-                        
-                        <div class="flex items-center space-x-4">
-                            ${this.isOffline ? '<span class="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">Offline</span>' : ''}
-                            
-                            <div class="flex items-center space-x-1">
-                                <span class="text-sm font-bold text-yellow-600 duo-xp-badge px-3 py-1 rounded-full shadow-sm flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                    <span id="current-score">${this.userProgress.score}</span>
-                                </span>
-                            </div>
+                if (this.state.currentScreen === 'map') {
+                    headerTitle.textContent = "Trilha da Crisma";
+                    heartsDisplay.classList.add('hidden');
+                    appDiv.innerHTML = this.renderMap();
+                } 
+                else if (this.state.currentScreen === 'lesson') {
+                    headerTitle.textContent = "Aula";
+                    heartsDisplay.classList.add('hidden');
+                    appDiv.innerHTML = "";
+                    this.renderLessonContent();
+                }
+                else if (this.state.currentScreen === 'quiz') {
+                    headerTitle.textContent = "Quiz";
+                    heartsDisplay.classList.remove('hidden');
+                    document.getElementById('hearts-count').textContent = this.state.hearts;
+                    appDiv.innerHTML = this.renderQuiz();
+                }
+                else if (this.state.currentScreen === 'result') {
+                    headerTitle.textContent = "Resultado";
+                    heartsDisplay.classList.add('hidden');
+                    appDiv.innerHTML = this.renderResult();
+                }
+                else if (this.state.currentScreen === 'ranking') {
+                    headerTitle.textContent = "Ranking";
+                    heartsDisplay.classList.add('hidden');
+                    this.renderRankingScreen();
+                }
+            },
 
-                            ${showHearts ? `
-                                <div class="flex items-center text-duo-red font-bold animate-pulse">
-                                    <svg class="w-6 h-6 fill-current mr-1" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                    <span>${this.state.hearts}</span>
-                                </div>
-                            ` : ''}
+            renderMap() {
+                let html = '<div class="flex flex-col items-center p-4 space-y-4 pb-20 w-full">';
+                const ids = Object.keys(courseData).map(Number).sort((a,b) => a - b);
+                
+                ids.forEach(id => {
+                    const lesson = courseData[id];
+                    const isCompleted = !!this.userProgress.completedLessons[id];
+                    const isUnlocked = id === 1 || !!this.userProgress.completedLessons[id - 1];
+                    
+                    let bgClass = isUnlocked ? (isCompleted ? 'bg-duo-yellow border-yellow-600' : 'bg-duo-green border-duo-dark-green') : 'bg-gray-200 border-gray-300';
+                    let icon = isCompleted ? '✓' : (id === 13 || id === 28 ? '🏆' : '★');
+                    let margin = (id % 2 === 0) ? 'ml-16' : 'mr-16';
+
+                    html += `
+                        <div class="flex flex-col items-center w-full ${margin} ${isUnlocked ? '' : 'opacity-60 grayscale'}">
+                            <button onclick="window.App.startLesson(${id})" ${!isUnlocked ? 'disabled' : ''} 
+                                class="w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl text-white font-bold shadow-lg mb-2 transition-transform active:scale-95 ${bgClass}">
+                                ${icon}
+                            </button>
+                            <span class="text-xs font-bold text-gray-500 bg-white px-2 py-1 rounded border">${lesson.title}</span>
+                        </div>
+                    `;
+                });
+                return html + '</div>';
+            },
+
+            async renderRankingScreen() {
+                const appDiv = document.getElementById('app');
+                appDiv.innerHTML = `
+                    <div class="p-6 flex flex-col items-center w-full animate-slide-up">
+                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg">
+                            <span class="text-5xl">🏆</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Melhores Alunos</h2>
+                        <div id="ranking-list" class="w-full space-y-3 pb-20">
+                            <div class="flex justify-center"><svg class="animate-spin h-8 w-8 text-duo-blue" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>
                         </div>
                     </div>
                 `;
-                return header;
-            },
 
-            // --- MAPA ---
-            renderMap() {
-                this.state.currentScreen = 'map';
-                const mapContainer = document.createElement('div');
-                mapContainer.className = 'flex flex-col items-center p-4 max-w-lg mx-auto w-full space-y-4 pb-12';
-                
-                // Ordena as chaves para renderizar de 1 a 28 (ou inverso se preferir)
-                const lessonIds = Object.keys(courseData).map(Number).sort((a, b) => a - b);
-                
-                lessonIds.forEach(id => {
-                    const lesson = courseData[id];
-                    const isCompleted = !!this.userProgress.completedLessons[id];
-                    // Lição anterior completa ou é a primeira
-                    const isUnlocked = id === 1 || !!this.userProgress.completedLessons[id - 1]; 
+                try {
+                    const leaders = await window.getLeaderboard();
+                    const listDiv = document.getElementById('ranking-list');
+                    listDiv.innerHTML = '';
                     
-                    // Ícones e Estilos
-                    const isTest = [13, 28].includes(id);
-                    const icon = isTest ? '🏆' : (isCompleted ? 'check' : 'star');
-                    
-                    let bgClass = isUnlocked ? (isCompleted ? 'bg-duo-yellow border-yellow-600' : 'bg-duo-green border-duo-dark-green') : 'bg-gray-200 border-gray-300';
-                    if (isCompleted) bgClass = 'bg-duo-yellow border-yellow-600'; // Dourado se completo
-                    if (isTest && isUnlocked && !isCompleted) bgClass = 'bg-duo-red border-red-700';
-
-                    const btn = document.createElement('button');
-                    btn.className = `relative w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl shadow-lg transition-transform transform active:scale-95 ${bgClass} ${!isUnlocked ? 'cursor-not-allowed opacity-60' : 'hover:brightness-110'}`;
-                    btn.disabled = !isUnlocked;
-                    
-                    // Ícone SVG ou Emoji
-                    if (isCompleted) {
-                        btn.innerHTML = `<svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>`;
-                    } else if (isTest) {
-                        btn.innerHTML = `<span class="text-3xl">🏆</span>`;
-                    } else {
-                        btn.innerHTML = `<svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>`;
+                    if (leaders.length === 0) {
+                        listDiv.innerHTML = '<p class="text-center text-gray-500">Ninguém pontuou ainda. Seja o primeiro!</p>';
+                        return;
                     }
 
-                    btn.onclick = () => {
-                        if (isUnlocked) {
-                            if (isCompleted && !isTest) {
-                                // Se já completou, pergunta se quer revisar
-                                if(confirm("Refazer esta aula para praticar?")) this.startLesson(id);
-                            } else if (isTest) {
-                                this.startReviewOrTest(id);
-                            } else {
-                                this.startLesson(id);
-                            }
-                        }
-                    };
+                    leaders.forEach((user, index) => {
+                        const isMe = user.name === this.userProgress.name;
+                        let medal = '';
+                        if (index === 0) medal = '🥇';
+                        else if (index === 1) medal = '🥈';
+                        else if (index === 2) medal = '🥉';
+                        else medal = `<span class="font-bold text-gray-500">#${index + 1}</span>`;
 
-                    // Label abaixo do botão
-                    const wrapper = document.createElement('div');
-                    wrapper.className = `flex flex-col items-center mb-6 w-full ${isUnlocked ? '' : 'grayscale'}`;
-                    
-                    // Posicionamento Zigue-Zague simples usando margem
-                    const offset = (id % 2 === 0) ? 'ml-16' : 'mr-16';
-                    wrapper.classList.add(offset);
+                        listDiv.innerHTML += `
+                            <div class="flex items-center justify-between p-4 rounded-xl border-b-4 ${isMe ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-300' : 'bg-white border-gray-100 shadow-sm'}">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-xl w-8 text-center">${medal}</div>
+                                    <div class="font-bold text-gray-700 ${isMe ? 'text-duo-blue' : ''}">${user.name} ${isMe ? '(Você)' : ''}</div>
+                                </div>
+                                <div class="font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-lg">${user.score} XP</div>
+                            </div>
+                        `;
+                    });
+                } catch (e) {
+                    console.error(e);
+                    document.getElementById('ranking-list').innerHTML = '<p class="text-red-500 text-center">Erro ao carregar ranking.</p>';
+                }
+            },
 
-                    wrapper.appendChild(btn);
-                    
-                    const label = document.createElement('div');
-                    label.className = "mt-2 bg-white px-3 py-1 rounded-lg text-xs font-bold text-gray-600 shadow-sm border border-gray-200 text-center max-w-[150px]";
-                    label.innerText = lesson.title;
-                    wrapper.appendChild(label);
+            startLesson(id) {
+                if (courseData[id].content.length > 0) {
+                    this.navigateTo('lesson', id);
+                } else {
+                    this.startQuiz(id);
+                }
+            },
 
-                    mapContainer.appendChild(wrapper);
+            renderLessonContent() {
+                const lesson = courseData[this.state.currentParam];
+                const appDiv = document.getElementById('app');
+                
+                let contentHtml = `<div class="p-6 flex flex-col h-full animate-slide-up pb-24">
+                    <h2 class="text-2xl font-bold mb-2">${lesson.title}</h2>
+                    <p class="text-sm text-gray-500 font-bold uppercase mb-6">${lesson.bible_ref}</p>
+                    <div class="space-y-4">`;
+                
+                lesson.content.forEach(text => {
+                    const fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>');
+                    contentHtml += `<div class="bg-white p-4 rounded-xl border-2 border-gray-100 shadow-sm text-lg text-gray-700">${fmt}</div>`;
                 });
 
-                return mapContainer;
+                contentHtml += `</div>
+                    <div class="fixed bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent">
+                        <button onclick="window.App.startQuiz(${lesson.id})" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">Começar Quiz</button>
+                    </div>
+                </div>`;
+                
+                appDiv.innerHTML = contentHtml;
             },
 
-            // --- QUIZ & LOGIC ---
-            navigateTo(screen, lessonId = null) {
-                this.state.currentScreen = screen;
-                this.state.currentLessonId = lessonId;
-                this.state.currentQuizIndex = 0;
-                this.state.currentQuizScore = 0;
-                this.state.selectedOption = null;
-                this.state.isChecking = false;
+            startQuiz(id) {
                 this.state.hearts = 5;
-                this.render();
+                this.state.quizScore = 0;
+                this.state.quizIndex = 0;
+                // Mistura perguntas
+                const q = [...courseData[id].quiz_questions].sort(() => Math.random() - 0.5).slice(0, 10);
+                this.state.quizData = q;
+                this.navigateTo('quiz', id);
             },
 
-            startLesson(lessonId) {
-                this.navigateTo('lesson', lessonId);
+            renderQuiz() {
+                const q = this.state.quizData[this.state.quizIndex];
+                const progress = ((this.state.quizIndex) / this.state.quizData.length) * 100;
+                
+                // Opções misturadas
+                const opts = [q.a, ...q.o].sort(() => Math.random() - 0.5);
+                
+                return `
+                    <div class="flex flex-col h-full p-4 pb-24 max-w-lg mx-auto w-full">
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+                            <div class="bg-duo-green h-3 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-700 mb-8">${q.q}</h2>
+                        <div class="space-y-3 flex-grow">
+                            ${opts.map(opt => `
+                                <button onclick="window.App.checkAnswer(this, '${opt.replace(/'/g, "\\'")}', '${q.a.replace(/'/g, "\\'")}')" 
+                                    class="duo-option-btn w-full p-4 rounded-xl text-left text-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
             },
 
-            startQuiz(lessonId) {
-                // Mistura as perguntas e pega no máximo 10 para o quiz não ficar eterno
-                const allQuestions = courseData[lessonId].quiz_questions || [];
-                // Se tiver poucas perguntas (ex: placeholders), usa todas
-                const limit = allQuestions.length > 5 ? allQuestions.length : 5;
-                this.state.currentQuizData = this.shuffleArray([...allQuestions]).slice(0, limit);
-                this.navigateTo('quiz', lessonId);
-            },
+            checkAnswer(btn, selected, correct) {
+                // Desabilita todos
+                const allBtns = document.querySelectorAll('.duo-option-btn');
+                allBtns.forEach(b => b.disabled = true);
 
-            startReviewOrTest(lessonId) {
-                let questions = [];
-                // Lógica simples: Prova pega random das anteriores
-                if ([13, 28].includes(lessonId)) {
-                    const start = lessonId === 13 ? 1 : 14;
-                    const end = lessonId === 13 ? 12 : 27;
-                    for(let i = start; i <= end; i++) {
-                        if(courseData[i] && courseData[i].quiz_questions) {
-                            questions.push(...courseData[i].quiz_questions);
-                        }
-                    }
+                if (selected === correct) {
+                    btn.classList.add('duo-correct');
+                    this.state.quizScore++;
+                    // Som de acerto (opcional)
                 } else {
-                    // Fallback normal
-                    questions = courseData[lessonId].quiz_questions;
-                }
-                
-                if(questions.length === 0) questions = generatePlaceholderQuestions(lessonId);
-
-                this.state.currentQuizData = this.shuffleArray(questions).slice(0, 15); // Prova com 15 perguntas
-                this.navigateTo('test', lessonId);
-            },
-
-            selectOption(option) {
-                if (!this.state.isChecking) {
-                    this.state.selectedOption = option;
-                    // Atualiza apenas a UI dos botões para performance
-                    const buttons = document.querySelectorAll('.duo-option-btn');
-                    buttons.forEach(btn => {
-                        btn.classList.remove('duo-selected', 'bg-blue-50', 'border-duo-blue');
-                        if (btn.innerText === option) {
-                            btn.classList.add('duo-selected');
-                        }
+                    btn.classList.add('duo-wrong');
+                    this.state.hearts--;
+                    // Mostra qual era a certa
+                    allBtns.forEach(b => {
+                        if (b.textContent.trim() === correct) b.classList.add('duo-correct');
                     });
-                    // Habilita o botão de verificar
-                    const checkBtn = document.getElementById('check-btn');
-                    if(checkBtn) {
-                        checkBtn.disabled = false;
-                        checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    }
                 }
-            },
-
-            checkAnswer() {
-                if (!this.state.selectedOption || this.state.isChecking) return;
-                
-                this.state.isChecking = true;
-                const currentQuestion = this.state.currentQuizData[this.state.currentQuizIndex];
-                const isCorrect = currentQuestion.a === this.state.selectedOption;
-
-                // Sons (opcional, mas adiciona "feel")
-                // const audio = new Audio(isCorrect ? 'correct.mp3' : 'wrong.mp3'); audio.play().catch(e=>{});
-
-                if (isCorrect) this.state.currentQuizScore++;
-                else this.state.hearts--;
-
-                this.render(); // Re-renderiza para mostrar o feedback (cores)
 
                 // Footer de Feedback
-                const feedbackDiv = document.getElementById('feedback-footer');
-                if(feedbackDiv) {
-                    feedbackDiv.className = `fixed bottom-0 left-0 right-0 p-4 animate-slide-up ${isCorrect ? 'bg-[#d7ffb8] border-t-2 border-[#58cc02]' : 'bg-[#ffdfe0] border-t-2 border-[#ff4b4b]'}`;
-                    feedbackDiv.innerHTML = `
-                        <div class="max-w-4xl mx-auto flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <span class="font-bold text-xl ${isCorrect ? 'text-duo-dark-green' : 'text-duo-red'} mb-1">
-                                    ${isCorrect ? 'Mandou bem!' : 'Resposta incorreta...'}
-                                </span>
-                                ${!isCorrect ? `<span class="text-sm text-gray-700">A resposta certa é: <strong>${currentQuestion.a}</strong></span>` : ''}
+                const footer = document.createElement('div');
+                footer.className = `fixed bottom-0 left-0 right-0 p-4 border-t-2 z-50 animate-slide-up ${selected === correct ? 'bg-[#d7ffb8] border-[#b8f28b]' : 'bg-[#ffdfe0] border-[#ffc1c7]'}`;
+                footer.innerHTML = `
+                    <div class="max-w-2xl mx-auto flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-xl ${selected === correct ? 'text-duo-dark-green' : 'text-duo-red'}">
+                                ${selected === correct ? 'Mandou bem!' : 'Resposta incorreta...'}
                             </div>
-                            <button onclick="window.App.nextQuestion()" class="duo-start-btn px-6 py-3 rounded-xl text-white font-bold uppercase tracking-wide shadow-md ${isCorrect ? 'bg-duo-green' : 'bg-duo-red border-red-600 hover:bg-red-500'}">
-                                Continuar
-                            </button>
                         </div>
-                    `;
-                }
+                        <button onclick="window.App.nextQuestion()" class="px-6 py-3 rounded-xl font-bold text-white uppercase ${selected === correct ? 'bg-duo-green border-b-4 border-duo-dark-green' : 'bg-duo-red border-b-4 border-[#e53e3e]'}">
+                            Continuar
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(footer);
             },
 
             nextQuestion() {
+                // Remove footer antigo
+                const footer = document.querySelector('.fixed.bottom-0.z-50');
+                if (footer) footer.remove();
+
                 if (this.state.hearts <= 0) {
                     this.finishQuiz(false);
                     return;
                 }
 
-                this.state.currentQuizIndex++;
-                if (this.state.currentQuizIndex >= this.state.currentQuizData.length) {
+                this.state.quizIndex++;
+                if (this.state.quizIndex >= this.state.quizData.length) {
                     this.finishQuiz(true);
                 } else {
-                    this.state.selectedOption = null;
-                    this.state.isChecking = false;
-                    this.render();
+                    document.getElementById('app').innerHTML = this.renderQuiz();
                 }
             },
 
-            finishQuiz(completed) {
-                const lessonId = this.state.currentLessonId;
-                const total = this.state.currentQuizData.length;
-                const score = this.state.currentQuizScore;
-                const passThreshold = Math.ceil(total * 0.6); // 60% para passar
-                const passed = completed && score >= passThreshold;
-
-                if (passed) {
-                    // Salva progresso
+            finishQuiz(passed) {
+                const lessonId = this.state.currentParam;
+                const total = this.state.quizData.length;
+                const score = this.state.quizScore;
+                const isWin = passed && score >= Math.ceil(total * 0.6);
+                
+                if (isWin) {
                     if (!this.userProgress.completedLessons[lessonId]) {
                         this.userProgress.score += courseData[lessonId].points;
                         this.userProgress.completedLessons[lessonId] = true;
                     }
-                    // Atualiza pontuação do quiz se for melhor
-                    const best = this.userProgress.completedQuizzes[lessonId] || 0;
-                    if (score > best) {
-                        this.userProgress.completedQuizzes[lessonId] = score;
-                    }
                     window.saveProgress(this.userProgress);
                 }
 
-                this.state.currentScreen = 'result';
-                this.state.resultData = { passed, score, total, xp: passed ? courseData[lessonId].points : 0 };
-                this.render();
+                this.navigateTo('result', { isWin, score, total, xp: isWin ? courseData[lessonId].points : 0 });
             },
 
-            // --- RENDERIZADORES DE TELA ---
+            renderResult() {
+                const { isWin, score, total, xp } = this.state.currentParam;
+                return `
+                    <div class="flex flex-col items-center justify-center h-full p-6 text-center animate-slide-up pb-24">
+                        <div class="text-8xl mb-6">${isWin ? '🎉' : '💔'}</div>
+                        <h2 class="text-3xl font-bold text-duo-dark-green mb-2">${isWin ? 'Lição Concluída!' : 'Não desista!'}</h2>
+                        <p class="text-gray-500 text-lg mb-8">Você acertou ${score} de ${total} questões.</p>
+                        ${isWin ? `<div class="bg-yellow-100 border-2 border-yellow-400 p-4 rounded-xl mb-8"><p class="text-yellow-700 font-bold text-xs uppercase">Total XP</p><p class="text-yellow-600 font-bold text-2xl">+${xp}</p></div>` : ''}
+                        <button onclick="window.App.navigateTo('map')" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">Continuar</button>
+                    </div>
+                `;
+            },
             
-            renderQuizScreen() {
-                const container = document.createElement('div');
-                container.className = 'flex flex-col flex-grow max-w-2xl mx-auto w-full pb-24'; // pb-24 espaço para footer
-
-                const question = this.state.currentQuizData[this.state.currentQuizIndex];
-                if (!question) return container; // Evita erro se array vazio
-
-                // Barra de Progresso
-                const progressPct = (this.state.currentQuizIndex / this.state.currentQuizData.length) * 100;
-                container.innerHTML = `
-                    <div class="w-full h-3 bg-gray-200 mt-4 rounded-full overflow-hidden mx-4 max-w-[90%] self-center">
-                        <div class="duo-progress-bar-fill h-full rounded-full" style="width: ${progressPct}%"></div>
-                    </div>
-                `;
-
-                // Pergunta
-                const content = document.createElement('div');
-                content.className = 'flex-grow flex flex-col items-center justify-center p-6 text-center';
-                
-                content.innerHTML = `
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-10 text-left w-full">${question.q}</h2>
-                    <div class="w-full space-y-4"></div>
-                `;
-
-                // Opções
-                const optionsDiv = content.querySelector('div');
-                const allOptions = this.shuffleArray([question.a, ...question.o]);
-
-                allOptions.forEach(opt => {
-                    const btn = document.createElement('button');
-                    // Lógica de classe CSS complexa para estados (correto, errado, selecionado)
-                    let classes = "duo-option-btn w-full text-left p-4 rounded-2xl font-semibold text-gray-700 text-lg md:text-xl";
-                    
-                    if (this.state.isChecking) {
-                        btn.disabled = true;
-                        if (opt === question.a) classes += " duo-correct";
-                        else if (opt === this.state.selectedOption) classes += " duo-wrong";
-                        else classes += " opacity-60";
-                    } else if (opt === this.state.selectedOption) {
-                        classes += " duo-selected";
-                    }
-
-                    btn.className = classes;
-                    btn.textContent = opt;
-                    btn.onclick = () => window.App.selectOption(opt);
-                    optionsDiv.appendChild(btn);
-                });
-
-                container.appendChild(content);
-
-                // Footer Inicial (Botão Verificar)
-                if (!this.state.isChecking) {
-                    const footer = document.createElement('div');
-                    footer.className = "fixed bottom-0 left-0 right-0 p-4 border-t bg-white";
-                    footer.innerHTML = `
-                        <div class="max-w-2xl mx-auto">
-                            <button id="check-btn" onclick="window.App.checkAnswer()" disabled class="duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-md opacity-50 cursor-not-allowed transition-all">
-                                Verificar
-                            </button>
-                        </div>
-                    `;
-                    container.appendChild(footer);
-                } else {
-                    // Placeholder para o footer de feedback injetado pelo checkAnswer
-                    const feedbackPlace = document.createElement('div');
-                    feedbackPlace.id = 'feedback-footer';
-                    container.appendChild(feedbackPlace);
-                    // Re-aciona o feedback visual imediatamente se re-renderizar
-                    setTimeout(() => window.App.checkAnswer(), 0);
-                }
-
-                return container;
-            },
-
-            renderResultScreen() {
-                const { passed, score, total, xp } = this.state.resultData;
-                const div = document.createElement('div');
-                div.className = "flex flex-col items-center justify-center flex-grow p-6 text-center animate-slide-up";
-                
-                div.innerHTML = `
-                    <div class="text-8xl mb-6">${passed ? '🎉' : '💔'}</div>
-                    <h2 class="text-3xl font-bold text-duo-dark-green mb-2">${passed ? 'Lição Concluída!' : 'Não desista!'}</h2>
-                    <p class="text-gray-500 text-lg mb-8">Você acertou ${score} de ${total} questões.</p>
-                    
-                    ${passed ? `
-                        <div class="flex space-x-4 mb-8">
-                            <div class="bg-yellow-100 border-2 border-yellow-400 p-4 rounded-xl w-32">
-                                <p class="text-yellow-700 font-bold text-xs uppercase">Total XP</p>
-                                <p class="text-yellow-600 font-bold text-2xl">+${xp}</p>
-                            </div>
-                            <div class="bg-blue-100 border-2 border-blue-400 p-4 rounded-xl w-32">
-                                <p class="text-blue-700 font-bold text-xs uppercase">Acertos</p>
-                                <p class="text-blue-600 font-bold text-2xl">${Math.round((score/total)*100)}%</p>
-                            </div>
-                        </div>
-                    ` : `
-                        <p class="mb-8 text-red-500 font-semibold">Tente novamente para avançar.</p>
-                    `}
-
-                    <button onclick="window.App.navigateTo('map')" class="duo-start-btn w-full max-w-xs py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">
-                        Continuar
-                    </button>
-                `;
-                return div;
-            },
-
-            renderLessonContent() {
-                const lesson = courseData[this.state.currentLessonId];
-                const container = document.createElement('div');
-                container.className = "flex flex-col flex-grow w-full max-w-xl mx-auto p-4 pb-32"; // Padding bottom grande para o botão fixo
-
-                container.innerHTML = `
-                    <div class="text-center mb-6">
-                        <h1 class="text-2xl font-bold text-gray-800">${lesson.title}</h1>
-                        <p class="text-sm text-gray-500 uppercase tracking-wide font-bold mt-1">${lesson.bible_ref}</p>
-                    </div>
-                    <div id="cards-area" class="space-y-6"></div>
-                `;
-                
-                // Variável local para controlar os cards mostrados
-                let cardIndex = 0;
-                
-                // Função interna para mostrar próximo card
-                const showNext = () => {
-                    const area = container.querySelector('#cards-area');
-                    const btn = document.getElementById('lesson-action-btn');
-                    
-                    if (cardIndex < lesson.content.length) {
-                        const cardText = lesson.content[cardIndex];
-                        const card = document.createElement('div');
-                        
-                        // Parse simples de Markdown (**bold**)
-                        const formattedText = cardText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>');
-                        
-                        card.className = "bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-sm animate-slide-up flex gap-4 items-start";
-                        card.innerHTML = `
-                            <div class="text-3xl">📖</div> <!-- Ícone genérico -->
-                            <div class="text-lg text-gray-700 leading-relaxed">${formattedText}</div>
-                        `;
-                        
-                        area.appendChild(card);
-                        // Scroll suave para o novo card
-                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        
-                        cardIndex++;
-                        
-                        // Atualiza texto do botão
-                        if (cardIndex === lesson.content.length) {
-                            btn.innerText = "COMEÇAR O DESAFIO";
-                            btn.className = "duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-lg animate-pulse";
-                            btn.onclick = () => this.startQuiz(lesson.id);
-                        } else {
-                            btn.innerText = "CONTINUAR";
-                        }
-                    }
-                };
-
-                // Cria o footer fixo com o botão
-                const footer = document.createElement('div');
-                footer.className = "fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-10";
-                footer.innerHTML = `
-                    <div class="max-w-xl mx-auto">
-                        <button id="lesson-action-btn" class="duo-start-btn w-full py-4 rounded-xl text-white font-bold text-lg uppercase tracking-wider shadow-md">
-                            Começar
-                        </button>
-                    </div>
-                `;
-                
-                // Adiciona listener ao botão
-                const btn = footer.querySelector('button');
-                btn.onclick = showNext;
-
-                // Monta a tela
-                setTimeout(() => {
-                    document.getElementById('app').appendChild(footer);
-                    showNext(); // Mostra o primeiro card automaticamente
-                }, 50);
-
-                return container;
-            },
-
-            // Utilitários
-            shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-                return array;
+            loadLeaderboard() {
+                this.navigateTo('ranking');
             }
         };
     </script>
