@@ -239,7 +239,7 @@
     </script>
 
     <script type="text/javascript">
-        // Helper para gerar placeholders (Aulas 5 a 28)
+        // Helper para gerar placeholders (Aulas 7 a 28)
         const generatePlaceholderQuestions = (lessonId) => {
             return Array.from({ length: 10 }, (_, i) => ({
                 q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}? (Este conteúdo precisa ser editado)`,
@@ -248,8 +248,7 @@
             }));
         };
 
-        // --- CONTEÚDO DO CURSO ---
-        // AQUI ESTÁ A CORREÇÃO DA AULA 3
+        // --- CONTEÚDO DO CURSO (AULAS 1 ATÉ 28) ---
         const courseData = {
             1: {
                 id: 1,
@@ -273,36 +272,83 @@
                     { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação", "Maria", "Os anjos"] }
                 ]
             },
-            // --- AULA 3 CORRIGIDA COM CONTEÚDO REAL ---
             3: {
                 id: 3,
                 title: "Jesus - Quem é o Filho de Deus?",
                 bible_ref: "João 14,8-11",
                 points: 200,
                 content: [
-                    "**Dupla Natureza:** Jesus é Verdadeiro Deus e Verdadeiro Homem. Ele não é metade um, metade outro.",
-                    "**O Messias:** 'Cristo' significa 'Ungido'. Ele é quem o povo de Israel esperava.",
-                    "**A Revelação:** Quem vê Jesus, vê o Pai. Ele é a imagem visível do Deus invisível.",
-                    "**O Caminho:** Jesus disse: 'Eu sou o Caminho, a Verdade e a Vida'. Ninguém vai ao Pai a não ser por Ele."
+                    "**Dupla Natureza:** Jesus é Verdadeiro Deus e Verdadeiro Homem.",
+                    "**O Messias:** Ele é o Cristo, o Ungido esperado por Israel.",
+                    "**A Revelação:** Quem vê Jesus, vê o Pai.",
+                    "**O Caminho:** Ninguém vai ao Pai senão por Ele."
                 ],
                 quiz_questions: [
                     { q: "Quais são as duas naturezas de Jesus?", a: "Divina e Humana", o: ["Anjo e Homem", "Espírito e Carne", "Rei e Servo"] },
-                    { q: "O que Jesus respondeu a Filipe (Jo 14,9)?", a: "Quem me vê, vê o Pai", o: ["O Pai está longe", "Eu sou apenas um profeta", "Não sei quem é o Pai"] },
                     { q: "O que significa o título 'Cristo'?", a: "Ungido", o: ["Rei", "Salvador", "Mestre"] },
                     { q: "Jesus disse: 'Eu sou o Caminho, a Verdade e a...'", a: "Vida", o: ["Luz", "Porta", "Paz"] },
-                    { q: "Onde Jesus nasceu?", a: "Belém", o: ["Nazaré", "Jerusalém", "Roma"] },
-                    { q: "Qual a missão principal de Jesus?", a: "Salvar a humanidade e revelar o Pai", o: ["Ser um líder político", "Ficar rico", "Escrever livros"] }
+                    { q: "Onde Jesus nasceu?", a: "Belém", o: ["Nazaré", "Jerusalém", "Roma"] }
                 ]
             },
-            // --- AULA 4 EM DIANTE (PLACEHOLDERS) ---
-            // Você precisa editar aqui igual fiz na Aula 3 para as perguntas aparecerem corretamente
-            4: { id: 4, title: "Por que Jesus foi Crucificado?", bible_ref: "Lucas 23,33-47", points: 200, content: ["Jesus morreu pelos pecados.", "Foi amor supremo."], quiz_questions: generatePlaceholderQuestions(4) },
-            5: { id: 5, title: "Ressurreição de Jesus", bible_ref: "João 20,1-10", points: 200, content: ["O Túmulo Vazio.", "Ele venceu a morte."], quiz_questions: generatePlaceholderQuestions(5) },
-            // ... Gera o restante automático
-            ...Array.from({length: 23}, (_, i) => i + 6).reduce((acc, id) => {
+            4: {
+                id: 4,
+                title: "Por que Jesus foi Crucificado?",
+                bible_ref: "Lucas 23,33-47",
+                points: 200,
+                content: [
+                    "**Amor Supremo:** Jesus não foi obrigado. Ele se entregou livremente por amor a nós.",
+                    "**O Cordeiro:** Sua morte pagou o preço dos nossos pecados e nos reconciliou com Deus.",
+                    "**Perdão:** Na cruz, Jesus disse: 'Pai, perdoa-lhes, porque não sabem o que fazem'.",
+                    "**O Bom Ladrão:** Jesus prometeu: 'Hoje estarás comigo no Paraíso'."
+                ],
+                quiz_questions: [
+                    { q: "Qual o motivo principal da morte de Jesus?", a: "Nossos pecados e Seu amor", o: ["Um acidente político", "Ele queria fugir", "Foi enganado"] },
+                    { q: "O que Jesus pediu ao Pai na cruz?", a: "Perdão para seus algozes", o: ["Vingança", "Água gelada", "Para descer da cruz"] },
+                    { q: "Quem condenou Jesus à morte?", a: "Pôncio Pilatos", o: ["Herodes", "Pedro", "Judas"] },
+                    { q: "O sacrifício de Jesus nos trouxe a...", a: "Salvação", o: ["Riqueza material", "Fama", "Sorte"] }
+                ]
+            },
+            5: {
+                id: 5,
+                title: "Ressurreição de Jesus",
+                bible_ref: "João 20,1-10",
+                points: 200,
+                content: [
+                    "**A Vitória:** A morte não segurou Jesus. Ele ressuscitou glorioso!",
+                    "**O Domingo:** Foi no primeiro dia da semana que encontraram o túmulo vazio.",
+                    "**Testemunhas:** Maria Madalena foi a primeira a ver. Depois Pedro, João e os outros.",
+                    "**Nossa Fé:** Se Cristo não ressuscitou, nossa fé é vazia (1 Cor 15)."
+                ],
+                quiz_questions: [
+                    { q: "O que encontraram no domingo de manhã?", a: "O túmulo vazio", o: ["Jesus dormindo", "Os soldados jogando", "Nada"] },
+                    { q: "Quem foi a primeira pessoa a ver o Ressuscitado?", a: "Maria Madalena", o: ["Pedro", "Tomé", "Judas"] },
+                    { q: "Em que dia da semana Jesus ressuscitou?", a: "Domingo", o: ["Sábado", "Sexta-feira", "Segunda-feira"] },
+                    { q: "Qual apóstolo duvidou e precisou tocar nas chagas?", a: "Tomé", o: ["João", "Mateus", "Tiago"] }
+                ]
+            },
+            6: {
+                id: 6,
+                title: "Segunda Vinda de Jesus",
+                bible_ref: "Mateus 24,35-44",
+                points: 200,
+                content: [
+                    "**Ele Voltará:** Jesus prometeu que virá novamente em glória para julgar vivos e mortos.",
+                    "**Quando?** 'Daquele dia e hora ninguém sabe, nem os anjos, só o Pai'.",
+                    "**Vigilância:** Devemos estar sempre preparados, vivendo no amor e na graça.",
+                    "**O Juízo:** Seremos julgados pelo amor. Tive fome e me destes de comer..."
+                ],
+                quiz_questions: [
+                    { q: "Quem sabe o dia e a hora da volta de Jesus?", a: "Só o Pai", o: ["O Papa", "Os Anjos", "Os Profetas"] },
+                    { q: "Qual deve ser nossa atitude sobre a vinda Dele?", a: "Vigilância e oração", o: ["Medo e pavor", "Despreocupação", "Curiosidade"] },
+                    { q: "Como Jesus virá na segunda vez?", a: "Em glória para julgar", o: ["Como um bebê", "Escondido", "Apenas em espírito"] },
+                    { q: "O que passará, segundo Jesus?", a: "O céu e a terra", o: ["A Palavra de Deus", "O Amor", "A alma"] }
+                ]
+            },
+            // Aulas 7 a 28 (Automáticas)
+            ...Array.from({length: 22}, (_, i) => i + 7).reduce((acc, id) => {
                 acc[id] = {
                     id: id,
-                    title: `Aula ${id}: Tema em Construção`,
+                    title: `Aula ${id}: Tema a definir`,
                     bible_ref: "Bíblia",
                     points: 200,
                     content: ["Conteúdo em breve..."],
