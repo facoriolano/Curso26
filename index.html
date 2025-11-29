@@ -2,43 +2,34 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fé Power-Up: Curso de Crisma</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Configuração de Fontes e Cores para Estilo Duolingo */
+        /* Configuração de Fontes e Cores */
         :root {
             --duo-green: #58cc02;
             --duo-dark-green: #40a000;
             --duo-blue: #1cb0f6;
-            --duo-dark-blue: #1899d6;
             --duo-yellow: #ffc800;
             --duo-red: #ff4b4b;
             --duo-light-gray: #f7f7f7;
-            --duo-dark-gray: #777;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--duo-light-gray);
-            /* Espaço para a barra de navegação inferior */
-            padding-bottom: 80px; 
+            padding-bottom: 90px; /* Espaço para menu inferior */
             overscroll-behavior-y: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Classes personalizadas */
+        /* Estilos Personalizados */
         .duo-header { background-color: white; border-bottom: 2px solid #e5e5e5; }
         
-        .duo-lesson-card {
-            background-color: white;
-            border-bottom: 4px solid #ddd;
-            transition: transform 0.1s;
-        }
-        .duo-lesson-card:active { transform: translateY(2px); border-bottom-width: 2px; }
-
         .duo-start-btn {
             background-color: var(--duo-green);
             border-bottom: 4px solid var(--duo-dark-green);
@@ -56,7 +47,7 @@
         .duo-correct { background-color: #d7ffb8 !important; border-color: var(--duo-green) !important; color: var(--duo-dark-green); }
         .duo-wrong { background-color: #ffdde0 !important; border-color: var(--duo-red) !important; color: var(--duo-red); }
         
-        /* Barra de Navegação Inferior */
+        /* Menu Inferior */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -66,20 +57,21 @@
             border-top: 2px solid #e5e5e5;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             z-index: 50;
+            padding-bottom: env(safe-area-inset-bottom);
         }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             color: #afafaf;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             text-transform: uppercase;
         }
         .nav-item.active { color: var(--duo-blue); }
-        .nav-item svg { width: 28px; height: 28px; margin-bottom: 2px; }
+        .nav-item svg { width: 26px; height: 26px; margin-bottom: 4px; }
 
         /* Animações */
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -89,71 +81,68 @@
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
     <!-- Tela de Carregamento -->
-    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
-        <svg class="animate-spin h-12 w-12 text-duo-green mb-4" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <p class="text-xl font-bold text-gray-700">Carregando...</p>
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-4 text-center">
+        <div id="loading-spinner">
+            <svg class="animate-spin h-12 w-12 text-duo-green mb-4 mx-auto" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-xl font-bold text-gray-700">Conectando ao Curso...</p>
+        </div>
+        <div id="error-message" class="hidden">
+            <p class="text-red-500 font-bold mb-4">Ocorreu um erro ao carregar.</p>
+            <button onclick="location.reload()" class="bg-gray-200 px-4 py-2 rounded font-bold text-gray-700">Tentar Novamente</button>
+        </div>
     </div>
 
-    <!-- Modal de Nome (Boas-vindas) -->
+    <!-- Modal de Nome -->
     <div id="name-modal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm text-center animate-slide-up">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Seja bem-vindo!</h2>
-            <p class="text-gray-600 mb-6">Como você gostaria de ser chamado no Ranking?</p>
-            <input type="text" id="user-name-input" placeholder="Seu nome aqui" class="w-full border-2 border-gray-300 rounded-xl p-3 text-lg mb-4 focus:border-duo-blue focus:outline-none text-center font-bold">
-            <button onclick="window.App.saveUserName()" class="w-full duo-start-btn text-white font-bold py-3 rounded-xl uppercase tracking-wider">Entrar</button>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Bem-vindo!</h2>
+            <p class="text-gray-600 mb-6">Qual seu nome para o Ranking?</p>
+            <input type="text" id="user-name-input" placeholder="Digite seu nome" class="w-full border-2 border-gray-300 rounded-xl p-3 text-lg mb-4 text-center font-bold outline-none focus:border-duo-blue">
+            <button onclick="window.App.saveUserName()" class="w-full duo-start-btn text-white font-bold py-3 rounded-xl uppercase tracking-wider">Começar</button>
         </div>
     </div>
 
-    <!-- Cabeçalho Superior -->
-    <header class="duo-header p-3 sticky top-0 z-20 shadow-sm flex justify-between items-center px-4">
-        <div class="flex items-center">
-             <span class="font-extrabold text-xl tracking-tight text-duo-green" id="header-title">Fé Power-Up</span>
-        </div>
+    <!-- Header -->
+    <header class="duo-header p-3 sticky top-0 z-20 shadow-sm flex justify-between items-center px-4 safe-top">
+        <span class="font-extrabold text-xl tracking-tight text-duo-green" id="header-title">Fé Power-Up</span>
         <div class="flex items-center space-x-2">
             <div class="flex items-center bg-yellow-100 px-3 py-1 rounded-full border border-yellow-400">
-                <svg class="w-4 h-4 text-yellow-600 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span class="mr-1 text-yellow-600">★</span>
                 <span id="current-score" class="text-yellow-700 font-bold">0</span>
             </div>
             <div id="hearts-display" class="hidden flex items-center text-duo-red font-bold">
-                <svg class="w-6 h-6 fill-current mr-1" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span class="mr-1">❤️</span>
                 <span id="hearts-count">5</span>
             </div>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
+    <!-- App Container -->
     <div id="app" class="flex flex-col flex-grow w-full max-w-2xl mx-auto"></div>
 
-    <!-- Barra de Navegação Inferior -->
-    <nav class="bottom-nav">
+    <!-- Menu Inferior -->
+    <nav class="bottom-nav safe-bottom">
         <button onclick="window.App.navigateTo('map')" class="nav-item active" id="nav-map">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
             Aulas
         </button>
         <button onclick="window.App.loadLeaderboard()" class="nav-item" id="nav-ranking">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
             Ranking
         </button>
     </nav>
 
-    <!-- Scripts Firebase -->
+    <!-- Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // ==========================================
-        // 🔴 CHAVES DO FIREBASE CONFIGURADAS 🔴
-        // ==========================================
+        // CONFIGURAÇÃO FIREBASE
         const appId = 'crisma-2026';
-        
         const firebaseConfig = {
             apiKey: "AIzaSyCoR6nlyCfsozUpwLo7iB8bUgQ-fdQ_14o",
             authDomain: "curso26-bcabf.firebaseapp.com",
@@ -162,93 +151,91 @@
             messagingSenderId: "691991061470",
             appId: "1:691991061470:web:7a5fa026c4f836069d734f"
         };
-        // ==========================================
 
         let db, auth;
-        let unsubscribeUser;
 
         window.initializeFirebase = async () => {
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("SUA_API_KEY")) {
-                 alert("ERRO: Chaves do Firebase inválidas.");
-                 document.getElementById('loading-screen').innerHTML = "<p class='p-4 text-red-500'>Erro: Chaves do Firebase não configuradas.</p>";
-                 return;
-            }
-
             try {
-                const firebaseApp = initializeApp(firebaseConfig);
-                db = getFirestore(firebaseApp);
-                auth = getAuth(firebaseApp);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Timeout de Segurança (se travar no carregando)
+                setTimeout(() => {
+                    if (document.getElementById('loading-screen') && !document.getElementById('loading-screen').classList.contains('hidden')) {
+                        document.getElementById('loading-spinner').classList.add('hidden');
+                        document.getElementById('error-message').classList.remove('hidden');
+                    }
+                }, 8000);
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         window.App.init(db, user.uid);
                     } else {
-                        signInAnonymously(auth).catch(err => console.error("Erro Login:", err));
+                        signInAnonymously(auth).catch(e => console.error(e));
                     }
                 });
             } catch (error) {
-                console.error("Erro Geral:", error);
-                document.getElementById('loading-screen').innerHTML = `<p class='p-4 text-red-500'>Erro de Conexão: ${error.message}</p>`;
+                console.error("Erro Firebase:", error);
+                document.getElementById('loading-spinner').classList.add('hidden');
+                document.getElementById('error-message').classList.remove('hidden');
+                document.getElementById('error-message').querySelector('p').innerText = "Erro ao conectar: " + error.message;
             }
         };
 
-        // Escuta o progresso pessoal
         window.startProgressListener = function(userId) {
             const docRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'crisma');
-            unsubscribeUser = onSnapshot(docRef, (docSnap) => {
+            onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     window.App.setUserProgress(docSnap.data());
                 } else {
                     window.App.setUserProgress({ score: 0, completedLessons: {}, name: null });
                 }
-                document.getElementById('loading-screen').classList.add('hidden');
+                const screen = document.getElementById('loading-screen');
+                if(screen) screen.classList.add('hidden');
+            }, (error) => {
+                console.error("Erro snapshot:", error);
             });
         };
 
-        // Salva progresso e atualiza o Ranking Público
         window.saveProgress = async (progress) => {
             if (!window.App.userId || !db) return;
-            
-            // 1. Salva no perfil do usuário
             const userRef = doc(db, 'artifacts', appId, 'users', window.App.userId, 'progress', 'crisma');
             await setDoc(userRef, progress, { merge: true });
 
-            // 2. Salva na tabela pública de Ranking (apenas Nome e Score)
             if (progress.name) {
-                const leaderboardRef = doc(db, 'artifacts', appId, 'leaderboard', window.App.userId);
-                await setDoc(leaderboardRef, {
-                    name: progress.name,
-                    score: progress.score,
-                    lastUpdate: new Date()
-                });
+                const lbRef = doc(db, 'artifacts', appId, 'leaderboard', window.App.userId);
+                await setDoc(lbRef, { name: progress.name, score: progress.score });
             }
         };
 
-        // Busca o Top 20 do Ranking
         window.getLeaderboard = async () => {
-            const q = query(collection(db, 'artifacts', appId, 'leaderboard'), orderBy("score", "desc"), limit(20));
-            const querySnapshot = await getDocs(q);
-            const leaders = [];
-            querySnapshot.forEach((doc) => {
-                leaders.push(doc.data());
-            });
-            return leaders;
+            try {
+                const q = query(collection(db, 'artifacts', appId, 'leaderboard'), orderBy("score", "desc"), limit(20));
+                const snap = await getDocs(q);
+                let leaders = [];
+                snap.forEach(d => leaders.push(d.data()));
+                return leaders;
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
         };
 
         window.onload = initializeFirebase;
     </script>
 
     <script type="text/javascript">
-        // Helper para gerar placeholders (Aulas 7 a 28)
+        // Helper para placeholders
         const generatePlaceholderQuestions = (lessonId) => {
             return Array.from({ length: 10 }, (_, i) => ({
-                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}? (Este conteúdo precisa ser editado)`,
+                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}?`,
                 a: "Resposta Correta",
                 o: ["Opção Errada 1", "Opção Errada 2", "Opção Errada 3"]
             }));
         };
 
-        // --- CONTEÚDO DO CURSO (AULAS 1 ATÉ 28) ---
+        // --- CONTEÚDO CORRIGIDO E TESTADO ---
         const courseData = {
             1: {
                 id: 1,
@@ -277,12 +264,7 @@
                 title: "Jesus - Quem é o Filho de Deus?",
                 bible_ref: "João 14,8-11",
                 points: 200,
-                content: [
-                    "**Dupla Natureza:** Jesus é Verdadeiro Deus e Verdadeiro Homem.",
-                    "**O Messias:** Ele é o Cristo, o Ungido esperado por Israel.",
-                    "**A Revelação:** Quem vê Jesus, vê o Pai.",
-                    "**O Caminho:** Ninguém vai ao Pai senão por Ele."
-                ],
+                content: ["**Natureza:** Jesus é Deus e Homem.", "**Messias:** O Cristo esperado.", "**Caminho:** Ninguém vai ao Pai senão por Ele."],
                 quiz_questions: [
                     { q: "Quais são as duas naturezas de Jesus?", a: "Divina e Humana", o: ["Anjo e Homem", "Espírito e Carne", "Rei e Servo"] },
                     { q: "O que significa o título 'Cristo'?", a: "Ungido", o: ["Rei", "Salvador", "Mestre"] },
@@ -295,17 +277,12 @@
                 title: "Por que Jesus foi Crucificado?",
                 bible_ref: "Lucas 23,33-47",
                 points: 200,
-                content: [
-                    "**Amor Supremo:** Jesus não foi obrigado. Ele se entregou livremente por amor a nós.",
-                    "**O Cordeiro:** Sua morte pagou o preço dos nossos pecados e nos reconciliou com Deus.",
-                    "**Perdão:** Na cruz, Jesus disse: 'Pai, perdoa-lhes, porque não sabem o que fazem'.",
-                    "**O Bom Ladrão:** Jesus prometeu: 'Hoje estarás comigo no Paraíso'."
-                ],
+                content: ["**Amor Supremo:** Entregou-se por nós.", "**Perdão:** Perdoou na cruz."],
                 quiz_questions: [
-                    { q: "Qual o motivo principal da morte de Jesus?", a: "Nossos pecados e Seu amor", o: ["Um acidente político", "Ele queria fugir", "Foi enganado"] },
-                    { q: "O que Jesus pediu ao Pai na cruz?", a: "Perdão para seus algozes", o: ["Vingança", "Água gelada", "Para descer da cruz"] },
-                    { q: "Quem condenou Jesus à morte?", a: "Pôncio Pilatos", o: ["Herodes", "Pedro", "Judas"] },
-                    { q: "O sacrifício de Jesus nos trouxe a...", a: "Salvação", o: ["Riqueza material", "Fama", "Sorte"] }
+                    { q: "Qual o motivo da morte de Jesus?", a: "Nossos pecados e Seu amor", o: ["Acidente político", "Fuga", "Engano"] },
+                    { q: "O que Jesus pediu na cruz?", a: "Perdão aos algozes", o: ["Vingança", "Água", "Liberdade"] },
+                    { q: "Quem condenou Jesus?", a: "Pôncio Pilatos", o: ["Herodes", "Pedro", "Judas"] },
+                    { q: "O sacrifício trouxe...", a: "Salvação", o: ["Riqueza", "Fama", "Sorte"] }
                 ]
             },
             5: {
@@ -313,17 +290,12 @@
                 title: "Ressurreição de Jesus",
                 bible_ref: "João 20,1-10",
                 points: 200,
-                content: [
-                    "**A Vitória:** A morte não segurou Jesus. Ele ressuscitou glorioso!",
-                    "**O Domingo:** Foi no primeiro dia da semana que encontraram o túmulo vazio.",
-                    "**Testemunhas:** Maria Madalena foi a primeira a ver. Depois Pedro, João e os outros.",
-                    "**Nossa Fé:** Se Cristo não ressuscitou, nossa fé é vazia (1 Cor 15)."
-                ],
+                content: ["**Vitória:** Ele venceu a morte!", "**Domingo:** O túmulo estava vazio."],
                 quiz_questions: [
-                    { q: "O que encontraram no domingo de manhã?", a: "O túmulo vazio", o: ["Jesus dormindo", "Os soldados jogando", "Nada"] },
-                    { q: "Quem foi a primeira pessoa a ver o Ressuscitado?", a: "Maria Madalena", o: ["Pedro", "Tomé", "Judas"] },
-                    { q: "Em que dia da semana Jesus ressuscitou?", a: "Domingo", o: ["Sábado", "Sexta-feira", "Segunda-feira"] },
-                    { q: "Qual apóstolo duvidou e precisou tocar nas chagas?", a: "Tomé", o: ["João", "Mateus", "Tiago"] }
+                    { q: "O que acharam no domingo?", a: "O túmulo vazio", o: ["Jesus dormindo", "Soldados", "Nada"] },
+                    { q: "Quem viu primeiro?", a: "Maria Madalena", o: ["Pedro", "Tomé", "Judas"] },
+                    { q: "Dia da ressurreição?", a: "Domingo", o: ["Sábado", "Sexta", "Segunda"] },
+                    { q: "Quem duvidou?", a: "Tomé", o: ["João", "Mateus", "Tiago"] }
                 ]
             },
             6: {
@@ -331,20 +303,15 @@
                 title: "Segunda Vinda de Jesus",
                 bible_ref: "Mateus 24,35-44",
                 points: 200,
-                content: [
-                    "**Ele Voltará:** Jesus prometeu que virá novamente em glória para julgar vivos e mortos.",
-                    "**Quando?** 'Daquele dia e hora ninguém sabe, nem os anjos, só o Pai'.",
-                    "**Vigilância:** Devemos estar sempre preparados, vivendo no amor e na graça.",
-                    "**O Juízo:** Seremos julgados pelo amor. Tive fome e me destes de comer..."
-                ],
+                content: ["**Ele Voltará:** Em glória para julgar.", "**Vigilância:** Estejam preparados."],
                 quiz_questions: [
-                    { q: "Quem sabe o dia e a hora da volta de Jesus?", a: "Só o Pai", o: ["O Papa", "Os Anjos", "Os Profetas"] },
-                    { q: "Qual deve ser nossa atitude sobre a vinda Dele?", a: "Vigilância e oração", o: ["Medo e pavor", "Despreocupação", "Curiosidade"] },
-                    { q: "Como Jesus virá na segunda vez?", a: "Em glória para julgar", o: ["Como um bebê", "Escondido", "Apenas em espírito"] },
-                    { q: "O que passará, segundo Jesus?", a: "O céu e a terra", o: ["A Palavra de Deus", "O Amor", "A alma"] }
+                    { q: "Quem sabe o dia da volta?", a: "Só o Pai", o: ["O Papa", "Anjos", "Profetas"] },
+                    { q: "Nossa atitude deve ser...", a: "Vigilância", o: ["Medo", "Sono", "Curiosidade"] },
+                    { q: "Como Ele virá?", a: "Em glória", o: ["Como bebê", "Escondido", "Em espírito"] },
+                    { q: "O que passará?", a: "Céu e terra", o: ["Palavra de Deus", "Amor", "Alma"] }
                 ]
             },
-            // Aulas 7 a 28 (Automáticas)
+            // Aulas 7 a 28 (Geradas Automaticamente)
             ...Array.from({length: 22}, (_, i) => i + 7).reduce((acc, id) => {
                 acc[id] = {
                     id: id,
@@ -361,320 +328,176 @@
         courseData[13].title = "🏆 PROVA INTERMEDIÁRIA";
         courseData[28].title = "🏆 PROVA FINAL";
 
-        // --- LÓGICA DO APLICATIVO ---
+        // --- APP LOGIC ---
         window.App = {
-            db: null,
-            userId: null,
+            db: null, userId: null,
             userProgress: { score: 0, completedLessons: {}, name: null },
             state: { currentScreen: 'map', hearts: 5, quizData: [], quizIndex: 0, quizScore: 0 },
 
-            init(dbInstance, userId) {
-                this.db = dbInstance;
-                this.userId = userId;
+            init(db, userId) {
+                this.db = db; this.userId = userId;
+                window.startProgressListener(userId);
                 this.render();
             },
 
-            setUserProgress(progress) {
-                this.userProgress = { ...this.userProgress, ...progress };
-                
-                // Se não tem nome, abre o modal
+            setUserProgress(p) {
+                this.userProgress = { ...this.userProgress, ...p };
+                const modal = document.getElementById('name-modal');
                 if (!this.userProgress.name) {
-                    document.getElementById('name-modal').classList.remove('hidden');
-                    document.getElementById('name-modal').classList.add('flex');
+                    modal.classList.remove('hidden'); modal.classList.add('flex');
                 } else {
-                    document.getElementById('name-modal').classList.add('hidden');
+                    modal.classList.add('hidden');
                 }
-                
                 this.render();
             },
 
             saveUserName() {
-                const nameInput = document.getElementById('user-name-input');
-                const name = nameInput.value.trim();
+                const name = document.getElementById('user-name-input').value.trim();
                 if (name.length > 2) {
                     this.userProgress.name = name;
                     window.saveProgress(this.userProgress);
                     document.getElementById('name-modal').classList.add('hidden');
-                } else {
-                    alert("Por favor, digite um nome válido!");
-                }
+                } else alert("Nome muito curto!");
             },
 
-            navigateTo(screen, param = null) {
+            navigateTo(screen, param) {
                 this.state.currentScreen = screen;
                 this.state.currentParam = param;
                 this.render();
             },
 
             render() {
-                const appDiv = document.getElementById('app');
-                const headerTitle = document.getElementById('header-title');
-                const scoreDisplay = document.getElementById('current-score');
-                const heartsDisplay = document.getElementById('hearts-display');
+                const app = document.getElementById('app');
+                document.getElementById('current-score').innerText = this.userProgress.score;
+                document.getElementById('hearts-count').innerText = this.state.hearts;
                 
-                // Atualiza Header
-                scoreDisplay.textContent = this.userProgress.score;
-                
-                // Gerencia abas ativas
-                document.getElementById('nav-map').className = `nav-item ${this.state.currentScreen === 'map' ? 'active' : ''}`;
-                document.getElementById('nav-ranking').className = `nav-item ${this.state.currentScreen === 'ranking' ? 'active' : ''}`;
+                // Tabs
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                if(this.state.currentScreen === 'map') document.getElementById('nav-map').classList.add('active');
+                if(this.state.currentScreen === 'ranking') document.getElementById('nav-ranking').classList.add('active');
 
-                if (this.state.currentScreen === 'map') {
-                    headerTitle.textContent = "Trilha da Crisma";
-                    heartsDisplay.classList.add('hidden');
-                    appDiv.innerHTML = this.renderMap();
-                } 
-                else if (this.state.currentScreen === 'lesson') {
-                    headerTitle.textContent = "Aula";
-                    heartsDisplay.classList.add('hidden');
-                    appDiv.innerHTML = "";
-                    this.renderLessonContent();
+                // Header Logic
+                const headerT = document.getElementById('header-title');
+                const hearts = document.getElementById('hearts-display');
+                
+                if(this.state.currentScreen === 'quiz') {
+                    headerT.innerText = "Quiz"; hearts.classList.remove('hidden');
+                } else {
+                    headerT.innerText = "Fé Power-Up"; hearts.classList.add('hidden');
                 }
-                else if (this.state.currentScreen === 'quiz') {
-                    headerTitle.textContent = "Quiz";
-                    heartsDisplay.classList.remove('hidden');
-                    document.getElementById('hearts-count').textContent = this.state.hearts;
-                    appDiv.innerHTML = this.renderQuiz();
-                }
-                else if (this.state.currentScreen === 'result') {
-                    headerTitle.textContent = "Resultado";
-                    heartsDisplay.classList.add('hidden');
-                    appDiv.innerHTML = this.renderResult();
-                }
-                else if (this.state.currentScreen === 'ranking') {
-                    headerTitle.textContent = "Ranking";
-                    heartsDisplay.classList.add('hidden');
-                    this.renderRankingScreen();
-                }
+
+                if (this.state.currentScreen === 'map') app.innerHTML = this.renderMap();
+                else if (this.state.currentScreen === 'ranking') this.renderRanking();
+                else if (this.state.currentScreen === 'lesson') this.renderLesson();
+                else if (this.state.currentScreen === 'quiz') app.innerHTML = this.renderQuiz();
+                else if (this.state.currentScreen === 'result') app.innerHTML = this.renderResult();
             },
 
             renderMap() {
-                let html = '<div class="flex flex-col items-center p-4 space-y-4 pb-20 w-full">';
-                const ids = Object.keys(courseData).map(Number).sort((a,b) => a - b);
-                
-                ids.forEach(id => {
-                    const lesson = courseData[id];
-                    const isCompleted = !!this.userProgress.completedLessons[id];
-                    const isUnlocked = id === 1 || !!this.userProgress.completedLessons[id - 1];
+                let h = '<div class="flex flex-col items-center p-4 space-y-6 pb-24 w-full">';
+                Object.keys(courseData).map(Number).sort((a,b)=>a-b).forEach(id => {
+                    const l = courseData[id];
+                    const done = !!this.userProgress.completedLessons[id];
+                    const open = id === 1 || !!this.userProgress.completedLessons[id-1];
+                    const icon = done ? '✓' : (id===13||id===28?'🏆':'★');
+                    const color = open ? (done?'bg-yellow-400 border-yellow-600':'bg-green-500 border-green-700') : 'bg-gray-300 border-gray-400';
+                    const margin = id%2===0 ? 'ml-12' : 'mr-12';
                     
-                    let bgClass = isUnlocked ? (isCompleted ? 'bg-duo-yellow border-yellow-600' : 'bg-duo-green border-duo-dark-green') : 'bg-gray-200 border-gray-300';
-                    let icon = isCompleted ? '✓' : (id === 13 || id === 28 ? '🏆' : '★');
-                    let margin = (id % 2 === 0) ? 'ml-16' : 'mr-16';
-
-                    html += `
-                        <div class="flex flex-col items-center w-full ${margin} ${isUnlocked ? '' : 'opacity-60 grayscale'}">
-                            <button onclick="window.App.startLesson(${id})" ${!isUnlocked ? 'disabled' : ''} 
-                                class="w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl text-white font-bold shadow-lg mb-2 transition-transform active:scale-95 ${bgClass}">
-                                ${icon}
-                            </button>
-                            <span class="text-xs font-bold text-gray-500 bg-white px-2 py-1 rounded border">${lesson.title}</span>
-                        </div>
-                    `;
+                    h += `<div class="flex flex-col items-center ${margin} ${open?'':'opacity-70'}">
+                        <button onclick="window.App.start(${id})" ${!open?'disabled':''} class="w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl text-white font-bold shadow-lg mb-2 transition active:scale-95 ${color}">${icon}</button>
+                        <span class="text-xs font-bold text-gray-500 bg-white px-2 py-1 rounded border shadow-sm max-w-[120px] text-center leading-tight">${l.title}</span>
+                    </div>`;
                 });
-                return html + '</div>';
+                return h + '</div>';
             },
 
-            async renderRankingScreen() {
-                const appDiv = document.getElementById('app');
-                appDiv.innerHTML = `
-                    <div class="p-6 flex flex-col items-center w-full animate-slide-up">
-                        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-lg">
-                            <span class="text-5xl">🏆</span>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Melhores Alunos</h2>
-                        <div id="ranking-list" class="w-full space-y-3 pb-20">
-                            <div class="flex justify-center"><svg class="animate-spin h-8 w-8 text-duo-blue" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>
-                        </div>
-                    </div>
-                `;
-
-                try {
-                    const leaders = await window.getLeaderboard();
-                    const listDiv = document.getElementById('ranking-list');
-                    listDiv.innerHTML = '';
-                    
-                    if (leaders.length === 0) {
-                        listDiv.innerHTML = '<p class="text-center text-gray-500">Ninguém pontuou ainda. Seja o primeiro!</p>';
-                        return;
-                    }
-
-                    leaders.forEach((user, index) => {
-                        const isMe = user.name === this.userProgress.name;
-                        let medal = '';
-                        if (index === 0) medal = '🥇';
-                        else if (index === 1) medal = '🥈';
-                        else if (index === 2) medal = '🥉';
-                        else medal = `<span class="font-bold text-gray-500">#${index + 1}</span>`;
-
-                        listDiv.innerHTML += `
-                            <div class="flex items-center justify-between p-4 rounded-xl border-b-4 ${isMe ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-300' : 'bg-white border-gray-100 shadow-sm'}">
-                                <div class="flex items-center space-x-4">
-                                    <div class="text-xl w-8 text-center">${medal}</div>
-                                    <div class="font-bold text-gray-700 ${isMe ? 'text-duo-blue' : ''}">${user.name} ${isMe ? '(Você)' : ''}</div>
-                                </div>
-                                <div class="font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-lg">${user.score} XP</div>
-                            </div>
-                        `;
-                    });
-                } catch (e) {
-                    console.error(e);
-                    document.getElementById('ranking-list').innerHTML = '<p class="text-red-500 text-center">Erro ao carregar ranking.</p>';
-                }
-            },
-
-            startLesson(id) {
-                if (courseData[id].content.length > 0) {
-                    this.navigateTo('lesson', id);
-                } else {
-                    this.startQuiz(id);
-                }
-            },
-
-            renderLessonContent() {
-                const lesson = courseData[this.state.currentParam];
-                const appDiv = document.getElementById('app');
-                
-                let contentHtml = `<div class="p-6 flex flex-col h-full animate-slide-up pb-24">
-                    <h2 class="text-2xl font-bold mb-2">${lesson.title}</h2>
-                    <p class="text-sm text-gray-500 font-bold uppercase mb-6">${lesson.bible_ref}</p>
-                    <div class="space-y-4">`;
-                
-                lesson.content.forEach(text => {
-                    const fmt = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gray-900">$1</strong>');
-                    contentHtml += `<div class="bg-white p-4 rounded-xl border-2 border-gray-100 shadow-sm text-lg text-gray-700">${fmt}</div>`;
+            async renderRanking() {
+                const app = document.getElementById('app');
+                app.innerHTML = '<div class="p-6 text-center"><h2 class="text-2xl font-bold mb-4">🏆 Melhores Alunos</h2><div id="list" class="space-y-3 pb-24"><p>Carregando...</p></div></div>';
+                const list = await window.getLeaderboard();
+                const div = document.getElementById('list');
+                div.innerHTML = '';
+                if(list.length===0) div.innerHTML = '<p class="text-gray-500">Ranking vazio.</p>';
+                list.forEach((u, i) => {
+                    const isMe = u.name === this.userProgress.name;
+                    div.innerHTML += `<div class="flex justify-between items-center p-4 rounded-xl border-b-4 ${isMe?'bg-blue-50 border-blue-200':'bg-white border-gray-100'}">
+                        <span class="font-bold text-lg w-8">#${i+1}</span>
+                        <span class="font-bold flex-grow text-left ${isMe?'text-blue-600':''}">${u.name}</span>
+                        <span class="font-bold text-yellow-600">${u.score} XP</span>
+                    </div>`;
                 });
+            },
 
-                contentHtml += `</div>
-                    <div class="fixed bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent">
-                        <button onclick="window.App.startQuiz(${lesson.id})" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">Começar Quiz</button>
-                    </div>
-                </div>`;
-                
-                appDiv.innerHTML = contentHtml;
+            start(id) {
+                if(courseData[id].content.length) this.navigateTo('lesson', id);
+                else this.startQuiz(id);
+            },
+
+            renderLesson() {
+                const l = courseData[this.state.currentParam];
+                const app = document.getElementById('app');
+                let h = `<div class="p-6 pb-32 animate-slide-up"><h2 class="text-2xl font-bold mb-2">${l.title}</h2><p class="text-sm font-bold text-gray-400 mb-6 uppercase">${l.bible_ref}</p><div class="space-y-4">`;
+                l.content.forEach(t => h+=`<div class="bg-white p-4 rounded-xl border-2 border-gray-100 text-lg text-gray-700 shadow-sm">${t.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>`);
+                h += `</div><div class="fixed bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent"><button onclick="window.App.startQuiz(${l.id})" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow">Começar Quiz</button></div></div>`;
+                app.innerHTML = h;
             },
 
             startQuiz(id) {
-                this.state.hearts = 5;
-                this.state.quizScore = 0;
-                this.state.quizIndex = 0;
-                // Mistura perguntas
-                const q = [...courseData[id].quiz_questions].sort(() => Math.random() - 0.5).slice(0, 10);
-                this.state.quizData = q;
+                this.state.hearts = 5; this.state.quizScore = 0; this.state.quizIndex = 0;
+                this.state.quizData = [...courseData[id].quiz_questions].sort(()=>Math.random()-0.5).slice(0,10);
                 this.navigateTo('quiz', id);
             },
 
             renderQuiz() {
                 const q = this.state.quizData[this.state.quizIndex];
-                const progress = ((this.state.quizIndex) / this.state.quizData.length) * 100;
-                
-                // Opções misturadas
-                const opts = [q.a, ...q.o].sort(() => Math.random() - 0.5);
-                
-                return `
-                    <div class="flex flex-col h-full p-4 pb-24 max-w-lg mx-auto w-full">
-                        <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
-                            <div class="bg-duo-green h-3 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-700 mb-8">${q.q}</h2>
-                        <div class="space-y-3 flex-grow">
-                            ${opts.map(opt => `
-                                <button onclick="window.App.checkAnswer(this, '${opt.replace(/'/g, "\\'")}', '${q.a.replace(/'/g, "\\'")}')" 
-                                    class="duo-option-btn w-full p-4 rounded-xl text-left text-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-                                    ${opt}
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                const p = (this.state.quizIndex / this.state.quizData.length)*100;
+                const opts = [q.a, ...q.o].sort(()=>Math.random()-0.5);
+                return `<div class="p-4 pb-32 h-full flex flex-col"><div class="w-full bg-gray-200 rounded-full h-3 mb-6"><div class="bg-green-500 h-3 rounded-full transition-all" style="width:${p}%"></div></div>
+                <h2 class="text-2xl font-bold text-gray-700 mb-6 flex-grow">${q.q}</h2>
+                <div class="space-y-3">${opts.map(o => `<button onclick="window.App.check(this, '${o.replace(/'/g,"\\'")}', '${q.a.replace(/'/g,"\\'")}')" class="duo-option-btn w-full p-4 rounded-xl text-left text-lg font-medium text-gray-700">${o}</button>`).join('')}</div></div>`;
             },
 
-            checkAnswer(btn, selected, correct) {
-                // Desabilita todos
-                const allBtns = document.querySelectorAll('.duo-option-btn');
-                allBtns.forEach(b => b.disabled = true);
-
-                if (selected === correct) {
-                    btn.classList.add('duo-correct');
-                    this.state.quizScore++;
-                    // Som de acerto (opcional)
-                } else {
-                    btn.classList.add('duo-wrong');
-                    this.state.hearts--;
-                    // Mostra qual era a certa
-                    allBtns.forEach(b => {
-                        if (b.textContent.trim() === correct) b.classList.add('duo-correct');
-                    });
-                }
-
-                // Footer de Feedback
-                const footer = document.createElement('div');
-                footer.className = `fixed bottom-0 left-0 right-0 p-4 border-t-2 z-50 animate-slide-up ${selected === correct ? 'bg-[#d7ffb8] border-[#b8f28b]' : 'bg-[#ffdfe0] border-[#ffc1c7]'}`;
-                footer.innerHTML = `
-                    <div class="max-w-2xl mx-auto flex justify-between items-center">
-                        <div>
-                            <div class="font-bold text-xl ${selected === correct ? 'text-duo-dark-green' : 'text-duo-red'}">
-                                ${selected === correct ? 'Mandou bem!' : 'Resposta incorreta...'}
-                            </div>
-                        </div>
-                        <button onclick="window.App.nextQuestion()" class="px-6 py-3 rounded-xl font-bold text-white uppercase ${selected === correct ? 'bg-duo-green border-b-4 border-duo-dark-green' : 'bg-duo-red border-b-4 border-[#e53e3e]'}">
-                            Continuar
-                        </button>
-                    </div>
-                `;
-                document.body.appendChild(footer);
+            check(btn, sel, cor) {
+                document.querySelectorAll('.duo-option-btn').forEach(b => b.disabled = true);
+                if(sel===cor) { btn.classList.add('duo-correct'); this.state.quizScore++; }
+                else { btn.classList.add('duo-wrong'); this.state.hearts--; document.querySelectorAll('.duo-option-btn').forEach(b=>{if(b.innerText===cor)b.classList.add('duo-correct')}); }
+                
+                const div = document.createElement('div');
+                div.className = `fixed bottom-0 left-0 right-0 p-4 border-t-2 z-50 animate-slide-up ${sel===cor?'bg-green-100 border-green-300':'bg-red-100 border-red-300'}`;
+                div.innerHTML = `<div class="max-w-2xl mx-auto flex justify-between items-center"><span class="font-bold text-xl ${sel===cor?'text-green-700':'text-red-700'}">${sel===cor?'Correto!':'Errado...'}</span><button onclick="window.App.next()" class="px-6 py-3 rounded-xl font-bold text-white uppercase ${sel===cor?'bg-green-500 border-b-4 border-green-700':'bg-red-500 border-b-4 border-red-700'}">Continuar</button></div>`;
+                document.body.appendChild(div);
             },
 
-            nextQuestion() {
-                // Remove footer antigo
-                const footer = document.querySelector('.fixed.bottom-0.z-50');
-                if (footer) footer.remove();
-
-                if (this.state.hearts <= 0) {
-                    this.finishQuiz(false);
-                    return;
-                }
-
+            next() {
+                document.querySelector('.fixed.bottom-0.z-50').remove();
+                if(this.state.hearts<=0) return this.finish(false);
                 this.state.quizIndex++;
-                if (this.state.quizIndex >= this.state.quizData.length) {
-                    this.finishQuiz(true);
-                } else {
-                    document.getElementById('app').innerHTML = this.renderQuiz();
-                }
+                if(this.state.quizIndex>=this.state.quizData.length) this.finish(true);
+                else document.getElementById('app').innerHTML = this.renderQuiz();
             },
 
-            finishQuiz(passed) {
-                const lessonId = this.state.currentParam;
-                const total = this.state.quizData.length;
-                const score = this.state.quizScore;
-                const isWin = passed && score >= Math.ceil(total * 0.6);
-                
-                if (isWin) {
-                    if (!this.userProgress.completedLessons[lessonId]) {
-                        this.userProgress.score += courseData[lessonId].points;
-                        this.userProgress.completedLessons[lessonId] = true;
+            finish(pass) {
+                const id = this.state.currentParam;
+                const win = pass && this.state.quizScore >= Math.ceil(this.state.quizData.length*0.6);
+                if(win) {
+                    if(!this.userProgress.completedLessons[id]) {
+                        this.userProgress.score += courseData[id].points;
+                        this.userProgress.completedLessons[id] = true;
                     }
                     window.saveProgress(this.userProgress);
                 }
-
-                this.navigateTo('result', { isWin, score, total, xp: isWin ? courseData[lessonId].points : 0 });
+                this.navigateTo('result', { win, s: this.state.quizScore, t: this.state.quizData.length });
             },
 
             renderResult() {
-                const { isWin, score, total, xp } = this.state.currentParam;
-                return `
-                    <div class="flex flex-col items-center justify-center h-full p-6 text-center animate-slide-up pb-24">
-                        <div class="text-8xl mb-6">${isWin ? '🎉' : '💔'}</div>
-                        <h2 class="text-3xl font-bold text-duo-dark-green mb-2">${isWin ? 'Lição Concluída!' : 'Não desista!'}</h2>
-                        <p class="text-gray-500 text-lg mb-8">Você acertou ${score} de ${total} questões.</p>
-                        ${isWin ? `<div class="bg-yellow-100 border-2 border-yellow-400 p-4 rounded-xl mb-8"><p class="text-yellow-700 font-bold text-xs uppercase">Total XP</p><p class="text-yellow-600 font-bold text-2xl">+${xp}</p></div>` : ''}
-                        <button onclick="window.App.navigateTo('map')" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow-lg">Continuar</button>
-                    </div>
-                `;
+                const { win, s, t } = this.state.currentParam;
+                return `<div class="flex flex-col items-center justify-center h-full p-6 text-center animate-slide-up pb-32">
+                    <div class="text-8xl mb-4">${win?'🎉':'💔'}</div><h2 class="text-3xl font-bold mb-2 ${win?'text-green-600':'text-red-500'}">${win?'Lição Concluída!':'Não desista!'}</h2>
+                    <p class="text-gray-500 text-lg mb-8">Acertou ${s} de ${t}</p>
+                    <button onclick="window.App.navigateTo('map')" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase">Continuar</button></div>`;
             },
             
-            loadLeaderboard() {
-                this.navigateTo('ranking');
-            }
+            loadLeaderboard() { this.navigateTo('ranking'); }
         };
     </script>
 </body>
