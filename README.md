@@ -1,64 +1,44 @@
-```markdown
+<div align="center">
 
-███████╗███████╗    ██████╗  ██████╗ ██╗    ██╗███████╗██████╗ 
-██╔════╝██╔════╝    ██╔══██╗██╔═══██╗██║    ██║██╔════╝██╔══██╗
-█████╗  █████╗      ██████╔╝██║   ██║██║ █╗ ██║█████╗  ██████╔╝
-██╔══╝  ██╔══╝      ██╔═══╝ ██║   ██║██║███╗██║██╔══╝  ██╔══██╗
-██║     ███████╗    ██║     ╚██████╔╝╚███╔███╔╝███████╗██║  ██║
-╚═╝     ╚══════╝    ╚═╝      ╚═════╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝
-```
+<!-- Título com Gradiente estilo GEMINI (Azul -> Roxo -> Rosa) -->
+<a href="https://github.com/facoriolano">
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=900&size=55&duration=3000&pause=1000&color=4285F4&background=00000000&center=true&vCenter=true&width=600&height=100&lines=FE+POWER-UP;CRISMA+2026;GAMIFICACAO" alt="Typing SVG" />
+</a>
 
-### 🕊️ Curso de Crisma Gamificado 2026
-
-<!-- Paleta Gemini: Roxo, Indigo e Azul -->
-![Database](https://img.shields.io/badge/Database-Firestore-6D28D9?style=for-the-badge&logo=firebase&logoColor=white)
-![Style](https://img.shields.io/badge/Style-Tailwind-4F46E5?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Online-EC4899?style=for-the-badge&logo=pwa&logoColor=white)
-![Version](https://img.shields.io/badge/Version-2.0-8B5CF6?style=for-the-badge)
+<!-- Badges com a paleta do Gemini -->
+<img src="https://img.shields.io/badge/Database-Firestore-6D28D9?style=for-the-badge&logo=firebase&logoColor=white" />
+<img src="https://img.shields.io/badge/Style-Tailwind-4F46E5?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+<img src="https://img.shields.io/badge/Dev-@facoriolano-EC4899?style=for-the-badge&logo=instagram&logoColor=white" />
 
 </div>
 
----
+<br>
 
-### 🔮 Developer & Contact
+<!-- Simulação do Terminal GEMINI -->
 
-```bash
-> user_contact
-  @facoriolano (Instagram)
+```text
+Tips for getting started:
+1.  Clone this repository.
+2.  Set up your Firebase credentials.
+3.  Run index.html directly.
 
-> current_mission
-  "Evangelizar através da tecnologia com gamificação."
+> describe project --author @facoriolano --style gemini
 
-> system_check
-  [✓] Aulas Completas (1-28)
-  [✓] Ranking em Tempo Real
-  [✓] Design Responsivo (Mobile First)
-  [✓] Banco de Dados na Nuvem (Firebase)
-```
+✦ I will start by analyzing the "Fé Power-Up" PWA structure. It appears to be a 
+  gamified Catechism platform designed to engage students through XP, Levels, 
+  and Interactive Quizzes. The stack relies on a serverless Firebase architecture 
+  for real-time ranking and authentication.
 
----
+  Finally, I will summarize why this project is awesome:
+  It transforms traditional learning into a dynamic journey, making theology 
+  accessible and fun for the 2026 class.
 
-### 🌌 Sobre o Projeto
+╭──────────────────────────────────────────────────────────────────────────────╮
+│  ∞  GoogleSearch  Searching the web for: "Como gamificar a catequese?"       │
+╰──────────────────────────────────────────────────────────────────────────────╯
 
-O **Fé Power-Up** é uma aplicação web progressiva (PWA) criada para revolucionar o ensino da Catequese. Inspirado na estética e mecânica do *Duolingo*, transformamos o aprendizado teológico em uma jornada visual e interativa.
+: Uncovering Faith through Technology (esc to cancel)
 
-**O que ele faz:**
-*   **🎮 Gamificação:** Sistema de XP, Vidas (Corações) e Progressão.
-*   **🏆 Competição Saudável:** Ranking global atualizado instantaneamente.
-*   **📱 Acesso Universal:** Roda em qualquer celular ou computador sem instalar nada.
+Using 3 FIREBASE services
 
----
-
-### ⚡ Tecnologias (Stack)
-
-Este projeto utiliza uma arquitetura *Serverless* focada em performance e simplicidade.
-
-| Componente | Tecnologia | Função |
-| :--- | :--- | :--- |
-| **Frontend** | `HTML5` + `JS ES6` | Lógica da aplicação e renderização. |
-| **Estilo** | `Tailwind CSS` | Design responsivo e moderno via CDN. |
-| **Backend** | `Firebase` | Autenticação anônima e segurança. |
-| **Database** | `Cloud Firestore` | Banco NoSQL em tempo real para o Ranking. |
-
----
-
+~/code/curso-crisma (main*)           no build needed (see /index.html)        v2.0-pro
