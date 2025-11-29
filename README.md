@@ -23,7 +23,7 @@
 ### 👨‍💻 Developer Profile
 
 ```bash
-> whoami
+> Instagram DM
   @facoriolano
 
 > current_mission
@@ -72,29 +72,3 @@ Este projeto foi construído focando em performance e simplicidade, sem necessid
   }
 }
 ```
-
-### 🛠️ Instalação e Execução
-
-Como o projeto é estático (client-side), ele pode ser hospedado em qualquer servidor simples ou rodado localmente.
-
-1.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/facoriolano/Curso26.git
-    ```
-
-2.  **Configuração do Firebase:**
-    *   Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
-    *   Habilite o **Firestore Database** e **Authentication (Anônimo)**.
-    *   Substitua as chaves no arquivo `index.html` na variável `firebaseConfig`.
-
-3.  **Rodar:**
-    *   Basta abrir o arquivo `index.html` no seu navegador ou usar o GitHub Pages.
-
----
-
-<div align="center">
-    <p>Feito com ❤️ e Fé por <b>@facoriolano</b></p>
-    <p><i>"Ide por todo o mundo e pregai o Evangelho a toda criatura." (Mc 16,15)</i></p>
-</div>
-```
-
