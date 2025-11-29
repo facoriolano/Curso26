@@ -1,8 +1,8 @@
 <div align="center">
 
-<!-- TÍTULO CORRIGIDO (Com fundo escuro para o texto aparecer) -->
+<!-- TÍTULO GIGANTE COM FUNDO TRANSPARENTE -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=4000&pause=1000&color=7C3AED&background=221C35&center=true&vCenter=true&width=1200&height=200&lines=%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=4000&pause=1000&color=7C3AED&background=00000000&center=true&vCenter=true&width=1200&height=200&lines=%40FACORIOLANO" alt="Typing SVG" />
 </a>
 
 <!-- Badges -->
