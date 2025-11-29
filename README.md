@@ -1,44 +1,42 @@
+# Fé Power-Up: Curso de Crisma 2026
+
 <div align="center">
 
-<!-- Badges com as cores do Print (Roxo, Indigo, Azul) -->
-<img src="https://img.shields.io/badge/Database-Firestore-7C3AED?style=for-the-badge&logo=firebase&logoColor=white" />
-<img src="https://img.shields.io/badge/Style-Tailwind-4338ca?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-<img src="https://img.shields.io/badge/Dev-@facoriolano-EC4899?style=for-the-badge&logo=instagram&logoColor=white" />
+<!-- Badges Estilo Gemini CLI -->
+[![Database](https://img.shields.io/badge/Database-Firestore-7C3AED?style=for-the-badge&logo=firebase&logoColor=white)](https://firebase.google.com/)
+[![Style](https://img.shields.io/badge/Style-Tailwind-4338ca?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Status](https://img.shields.io/badge/Status-Online_&_Live-3b82f6?style=for-the-badge&logo=pwa&logoColor=white)](https://facoriolano.github.io/Curso26/)
+[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
 </div>
 
 <br>
 
+<!-- TERMINAL VISUAL (Arte ASCII) -->
+
 ```text
-  _______   ______   ______   ______   ______   __   ______   __          ______   __   __   ______  
- /______/\ /_____/\ /_____/\ /_____/\ /_____/\ /_/\ /_____/\ /_/\        /_____/\ /_/\ /_/\ /_____/\ 
- \::::__\/ \::::_\/ \:::__\/ \:::_ \ \\:::_ \ \\:\ \\:::_ \ \\:\ \       \:::_ \ \\:\ \\:\ \\:::_ \ \
-  \:\ \  __ \:\/___  \:\ \  __\:\ \ \ \\:(_) ) )\:\ \\:\ \ \ \\:\ \       \:\ \ \ \\:\ \\:\ \\:\ \ \ \
-   \:\ \/_/\ \:::_/\  \:\ \/_/\\:\ \ \ \\: __ `\ \:\ \\:\ \ \ \\:\ \____   \:\ \ \ \\:\_/.:\ \\:\ \ \ \
-    \:\_\ \ \ \:\_\ \  \:\_\ \ \\:\_\ \ \\ \ `\ \ \:\ \\:\_\ \ \\:\/___/\   \:\_\ \ \\ ..::/ / \:\_\ \ \
-     \_____\/  \_____\/ \_____\/ \_____\/ \_\/ \_\/\_\/ \_____\/ \_____\/    \_____\/ \______/   \_____\/
+   __ _   ______   ______   ______   ______   __   ______   __          ______   __   __   ______  
+  / /_/\ /_____/\ /_____/\ /_____/\ /_____/\ /_/\ /_____/\ /_/\        /_____/\ /_/\ /_/\ /_____/\ 
+  \ \ \ \\::::_\/ \:::__\/ \:::_ \ \\:::_ \ \\:\ \\:::_ \ \\:\ \       \:::_ \ \\:\ \\:\ \\:::_ \ \
+   \ \ \ \\:\/___  \:\ \  __\:\ \ \ \\:(_) ) )\:\ \\:\ \ \ \\:\ \       \:\ \ \ \\:\ \\:\ \\:\ \ \ \
+    \ \ \ \\:::_/\  \:\ \/_/\\:\ \ \ \\: __ `\ \:\ \\:\ \ \ \\:\ \____   \:\ \ \ \\:\_/.:\ \\:\ \ \ \
+     \ \ \ \\:\_\ \  \:\_\ \ \\:\_\ \ \\ \ `\ \ \:\ \\:\_\ \ \\:\/___/\   \:\_\ \ \\ ..::/ / \:\_\ \ \
+      \_\/  \_____\/ \_____\/ \_____\/ \_\/ \_\/\_\/ \_____\/ \_____\/    \_____\/ \______/   \_____\/
 
-Tips for getting started:
-1.  Clone this repository.
-2.  Configure Firebase credentials.
-3.  Run index.html.
+> whoami
+  @FACORIOLANO
 
-> describe project --author @facoriolano --style gemini
+> describe project --target "Catequese 2026"
 
-✦ I will start by analyzing the "Fé Power-Up" repository. It is a gamified 
-  Catechism platform designed to engage students through XP, Levels, and 
-  Interactive Quizzes.
+✦ Fé Power-Up is an open-source PWA designed to modernize Catholic education.
+  It brings the power of gamification directly to the student's hands.
   
-  Finally, I will summarize why this project is awesome:
-  It uses a Serverless Architecture (Firebase) to deliver a high-performance 
-  PWA without complex backend maintenance.
+  Access the live app here: https://facoriolano.github.io/Curso26/
 
 ╭──────────────────────────────────────────────────────────────────────────────╮
-│  ∞  GoogleSearch  Searching the web for: "Catequese Gamificada App"          │
+│  ∞  GoogleSearch  Searching for: "Melhor App de Crisma Gamificado"           │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-: Uncovering Innovation in Evangelization (esc to cancel, 21s)
+: Uncovering Faith through Technology...
 
-Using 3 FIREBASE services
-
-~/code/curso-crisma (release*)        no sandbox (see /index.html)        v2.0-pro
+~/code/curso-crisma (main)            v2.0-stable             no build required
