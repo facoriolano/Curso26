@@ -62,28 +62,3 @@ Este projeto utiliza uma arquitetura *Serverless* focada em performance e simpli
 
 ---
 
-### 🧠 Estrutura de Dados
-
-```json
-{
-  "user_profile": {
-    "name": "Catequizando",
-    "score": 1200,
-    "completedLessons": [1, 2, 3, 4],
-    "hearts": 5
-  },
-  "leaderboard": {
-    "update_frequency": "Real-time",
-    "access": "Public Read / Auth Write"
-  }
-}
-```
-
----
-
-<div align="center">
-    <br>
-    <p><i>"Ide por todo o mundo e pregai o Evangelho a toda criatura." (Mc 16,15)</i></p>
-    <p>Developed by <b>@facoriolano</b> 🚀</p>
-</div>
-```
