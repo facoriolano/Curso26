@@ -1,8 +1,8 @@
 <div align="center">
 
-<!-- TÍTULO GIGANTE (Aumentei o size para 70 e height para 150) -->
+<!-- TÍTULO CORRIGIDO: Maior, mais nítido e centralizado -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=70&duration=1&pause=1000&color=5A8AF2&background=00000000&center=true&vCenter=true&width=1000&height=150&lines=%3E+%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=45&duration=4000&pause=1000&color=7C3AED&background=00000000&center=true&vCenter=true&width=900&height=120&lines=%3E+%40FACORIOLANO;FE+POWER-UP" alt="Typing SVG" />
 </a>
 
 <!-- Badges -->
@@ -14,7 +14,7 @@
 
 <br>
 
-<!-- Terminal -->
+<!-- TERMINAL VISUAL -->
 
 ```text
 Tips for getting started:
