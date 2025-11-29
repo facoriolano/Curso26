@@ -24,8 +24,6 @@
 
 ```
 
----
----
 
 ### 🔮 Developer & Contact
 
