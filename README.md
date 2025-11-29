@@ -23,11 +23,22 @@
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
 
+---
+
 ### 🔮 Developer & Contact
 
 ```bash
 > user_contact
   @facoriolano (Instagram)
+
+> current_mission
+  "Evangelizar através da tecnologia com gamificação."
+
+> system_check
+  [✓] Aulas Completas (1-28)
+  [✓] Ranking em Tempo Real
+  [✓] Design Responsivo (Mobile First)
+  [✓] Banco de Dados na Nuvem (Firebase)
 ```
 
 ---
