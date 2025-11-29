@@ -1,20 +1,61 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ✨ CURSO DE CRISMA INTERATIVO
 
-# Run and deploy your AI Studio app
+📍 [Acesse o aplicativo aqui](https://facoriolano.github.io/Curso26/)
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/1SA4iJcZAnwkcRgSLK4STj5gZ8GF-DOcY
+## 🚀 Sobre o projeto
 
-## Run Locally
+Este é um aplicativo web interativo para o **Curso de Crisma**, desenvolvido para facilitar o aprendizado e acompanhamento dos alunos. O curso é dividido em **28 aulas**, cada uma com:
 
-**Prerequisites:**  Node.js
+- ✅ Conteúdo formativo
+- 🧠 Quiz ao final de cada aula
+- 🧪 Teste intermediário após metade do curso
+- 🎓 Prova final ao concluir todas as aulas
+- 🏆 Sistema de ranking gamificado (estilo apps de idiomas)
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 📦 Funcionalidades
+
+- 📚 Aulas organizadas e sequenciais
+- 📝 Avaliações com correção automática
+- 📊 Ranking de desempenho entre alunos
+- 🔒 Progresso salvo localmente
+- 📱 Interface responsiva para celular e desktop
+
+---
+
+## 🛠 Tecnologias utilizadas
+
+- HTML5 + CSS3
+- JavaScript
+- GitHub Pages (deploy)
+- LocalStorage (para salvar progresso)
+
+---
+
+## 🧭 Como usar
+
+1. Acesse o link: [https://facoriolano.github.io/Curso26/](https://facoriolano.github.io/Curso26/)
+2. Escolha uma aula e comece o curso
+3. Faça os quizzes e acompanhe seu progresso
+4. Veja sua posição no ranking após cada teste
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Fabricio Coriolano**  
+📧 Email: [facoriolano@email.com](mailto:facoriolano@email.com)
+
+---
+
+## 📁 Licença
+
+Este projeto está sob licença **MIT**.  
+Sinta-se livre para estudar, adaptar e compartilhar com sua comunidade.
+
+---
+
+> Terminal ready. Curso iniciado. Boa jornada de fé ✝️
