@@ -22,27 +22,5 @@
 ██║     ██║  ██║╚██████╗╚██████╔╝██║  ██║██║╚██████╔╝███████╗██║  ██║██║ ╚████║╚██████╔╝
 ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-Tips for getting started:
-1.  Clone this repository.
-2.  Open index.html in your browser.
-3.  Enjoy the gamified experience.
-
-> describe project --author @facoriolano --style gemini
-
-✦ I will start by analyzing the "Fé Power-Up" repository. It is a gamified 
-  platform for Catholic Catechism. Following that, I'll examine the features: 
-  XP System, Real-time Ranking, and Interactive Quizzes. 
-  
-  Finally, I will summarize why this project is awesome:
-  It uses a Serverless Architecture (Firebase) to deliver a high-performance 
-  PWA without complex backend maintenance.
-
-╭──────────────────────────────────────────────────────────────────────────────╮
-│  ∞  GoogleSearch  Searching the web for: "Fé Power-Up App"                   │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-: Uncovering Innovation in Evangelization (esc to cancel)
-
-Using 3 FIREBASE services
-
-~/code/curso-crisma (release*)        no sandbox (see /index.html)        v2.0-pro
+Instagram send me a DM:
+@facoriolano
