@@ -17,17 +17,10 @@
 
 ### 📖 Sobre o Projeto
 
-```text
-> carregar_informacoes --projeto "Fé Power-Up"
+O **Fé Power-Up** é uma aplicação web progressiva (PWA) desenvolvida para modernizar o ensino da Catequese de Crisma. Utilizando a metodologia de **gamificação** (estilo Duolingo), o projeto transforma o aprendizado teológico em uma jornada interativa e divertida.
 
-RESUMO:
-O Fé Power-Up é uma aplicação web progressiva (PWA) desenvolvida para 
-modernizar o ensino da Catequese de Crisma. Utilizando a metodologia 
-de gamificação (estilo Duolingo), o projeto transforma o aprendizado 
-teológico em uma jornada interativa e divertida.
-
-OBJETIVOS:
-1.  [Aulas Interativas]    Conteúdo dividido em "cards" de fácil leitura.
-2.  [Quizzes]              Perguntas de fixação ao final de cada módulo.
-3.  [Sistema de Vidas]     O aluno possui 5 corações; errou, perdeu vida!
-4.  [Ranking Global]       Tabela de liderança em tempo real.
+O objetivo é aumentar o engajamento dos crismandos através de:
+1.  **Aulas Interativas:** Conteúdo teológico dividido em "cards" de fácil leitura.
+2.  **Quizzes Desafiadores:** Perguntas de fixação ao final de cada módulo.
+3.  **Sistema de Vidas:** O aluno possui 5 corações; errou, perdeu vida!
+4.  **Ranking Global:** Uma tabela de liderança em tempo real para incentivar a competição saudável.
