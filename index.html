@@ -9,7 +9,6 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Configuração de Fontes e Cores */
         :root {
             --duo-green: #58cc02;
             --duo-dark-green: #40a000;
@@ -22,12 +21,12 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--duo-light-gray);
-            padding-bottom: 90px; /* Espaço para menu inferior */
+            /* Importante: Removemos padding do body para controlar via container */
             overscroll-behavior-y: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Estilos Personalizados */
+        /* Classes Utilitárias */
         .duo-header { background-color: white; border-bottom: 2px solid #e5e5e5; }
         
         .duo-start-btn {
@@ -47,7 +46,7 @@
         .duo-correct { background-color: #d7ffb8 !important; border-color: var(--duo-green) !important; color: var(--duo-dark-green); }
         .duo-wrong { background-color: #ffdde0 !important; border-color: var(--duo-red) !important; color: var(--duo-red); }
         
-        /* Menu Inferior */
+        /* Menu Inferior Fixo */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -57,9 +56,10 @@
             border-top: 2px solid #e5e5e5;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
-            z-index: 50;
+            padding: 10px 0;
+            z-index: 50; /* Z-Index alto para ficar acima de tudo */
             padding-bottom: env(safe-area-inset-bottom);
+            height: 70px;
         }
         .nav-item {
             display: flex;
@@ -81,7 +81,7 @@
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
     <!-- Tela de Carregamento -->
-    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-4 text-center">
+    <div id="loading-screen" class="fixed inset-0 bg-white z-[60] flex flex-col items-center justify-center p-4 text-center">
         <div id="loading-spinner">
             <svg class="animate-spin h-12 w-12 text-duo-green mb-4 mx-auto" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
@@ -96,7 +96,7 @@
     </div>
 
     <!-- Modal de Nome -->
-    <div id="name-modal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
+    <div id="name-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 shadow-2xl w-full max-w-sm text-center animate-slide-up">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Bem-vindo!</h2>
             <p class="text-gray-600 mb-6">Qual seu nome para o Ranking?</p>
@@ -106,7 +106,7 @@
     </div>
 
     <!-- Header -->
-    <header class="duo-header p-3 sticky top-0 z-20 shadow-sm flex justify-between items-center px-4 safe-top">
+    <header class="duo-header p-3 sticky top-0 z-40 shadow-sm flex justify-between items-center px-4 safe-top">
         <span class="font-extrabold text-xl tracking-tight text-duo-green" id="header-title">Fé Power-Up</span>
         <div class="flex items-center space-x-2">
             <div class="flex items-center bg-yellow-100 px-3 py-1 rounded-full border border-yellow-400">
@@ -120,11 +120,12 @@
         </div>
     </header>
 
-    <!-- App Container -->
-    <div id="app" class="flex flex-col flex-grow w-full max-w-2xl mx-auto"></div>
+    <!-- App Container (Onde tudo acontece) -->
+    <!-- Adicionei pb-24 aqui para garantir que o final da página nunca fique escondido -->
+    <div id="app" class="flex flex-col w-full max-w-2xl mx-auto h-full overflow-y-auto"></div>
 
     <!-- Menu Inferior -->
-    <nav class="bottom-nav safe-bottom">
+    <nav class="bottom-nav">
         <button onclick="window.App.navigateTo('map')" class="nav-item active" id="nav-map">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
             Aulas
@@ -160,7 +161,6 @@
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                // Timeout de Segurança (se travar no carregando)
                 setTimeout(() => {
                     if (document.getElementById('loading-screen') && !document.getElementById('loading-screen').classList.contains('hidden')) {
                         document.getElementById('loading-spinner').classList.add('hidden');
@@ -179,7 +179,7 @@
                 console.error("Erro Firebase:", error);
                 document.getElementById('loading-spinner').classList.add('hidden');
                 document.getElementById('error-message').classList.remove('hidden');
-                document.getElementById('error-message').querySelector('p').innerText = "Erro ao conectar: " + error.message;
+                document.getElementById('error-message').querySelector('p').innerText = "Erro ao conectar.";
             }
         };
 
@@ -226,7 +226,6 @@
     </script>
 
     <script type="text/javascript">
-        // Helper para placeholders
         const generatePlaceholderQuestions = (lessonId) => {
             return Array.from({ length: 10 }, (_, i) => ({
                 q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}?`,
@@ -235,7 +234,6 @@
             }));
         };
 
-        // --- CONTEÚDO CORRIGIDO E TESTADO ---
         const courseData = {
             1: {
                 id: 1,
@@ -394,7 +392,8 @@
             },
 
             renderMap() {
-                let h = '<div class="flex flex-col items-center p-4 space-y-6 pb-24 w-full">';
+                // Adicionei pb-32 para dar espaço no final
+                let h = '<div class="flex flex-col items-center p-4 space-y-6 pb-32 w-full">';
                 Object.keys(courseData).map(Number).sort((a,b)=>a-b).forEach(id => {
                     const l = courseData[id];
                     const done = !!this.userProgress.completedLessons[id];
@@ -413,7 +412,8 @@
 
             async renderRanking() {
                 const app = document.getElementById('app');
-                app.innerHTML = '<div class="p-6 text-center"><h2 class="text-2xl font-bold mb-4">🏆 Melhores Alunos</h2><div id="list" class="space-y-3 pb-24"><p>Carregando...</p></div></div>';
+                // Adicionei pb-32 aqui também
+                app.innerHTML = '<div class="p-6 text-center pb-32"><h2 class="text-2xl font-bold mb-4">🏆 Melhores Alunos</h2><div id="list" class="space-y-3"><p>Carregando...</p></div></div>';
                 const list = await window.getLeaderboard();
                 const div = document.getElementById('list');
                 div.innerHTML = '';
@@ -436,9 +436,12 @@
             renderLesson() {
                 const l = courseData[this.state.currentParam];
                 const app = document.getElementById('app');
-                let h = `<div class="p-6 pb-32 animate-slide-up"><h2 class="text-2xl font-bold mb-2">${l.title}</h2><p class="text-sm font-bold text-gray-400 mb-6 uppercase">${l.bible_ref}</p><div class="space-y-4">`;
+                // Aqui está a MÁGICA: pb-48 (muito espaço embaixo) e botão fixo mais alto (bottom-[70px])
+                let h = `<div class="p-6 pb-48 animate-slide-up"><h2 class="text-2xl font-bold mb-2">${l.title}</h2><p class="text-sm font-bold text-gray-400 mb-6 uppercase">${l.bible_ref}</p><div class="space-y-4">`;
                 l.content.forEach(t => h+=`<div class="bg-white p-4 rounded-xl border-2 border-gray-100 text-lg text-gray-700 shadow-sm">${t.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>`);
-                h += `</div><div class="fixed bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent"><button onclick="window.App.startQuiz(${l.id})" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow">Começar Quiz</button></div></div>`;
+                
+                // Botão posicionado acima da barra de navegação
+                h += `</div><div class="fixed bottom-[70px] left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent z-40 max-w-2xl mx-auto"><button onclick="window.App.startQuiz(${l.id})" class="w-full duo-start-btn py-4 rounded-xl text-white font-bold text-lg uppercase shadow">Começar Quiz</button></div></div>`;
                 app.innerHTML = h;
             },
 
@@ -452,7 +455,8 @@
                 const q = this.state.quizData[this.state.quizIndex];
                 const p = (this.state.quizIndex / this.state.quizData.length)*100;
                 const opts = [q.a, ...q.o].sort(()=>Math.random()-0.5);
-                return `<div class="p-4 pb-32 h-full flex flex-col"><div class="w-full bg-gray-200 rounded-full h-3 mb-6"><div class="bg-green-500 h-3 rounded-full transition-all" style="width:${p}%"></div></div>
+                // pb-40 no container do quiz
+                return `<div class="p-4 pb-40 h-full flex flex-col"><div class="w-full bg-gray-200 rounded-full h-3 mb-6"><div class="bg-green-500 h-3 rounded-full transition-all" style="width:${p}%"></div></div>
                 <h2 class="text-2xl font-bold text-gray-700 mb-6 flex-grow">${q.q}</h2>
                 <div class="space-y-3">${opts.map(o => `<button onclick="window.App.check(this, '${o.replace(/'/g,"\\'")}', '${q.a.replace(/'/g,"\\'")}')" class="duo-option-btn w-full p-4 rounded-xl text-left text-lg font-medium text-gray-700">${o}</button>`).join('')}</div></div>`;
             },
@@ -462,14 +466,18 @@
                 if(sel===cor) { btn.classList.add('duo-correct'); this.state.quizScore++; }
                 else { btn.classList.add('duo-wrong'); this.state.hearts--; document.querySelectorAll('.duo-option-btn').forEach(b=>{if(b.innerText===cor)b.classList.add('duo-correct')}); }
                 
+                // Feedback também posicionado acima da barra de navegação
                 const div = document.createElement('div');
-                div.className = `fixed bottom-0 left-0 right-0 p-4 border-t-2 z-50 animate-slide-up ${sel===cor?'bg-green-100 border-green-300':'bg-red-100 border-red-300'}`;
-                div.innerHTML = `<div class="max-w-2xl mx-auto flex justify-between items-center"><span class="font-bold text-xl ${sel===cor?'text-green-700':'text-red-700'}">${sel===cor?'Correto!':'Errado...'}</span><button onclick="window.App.next()" class="px-6 py-3 rounded-xl font-bold text-white uppercase ${sel===cor?'bg-green-500 border-b-4 border-green-700':'bg-red-500 border-b-4 border-red-700'}">Continuar</button></div>`;
+                div.className = `fixed bottom-[70px] left-0 right-0 p-4 border-t-2 z-40 animate-slide-up max-w-2xl mx-auto ${sel===cor?'bg-green-100 border-green-300':'bg-red-100 border-red-300'}`;
+                div.innerHTML = `<div class="flex justify-between items-center"><span class="font-bold text-xl ${sel===cor?'text-green-700':'text-red-700'}">${sel===cor?'Correto!':'Errado...'}</span><button onclick="window.App.next()" class="px-6 py-3 rounded-xl font-bold text-white uppercase ${sel===cor?'bg-green-500 border-b-4 border-green-700':'bg-red-500 border-b-4 border-red-700'}">Continuar</button></div>`;
                 document.body.appendChild(div);
             },
 
             next() {
-                document.querySelector('.fixed.bottom-0.z-50').remove();
+                // Remove corretamente o footer
+                const feedback = document.querySelector('.fixed.bottom-\\[70px\\]');
+                if(feedback) feedback.remove();
+                
                 if(this.state.hearts<=0) return this.finish(false);
                 this.state.quizIndex++;
                 if(this.state.quizIndex>=this.state.quizData.length) this.finish(true);
