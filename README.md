@@ -1,61 +1,47 @@
-# ✨ CURSO DE CRISMA INTERATIVO
+██████╗ ██████╗ ██╗   ██╗███████╗███████╗ ██████╗ ██████╗ 
+██╔══██╗██╔═══██╗██║   ██║██╔════╝██╔════╝██╔═══██╗██╔══██╗
+██████╔╝██║   ██║██║   ██║█████╗  ███████╗██║   ██║██████╔╝
+██╔═══╝ ██║   ██║██║   ██║██╔══╝  ╚════██║██║   ██║██╔═══╝ 
+██║     ╚██████╔╝╚██████╔╝███████╗███████║╚██████╔╝██║     
+╚═╝      ╚═════╝  ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚═╝     
 
-📍 [Acesse o aplicativo aqui](https://facoriolano.github.io/Curso26/)
+📦 CURSO DE CRISMA INTERATIVO
 
----
-
-## 🚀 Sobre o projeto
-
-Este é um aplicativo web interativo para o **Curso de Crisma**, desenvolvido para facilitar o aprendizado e acompanhamento dos alunos. O curso é dividido em **28 aulas**, cada uma com:
-
-- ✅ Conteúdo formativo
-- 🧠 Quiz ao final de cada aula
-- 🧪 Teste intermediário após metade do curso
-- 🎓 Prova final ao concluir todas as aulas
-- 🏆 Sistema de ranking gamificado (estilo apps de idiomas)
+Tips for getting started:
+A. Acesse o curso completo com 28 aulas.
+B. Faça quizzes, testes e acompanhe seu progresso.
+C. Veja seu ranking e evolua na jornada.
 
 ---
 
-## 📦 Funcionalidades
-
-- 📚 Aulas organizadas e sequenciais
-- 📝 Avaliações com correção automática
-- 📊 Ranking de desempenho entre alunos
-- 🔒 Progresso salvo localmente
-- 📱 Interface responsiva para celular e desktop
+🔗 **Acesse o aplicativo:** [https://facoriolano.github.io/Curso26/](https://facoriolano.github.io/Curso26/)
 
 ---
 
-## 🛠 Tecnologias utilizadas
+🧠 **O que este projeto oferece:**
+
+- 28 aulas formativas com conteúdo direto
+- Quiz ao final de cada aula
+- 1 teste intermediário + 1 prova final
+- Ranking gamificado para motivar os alunos
+- Interface leve, responsiva e intuitiva
+
+---
+
+🛠 **Tecnologias utilizadas:**
 
 - HTML5 + CSS3
 - JavaScript
-- GitHub Pages (deploy)
-- LocalStorage (para salvar progresso)
+- TypeScript
+- GitHub Pages
+- LocalStorage
 
 ---
 
-## 🧭 Como usar
+📁 **Como usar:**
 
-1. Acesse o link: [https://facoriolano.github.io/Curso26/](https://facoriolano.github.io/Curso26/)
-2. Escolha uma aula e comece o curso
-3. Faça os quizzes e acompanhe seu progresso
-4. Veja sua posição no ranking após cada teste
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido por **Fabricio Coriolano**  
-📧 Email: [facoriolano@email.com](mailto:facoriolano@email.com)
-
----
-
-## 📁 Licença
-
-Este projeto está sob licença **MIT**.  
-Sinta-se livre para estudar, adaptar e compartilhar com sua comunidade.
-
----
-
-> Terminal ready. Curso iniciado. Boa jornada de fé ✝️
+```bash
+1. Acesse o link do curso
+2. Escolha uma aula e comece a estudar
+3. Faça os quizzes e veja seu progresso
+4. Confira seu ranking e continue avançando
