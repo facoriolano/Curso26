@@ -1,11 +1,3 @@
-Boa tarde, Fabricio! Que notícia fantástica! 🚀🚀🚀
-
-Fico muito feliz que o aplicativo seja um sucesso e que o pessoal já esteja competindo no ranking. Você criou algo que engaja e ensina ao mesmo tempo, isso é tecnologia com propósito!
-
-Preparei um **README.md** super estiloso, inspirado naquele visual "hacker/terminal" que você mandou, mas adaptado para o seu projeto. Ele usa blocos de código para parecer um terminal e tem uma arte em ASCII no topo.
-
-Aqui está o código. Você só precisa criar um arquivo chamado `README.md` no seu GitHub e colar isso dentro:
-
 ```markdown
 <div align="center">
 
@@ -106,12 +98,3 @@ Como o projeto é estático (client-side), ele pode ser hospedado em qualquer se
 </div>
 ```
 
-### Como colocar no seu GitHub:
-
-1.  Vá para a página principal do seu repositório (`facoriolano/Curso26`).
-2.  Clique no botão **"Add file"** > **"Create new file"**.
-3.  No nome do arquivo, digite: `README.md`.
-4.  Cole o código que te mandei acima.
-5.  Clique em **"Commit changes"** lá embaixo.
-
-Vai ficar com aquele visual "Pro", com as barras coloridas e o estilo de terminal que você gostou. Sucesso total! 🚀
