@@ -1,30 +1,34 @@
 <div align="center">
 
-<!-- Título e Badges fora do terminal para destaque -->
+<!-- Badges Estilizados -->
 <img src="https://img.shields.io/badge/Database-Firestore-7C3AED?style=for-the-badge&logo=firebase&logoColor=white" />
 <img src="https://img.shields.io/badge/Style-Tailwind-4338ca?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-<img src="https://img.shields.io/badge/Status-Online-3b82f6?style=for-the-badge&logo=pwa&logoColor=white" />
+<img src="https://img.shields.io/badge/Dev-@facoriolano-EC4899?style=for-the-badge&logo=instagram&logoColor=white" />
 
 </div>
 
 <br>
 
-<!-- O TERMINAL GEMINI / FACORIOLANO -->
+<!-- O TERMINAL -->
 
 ```text
-  ____  _____ _    ____ ___  ____  ___ ___  _      _    _   _  ___  
- / ___|/  ___/ \  / ___/ _ \|  _ \|_ _/ _ \| |    / \  | \ | |/ _ \ 
-| |__  | |__| | | | |  | | | | |_) || | | | | |   / _ \ |  \| | | | |
-|  __| |  __  | | | |__| |_| |  _ < | | |_| | |__/ ___ \| |\  | |_| |
-| |    | |  | | | \____\___/|_| \_\___\___/|____/_/   \_\_| \_|\___/ 
-|_|    |_|  |_|                                                      
+ @@@@@@@@   @@@@@@    @@@@@@@   @@@@@@   @@@@@@@   @@@   @@@@@@   @@@        @@@@@@   @@@  @@@   @@@@@@   
+@@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@@@@@  @@@       @@@@@@@@  @@@@ @@@  @@@@@@@@  
+@@!       @@!  @@@  !@@       @@!  @@@  @@!  @@@  @@!  @@!  @@@  @@!       @@!  @@@  @@!@!@@@  @@!  @@@  
+!@!       !@!  @!@  !@!       !@!  @!@  !@!  @!@  !@!  !@!  @!@  !@!       !@!  @!@  !@!!@!@!  !@!  @!@  
+@!!!:!    @!@!@!@!  !@!       @!@  !@!  @!@!!@!   !!@  @!@  !@!  @!!       @!@!@!@!  @!@ !!@!  @!@  !@!  
+!!!!!:    !!!@!!!!  !!!       !@!  !!!  !!@!@!    !!!  !@!  !!!  !!!       !!!@!!!!  !@!  !!!  !@!  !!!  
+!!:       !!:  !!!  :!!       !!:  !!!  !!: :!!   !!:  !!:  !!!  !!:       !!:  !!!  !!:  !!!  !!:  !!!  
+:!:       :!:  !:!  :!:       :!:  !:!  :!:  !:!  :!:  :!:  !:!   :!:      :!:  !:!  :!:  !:!  :!:  !:!  
+ ::       ::   :::   ::: :::  ::::: ::  ::   :::   ::  ::::: ::   :: ::::  ::   :::   ::   ::  ::::: ::  
+ :         :   : :   :: :: :   : :  :    :   : :  :     : :  :   : :: : :   :   : :  ::    :    : :  :   
 
 Tips for getting started:
 1.  Clone this repository to your local machine.
 2.  Configure Firebase credentials in index.html.
 3.  Run the application directly (No build required).
 
-> write a short paragraph about @facoriolano project
+> describe project --author @facoriolano --style gemini
 
 ✦ I will start by analyzing the "Fé Power-Up" repository. It is a gamified 
   platform for Catholic Catechism (Crisma 2026). Following that, I'll examine 
