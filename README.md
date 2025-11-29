@@ -1,11 +1,11 @@
 <div align="center">
 
-<!-- Título Pixelado -->
+<!-- TÍTULO GIGANTE ESTÁTICO (Estilo Pixel Art) -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=35&duration=1&pause=1000&color=5A8AF2&background=00000000&center=true&vCenter=true&width=800&height=70&lines=%3E+%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=1&pause=10000&color=7C3AED&background=00000000&center=true&vCenter=true&width=1200&height=200&lines=%40FACORIOLANO" alt="Typing SVG" />
 </a>
 
-<!-- Badges (Incluindo o botão do Instagram que você pediu) -->
+<!-- Badges (Incluindo Instagram) -->
 [![Database](https://img.shields.io/badge/Database-Firestore-7C3AED?style=for-the-badge&logo=firebase&logoColor=white)](https://firebase.google.com/)
 [![Style](https://img.shields.io/badge/Style-Tailwind-4338ca?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Status](https://img.shields.io/badge/Status-Online-3b82f6?style=for-the-badge&logo=pwa&logoColor=white)](https://facoriolano.github.io/Curso26/)
@@ -27,26 +27,6 @@ O objetivo é aumentar o engajamento dos crismandos através de:
 3.  **Sistema de Vidas:** O aluno possui 5 corações; errou, perdeu vida!
 4.  **Ranking Global:** Uma tabela de liderança em tempo real para incentivar a competição saudável.
 
-### 🚀 Tecnologias Utilizadas
 
-Este projeto foi construído focando em performance e simplicidade:
-
-*   **HTML5 & JavaScript (ES6):** Lógica pura e eficiente.
-*   **Tailwind CSS (via CDN):** Para um design moderno, limpo e responsivo.
-*   **Google Firebase (Firestore & Auth):** Banco de dados em tempo real e autenticação anônima.
-*   **Lucide Icons:** Ícones vetoriais leves.
-
-### 📦 Instalação e Execução
-
-Como o projeto é estático (client-side), ele pode ser rodado localmente com facilidade:
 
 ```bash
-# 1. Clone o repositório
-git clone https://github.com/facoriolano/Curso26.git
-
-# 2. Configure as chaves
-# Abra index.html e procure por "const firebaseConfig"
-# Cole suas chaves API do Console Firebase
-
-# 3. Execute
-# Basta abrir o arquivo index.html no navegador!
