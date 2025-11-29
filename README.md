@@ -27,6 +27,3 @@ O objetivo é aumentar o engajamento dos crismandos através de:
 3.  **Sistema de Vidas:** O aluno possui 5 corações; errou, perdeu vida!
 4.  **Ranking Global:** Uma tabela de liderança em tempo real para incentivar a competição saudável.
 
-
-
-```bash
