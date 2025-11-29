@@ -41,5 +41,3 @@
   [✓] Ranking em Tempo Real
   [✓] Design Responsivo (Mobile First)
   [✓] Banco de Dados na Nuvem (Firebase)
-
-'''
