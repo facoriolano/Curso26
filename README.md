@@ -58,16 +58,4 @@ Este projeto foi construído focando em performance e simplicidade, sem necessid
     *   *Firestore Database:* Armazenamento do progresso, pontuação e ranking em tempo real.
 *   **Lucide Icons:** Ícones vetoriais leves.
 
-### 🎮 Como Funciona a Gamificação
 
-```json
-{
-  "XP System": "Cada aula concluída gera pontos de experiência.",
-  "Streak": "Mecanismo para manter a constância nos estudos.",
-  "Leaderboard": {
-    "type": "Real-time",
-    "update": "Instant",
-    "limit": "Top 20 Alunos"
-  }
-}
-```
