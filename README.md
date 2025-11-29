@@ -1,8 +1,3 @@
-Para deixar **exatamente** com a "vibe" do print (aquele estilo Cyberpunk/Synthwave do Gemini), o segredo é usar os **Badges** com as cores hexadecimais específicas daquela imagem (Azul Neon, Roxo Elétrico e Rosa) e estruturar o texto dentro de um bloco de código para parecer o terminal.
-
-Como o GitHub não permite mudar a cor de fundo da página (isso depende se o usuário usa modo claro ou escuro), nós vamos focar em fazer os elementos "saltarem" com essas cores.
-
-Aqui está o código refinado. **Copie e cole no seu `README.md`**:
 
 ```markdown
 <div align="center">
