@@ -1,8 +1,8 @@
 <div align="center">
 
-<!-- TÍTULO AJUSTADO (Tamanho reduzido para não cortar e Cor mais clara para contraste) -->
+<!-- TÍTULO CORRIGIDO (Adicionei &v=1 para forçar o GitHub a recarregar) -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=65&duration=4000&pause=1000&color=C084FC&background=00000000&center=true&vCenter=true&width=1200&height=150&lines=%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=65&duration=4000&pause=1000&color=C084FC&background=00000000&center=true&vCenter=true&width=1200&height=150&lines=%40FACORIOLANO&v=1" alt="Typing SVG" />
 </a>
 
 <!-- Badges -->
