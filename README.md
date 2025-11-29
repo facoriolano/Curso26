@@ -22,7 +22,7 @@
 ### 👨‍💻 Developer Profile
 
 ```bash
-> whoami
+> Instagram
   @facoriolano
 
 > current_mission
