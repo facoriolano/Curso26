@@ -1,8 +1,8 @@
 <div align="center">
 
-<!-- TÍTULO COM FUNDO ROXO ESCURO (Igual ao print) -->
+<!-- BANNER LARGO COM FUNDO ROXO -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=1&pause=10000&color=7C3AED&background=221C35&center=true&vCenter=true&width=1200&height=250&lines=%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=1&pause=10000&color=7C3AED&background=221C35&center=true&vCenter=true&width=1500&height=300&lines=%40FACORIOLANO" alt="Typing SVG" />
 </a>
 
 <!-- Badges -->
