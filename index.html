@@ -21,12 +21,10 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--duo-light-gray);
-            /* Importante: Removemos padding do body para controlar via container */
             overscroll-behavior-y: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Classes Utilitárias */
         .duo-header { background-color: white; border-bottom: 2px solid #e5e5e5; }
         
         .duo-start-btn {
@@ -46,7 +44,6 @@
         .duo-correct { background-color: #d7ffb8 !important; border-color: var(--duo-green) !important; color: var(--duo-dark-green); }
         .duo-wrong { background-color: #ffdde0 !important; border-color: var(--duo-red) !important; color: var(--duo-red); }
         
-        /* Menu Inferior Fixo */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -57,7 +54,7 @@
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
-            z-index: 50; /* Z-Index alto para ficar acima de tudo */
+            z-index: 50;
             padding-bottom: env(safe-area-inset-bottom);
             height: 70px;
         }
@@ -73,7 +70,6 @@
         .nav-item.active { color: var(--duo-blue); }
         .nav-item svg { width: 26px; height: 26px; margin-bottom: 4px; }
 
-        /* Animações */
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
     </style>
@@ -120,8 +116,7 @@
         </div>
     </header>
 
-    <!-- App Container (Onde tudo acontece) -->
-    <!-- Adicionei pb-24 aqui para garantir que o final da página nunca fique escondido -->
+    <!-- App Container -->
     <div id="app" class="flex flex-col w-full max-w-2xl mx-auto h-full overflow-y-auto"></div>
 
     <!-- Menu Inferior -->
@@ -226,24 +221,24 @@
     </script>
 
     <script type="text/javascript">
-        const generatePlaceholderQuestions = (lessonId) => {
-            return Array.from({ length: 10 }, (_, i) => ({
-                q: `Pergunta ${i + 1} sobre o tema da Aula ${lessonId}?`,
-                a: "Resposta Correta",
-                o: ["Opção Errada 1", "Opção Errada 2", "Opção Errada 3"]
-            }));
-        };
-
+        // --- CONTEÚDO DO CURSO COMPLETO (1-28) ---
         const courseData = {
             1: {
                 id: 1,
                 title: "Oração - Nossa Fé nos Reuniu",
                 bible_ref: "Hebreus 11,6-12",
                 points: 200,
-                content: ["**O que é Oração?** É o diálogo de amor entre Deus e o homem.", "**A Base da Fé.** Sem fé é impossível agradar a Deus."],
+                content: [
+                    "**O que é Oração?**\nNão é apenas repetir palavras. É um diálogo de amor, uma conversa íntima entre Deus e o homem. Santa Teresinha dizia que orar é um impulso do coração.",
+                    "**Por que precisamos orar?**\nAssim como o corpo precisa de ar, a alma precisa de oração. Sem ela, nossa fé morre. É na oração que recebemos a força para viver como cristãos.",
+                    "**A Base da Fé (Hb 11,6)**\nA Bíblia diz: 'Sem fé é impossível agradar a Deus'. Quem se aproxima Dele deve crer que Ele existe e recompensa quem O busca.",
+                    "**Tipos de Oração**\nPodemos orar de várias formas: Agradecimento (louvar a Deus), Súplica (pedir ajuda), Intercessão (pedir pelos outros) e Contemplação (silêncio amoroso)."
+                ],
                 quiz_questions: [
                     { q: "Qual o tema principal de Hebreus 11,6?", a: "A importância da Fé", o: ["A criação do mundo", "A vida dos anjos", "A vinda de Cristo"] },
-                    { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos", "Pedir coisas", "Pensar em problemas"] }
+                    { q: "Como a Igreja define a Oração?", a: "Diálogo de amor com Deus", o: ["Recitar textos", "Pedir coisas", "Pensar em problemas"] },
+                    { q: "O que acontece com a fé sem oração?", a: "Ela enfraquece e morre", o: ["Fica mais forte", "Não muda nada", "Vira milagre"] },
+                    { q: "Oração pelos outros chama-se...", a: "Intercessão", o: ["Louvor", "Penitência", "Súplica"] }
                 ]
             },
             2: {
@@ -251,10 +246,17 @@
                 title: "Quem é Deus - A Santíssima Trindade",
                 bible_ref: "1 João 4,12-16",
                 points: 200,
-                content: ["**Mistério:** Um só Deus em três Pessoas.", "**Pai, Filho, Espírito Santo.**"],
+                content: [
+                    "**O Grande Mistério**\nNós cristãos cremos em UM só Deus, mas que não é solitário. Ele é uma Família, uma Comunidade de Amor.",
+                    "**Três Pessoas, Um Deus**\nO Pai (Criador), o Filho (Salvador) e o Espírito Santo (Santificador). Eles não são três deuses, mas um só Deus em três pessoas distintas.",
+                    "**Deus é Amor**\nSão João escreveu: 'Deus é Amor'. E o amor precisa de alguém para amar. O Pai ama o Filho, o Filho ama o Pai, e esse Amor é o Espírito Santo.",
+                    "**A Nossa Vida**\nFomos batizados 'Em nome do Pai, do Filho e do Espírito Santo'. Nossa meta é viver mergulhados nesse amor da Trindade."
+                ],
                 quiz_questions: [
                     { q: "Quantas Pessoas existem na Trindade?", a: "Três", o: ["Uma", "Duas", "Quatro"] },
-                    { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação", "Maria", "Os anjos"] }
+                    { q: "Qual a verdade central da fé cristã?", a: "A Santíssima Trindade", o: ["A criação", "Maria", "Os anjos"] },
+                    { q: "Qual a definição de Deus em 1 João 4?", a: "Deus é Amor", o: ["Deus é Poder", "Deus é Juiz", "Deus é Vingança"] },
+                    { q: "Quem é o Santificador?", a: "Espírito Santo", o: ["O Pai", "O Filho", "São Pedro"] }
                 ]
             },
             3: {
@@ -262,12 +264,17 @@
                 title: "Jesus - Quem é o Filho de Deus?",
                 bible_ref: "João 14,8-11",
                 points: 200,
-                content: ["**Natureza:** Jesus é Deus e Homem.", "**Messias:** O Cristo esperado.", "**Caminho:** Ninguém vai ao Pai senão por Ele."],
+                content: [
+                    "**Verdadeiro Deus e Verdadeiro Homem**\nJesus não é 'meio a meio'. Ele é 100% Deus e 100% humano. Ele sentiu fome, sede e dor, mas também curou, perdoou e ressuscitou.",
+                    "**O Messias Esperado**\n'Cristo' é uma palavra grega que significa 'Ungido'. Os judeus esperavam um Salvador. Jesus é esse Salvador.",
+                    "**Quem me vê, vê o Pai**\nFilipe pediu para ver o Pai. Jesus respondeu que Ele é a face visível de Deus. Quer saber como Deus é? Olhe para Jesus.",
+                    "**O Caminho Único**\nJesus não disse 'eu sou um dos caminhos'. Ele disse: 'Eu sou O Caminho, a Verdade e a Vida'. Ninguém chega ao céu sem passar por Ele."
+                ],
                 quiz_questions: [
                     { q: "Quais são as duas naturezas de Jesus?", a: "Divina e Humana", o: ["Anjo e Homem", "Espírito e Carne", "Rei e Servo"] },
+                    { q: "O que Jesus respondeu a Filipe (Jo 14,9)?", a: "Quem me vê, vê o Pai", o: ["O Pai está longe", "Eu sou apenas um profeta", "Não sei quem é o Pai"] },
                     { q: "O que significa o título 'Cristo'?", a: "Ungido", o: ["Rei", "Salvador", "Mestre"] },
-                    { q: "Jesus disse: 'Eu sou o Caminho, a Verdade e a...'", a: "Vida", o: ["Luz", "Porta", "Paz"] },
-                    { q: "Onde Jesus nasceu?", a: "Belém", o: ["Nazaré", "Jerusalém", "Roma"] }
+                    { q: "Jesus disse: 'Eu sou o Caminho, a Verdade e a...'", a: "Vida", o: ["Luz", "Porta", "Paz"] }
                 ]
             },
             4: {
@@ -275,12 +282,17 @@
                 title: "Por que Jesus foi Crucificado?",
                 bible_ref: "Lucas 23,33-47",
                 points: 200,
-                content: ["**Amor Supremo:** Entregou-se por nós.", "**Perdão:** Perdoou na cruz."],
+                content: [
+                    "**A Causa Real**\nNão foram apenas os judeus ou romanos que mataram Jesus. Fomos nós. Nossos pecados foram a causa da Sua cruz.",
+                    "**Amor Supremo**\nJesus poderia ter descido da cruz. Ele ficou lá por obediência ao Pai e por amor louco a você. 'Ninguém tem maior amor do que aquele que dá a vida pelos amigos'.",
+                    "**O Perdão na Dor**\nEnquanto era pregado, Jesus não gritava ódio. Ele rezava: 'Pai, perdoa-lhes, eles não sabem o que fazem'.",
+                    "**A Promessa**\nAo lado dele havia um ladrão arrependido. Jesus garantiu: 'Hoje mesmo estarás comigo no Paraíso'. A cruz é a chave que abre o céu."
+                ],
                 quiz_questions: [
                     { q: "Qual o motivo da morte de Jesus?", a: "Nossos pecados e Seu amor", o: ["Acidente político", "Fuga", "Engano"] },
                     { q: "O que Jesus pediu na cruz?", a: "Perdão aos algozes", o: ["Vingança", "Água", "Liberdade"] },
                     { q: "Quem condenou Jesus?", a: "Pôncio Pilatos", o: ["Herodes", "Pedro", "Judas"] },
-                    { q: "O sacrifício trouxe...", a: "Salvação", o: ["Riqueza", "Fama", "Sorte"] }
+                    { q: "O que o bom ladrão ganhou?", a: "O Paraíso", o: ["Dinheiro", "Liberdade na terra", "Nada"] }
                 ]
             },
             5: {
@@ -288,12 +300,17 @@
                 title: "Ressurreição de Jesus",
                 bible_ref: "João 20,1-10",
                 points: 200,
-                content: ["**Vitória:** Ele venceu a morte!", "**Domingo:** O túmulo estava vazio."],
+                content: [
+                    "**A Morte não Venceu!**\nNa sexta-feira parecia o fim. Mas no Domingo de manhã, a história mudou para sempre. Jesus venceu a morte!",
+                    "**O Túmulo Vazio**\nMaria Madalena foi a primeira a chegar. Ela viu a pedra removida. Depois Pedro e João correram e viram apenas os panos no chão.",
+                    "**Não é um Fantasma**\nJesus ressuscitado não é um espírito. Ele tem corpo, comeu com os discípulos e Tomé tocou suas feridas. Mas agora é um corpo glorioso, que não morre mais.",
+                    "**O Pilar da Fé**\nSão Paulo diz: 'Se Cristo não ressuscitou, a nossa fé é inútil'. A Ressurreição é a garantia de que nós também ressuscitaremos um dia."
+                ],
                 quiz_questions: [
                     { q: "O que acharam no domingo?", a: "O túmulo vazio", o: ["Jesus dormindo", "Soldados", "Nada"] },
                     { q: "Quem viu primeiro?", a: "Maria Madalena", o: ["Pedro", "Tomé", "Judas"] },
                     { q: "Dia da ressurreição?", a: "Domingo", o: ["Sábado", "Sexta", "Segunda"] },
-                    { q: "Quem duvidou?", a: "Tomé", o: ["João", "Mateus", "Tiago"] }
+                    { q: "A Ressurreição prova que...", a: "Jesus é Deus e venceu a morte", o: ["Ele fugiu", "Era um fantasma", "Foi um sonho"] }
                 ]
             },
             6: {
@@ -301,30 +318,442 @@
                 title: "Segunda Vinda de Jesus",
                 bible_ref: "Mateus 24,35-44",
                 points: 200,
-                content: ["**Ele Voltará:** Em glória para julgar.", "**Vigilância:** Estejam preparados."],
+                content: [
+                    "**Ele Voltará!**\nJesus prometeu que virá novamente, não como criança em Belém, mas em glória para julgar os vivos e os mortos.",
+                    "**Ninguém Sabe o Dia**\nJesus disse claramente: 'Daquele dia e hora ninguém sabe, nem os anjos do céu, nem o Filho, mas unicamente o Pai'. Não acredite em datas marcadas!",
+                    "**Vigilância Constante**\nComo não sabemos quando será, devemos viver preparados. 'Vigiai, pois, porque não sabeis a que hora há de vir o vosso Senhor'.",
+                    "**O Julgamento do Amor**\nNo final, seremos julgados pelo amor. Tive fome e me destes de comer, tive sede e me destes de beber. O amor ao próximo é a chave."
+                ],
                 quiz_questions: [
-                    { q: "Quem sabe o dia da volta?", a: "Só o Pai", o: ["O Papa", "Anjos", "Profetas"] },
-                    { q: "Nossa atitude deve ser...", a: "Vigilância", o: ["Medo", "Sono", "Curiosidade"] },
-                    { q: "Como Ele virá?", a: "Em glória", o: ["Como bebê", "Escondido", "Em espírito"] },
-                    { q: "O que passará?", a: "Céu e terra", o: ["Palavra de Deus", "Amor", "Alma"] }
+                    { q: "Quem sabe o dia e a hora da volta de Jesus?", a: "Só o Pai", o: ["O Papa", "Anjos", "Profetas"] },
+                    { q: "Qual deve ser nossa atitude?", a: "Vigilância e oração", o: ["Medo e pavor", "Despreocupação", "Curiosidade"] },
+                    { q: "Como Jesus virá na segunda vez?", a: "Em glória para julgar", o: ["Como um bebê", "Escondido", "Apenas em espírito"] },
+                    { q: "Sobre o que seremos julgados?", a: "Sobre o amor e caridade", o: ["Sobre quanto dinheiro juntamos", "Sobre nossa beleza", "Sobre nossa fama"] }
                 ]
             },
-            // Aulas 7 a 28 (Geradas Automaticamente)
-            ...Array.from({length: 22}, (_, i) => i + 7).reduce((acc, id) => {
-                acc[id] = {
-                    id: id,
-                    title: `Aula ${id}: Tema a definir`,
-                    bible_ref: "Bíblia",
-                    points: 200,
-                    content: ["Conteúdo em breve..."],
-                    quiz_questions: generatePlaceholderQuestions(id)
-                };
-                return acc;
-            }, {})
+            7: {
+                id: 7,
+                title: "Maria - Mãe de Deus e Nossa",
+                bible_ref: "João 19, 25-27",
+                points: 200,
+                content: [
+                    "**Mãe de Deus**\nComo Jesus é Deus, Maria é verdadeiramente Mãe de Deus (Theotokos). Ela deu a carne humana ao Verbo.",
+                    "**Imaculada Conceição**\nDeus a preservou de todo pecado desde o primeiro instante. Ela é a 'Cheia de Graça'.",
+                    "**Sempre Virgem**\nMaria concebeu Jesus pelo Espírito Santo e permaneceu virgem antes, durante e depois do parto.",
+                    "**Mãe da Igreja**\nNa cruz, Jesus nos deu Maria por mãe: 'Mulher, eis aí o teu filho'. Ela cuida de nós lá do céu."
+                ],
+                quiz_questions: [
+                    { q: "Por que chamamos Maria de Mãe de Deus?", a: "Porque Jesus é Deus", o: ["Porque ela criou Deus", "É um exagero", "Ela é uma deusa"] },
+                    { q: "O que significa Imaculada Conceição?", a: "Preservada do pecado original", o: ["Que ela nunca casou", "Que ela subiu ao céu", "Que ela fez milagres"] },
+                    { q: "Quem disse 'Eis aí a tua mãe'?", a: "Jesus na Cruz", o: ["O Anjo Gabriel", "São José", "Isabel"] },
+                    { q: "Maria é nossa...", a: "Mãe e Intercessora", o: ["Salvadora", "Deusa", "Irmã"] }
+                ]
+            },
+            8: {
+                id: 8,
+                title: "A Igreja Católica",
+                bible_ref: "Mateus 16,18",
+                points: 200,
+                content: [
+                    "**Fundada por Cristo**\nJesus quis a Igreja. Ele disse a Pedro: 'Tu és Pedro, e sobre esta pedra edificarei a minha Igreja'.",
+                    "**Corpo de Cristo**\nNós somos os membros e Cristo é a cabeça. A Igreja não é apenas um prédio, somos nós unidos a Ele.",
+                    "**As 4 Marcas**\nA Igreja é UNA (só uma fé), SANTA (vem de Deus), CATÓLICA (para todos/universal) e APOSTÓLICA (vem dos apóstolos).",
+                    "**Missão**\nA missão da Igreja é evangelizar, levar Jesus a todos e administrar os sacramentos."
+                ],
+                quiz_questions: [
+                    { q: "Quem fundou a Igreja?", a: "Jesus Cristo", o: ["Pedro", "Paulo", "Constantino"] },
+                    { q: "O que significa Igreja 'Católica'?", a: "Universal (para todos)", o: ["Fechada", "Romana apenas", "Antiga"] },
+                    { q: "Quem é a cabeça do Corpo da Igreja?", a: "Cristo", o: ["O Papa", "O Bispo", "O Padre"] },
+                    { q: "Sobre quem Jesus edificou a Igreja?", a: "Pedro", o: ["João", "Judas", "Tiago"] }
+                ]
+            },
+            9: {
+                id: 9,
+                title: "O Papa e a Hierarquia",
+                bible_ref: "Mateus 16,19",
+                points: 200,
+                content: [
+                    "**O Papa**\nÉ o sucessor de São Pedro. Ele é o princípio visível de unidade da Igreja e Vigário de Cristo na terra.",
+                    "**As Chaves**\nJesus deu a Pedro as 'chaves do Reino'. O que ele ligar na terra será ligado no céu (autoridade).",
+                    "**Bispos e Padres**\nOs Bispos são sucessores dos Apóstolos. Os Padres colaboram com os Bispos para cuidar das paróquias.",
+                    "**Leigos**\nNão são apenas 'ouvintes'. Todos os batizados são chamados a ser santos e apóstolos no mundo."
+                ],
+                quiz_questions: [
+                    { q: "Quem é o sucessor de São Pedro?", a: "O Papa", o: ["O Rei", "O Presidente", "O Bispo local"] },
+                    { q: "O que significam as chaves dadas a Pedro?", a: "Autoridade espiritual", o: ["Chaves do cofre", "Chaves da cidade", "Poder militar"] },
+                    { q: "Quem são os sucessores dos Apóstolos?", a: "Os Bispos", o: ["Os Padres", "Os Diáconos", "Os Coroinhas"] },
+                    { q: "Qual a missão dos leigos?", a: "Ser sal e luz no mundo", o: ["Apenas assistir missa", "Pagar dízimo", "Não fazer nada"] }
+                ]
+            },
+            10: {
+                id: 10,
+                title: "Quem é o Espírito Santo?",
+                bible_ref: "Atos 2,1-4",
+                points: 200,
+                content: [
+                    "**O Consolador**\nÉ a Terceira Pessoa da Trindade. Jesus prometeu enviá-Lo para nos ensinar e recordar tudo.",
+                    "**Pentecostes**\n50 dias após a Páscoa, o Espírito desceu sobre os apóstolos como fogo. A Igreja nasceu aí, cheia de coragem.",
+                    "**Templo do Espírito**\nPelo Batismo, o Espírito Santo mora em você. Seu corpo é templo Dele!",
+                    "**Ação na Crisma**\nNa Crisma, você recebe a plenitude do Espírito para ser uma testemunha adulta de Jesus."
+                ],
+                quiz_questions: [
+                    { q: "O Espírito Santo é...", a: "Deus, 3ª Pessoa da Trindade", o: ["Um anjo", "Uma energia", "Um pensamento"] },
+                    { q: "O que aconteceu em Pentecostes?", a: "Descida do Espírito Santo", o: ["Nascimento de Jesus", "Morte de Jesus", "Criação do mundo"] },
+                    { q: "Onde o Espírito Santo habita?", a: "Em nossos corações", o: ["Nas nuvens", "Apenas na Igreja", "Nos livros"] },
+                    { q: "O que a Crisma nos dá?", a: "A plenitude do Espírito", o: ["O perdão dos pecados", "A primeira comunhão", "O casamento"] }
+                ]
+            },
+            11: {
+                id: 11,
+                title: "A Eucaristia - Presença Real",
+                bible_ref: "Lucas 22,19-20",
+                points: 200,
+                content: [
+                    "**Corpo e Sangue**\nA Eucaristia não é símbolo! É verdadeiramente o Corpo, Sangue, Alma e Divindade de Jesus.",
+                    "**A Última Ceia**\nJesus instituiu a Eucaristia na Quinta-feira Santa: 'Isto é o meu corpo entregue por vós'.",
+                    "**Transubstanciação**\nÉ o milagre que acontece na Missa. A aparência de pão continua, mas a substância vira Jesus.",
+                    "**Alimento da Alma**\nQuem come deste pão viverá eternamente. A Eucaristia nos une a Cristo e apaga pecados leves."
+                ],
+                quiz_questions: [
+                    { q: "O que é a Eucaristia?", a: "O Corpo e Sangue de Cristo", o: ["Apenas um pão bento", "Um símbolo", "Uma lembrança"] },
+                    { q: "Quando foi instituída a Eucaristia?", a: "Na Última Ceia", o: ["No Natal", "Na Páscoa", "No Batismo"] },
+                    { q: "O que é Transubstanciação?", a: "Mudança do pão em Corpo de Cristo", o: ["Benção do pão", "Divisão do pão", "Compra do pão"] },
+                    { q: "Para comungar é preciso...", a: "Estar em estado de graça", o: ["Ter dinheiro", "Ser velho", "Estar em jejum de 24h"] }
+                ]
+            },
+            12: {
+                id: 12,
+                title: "A Santa Missa (Parte 1)",
+                bible_ref: "Atos 2,42",
+                points: 200,
+                content: [
+                    "**O Que é a Missa?**\nÉ a renovação do sacrifício de Jesus na Cruz, mas de forma incruenta (sem dor). É o céu na terra.",
+                    "**Ritos Iniciais**\nChegamos, pedimos perdão (Ato Penitencial) e louvamos a Deus (Glória). Nos preparamos para ouvir Deus.",
+                    "**Liturgia da Palavra**\nOuvimos a Bíblia. Primeira leitura, Salmo, Segunda leitura e o Evangelho (o ponto alto da palavra).",
+                    "**Homilia**\nO padre explica a palavra e como aplicá-la na nossa vida hoje."
+                ],
+                quiz_questions: [
+                    { q: "A Missa renova o quê?", a: "O sacrifício da Cruz", o: ["O nascimento de Jesus", "O batismo", "Milagres antigos"] },
+                    { q: "Qual a parte onde ouvimos a Bíblia?", a: "Liturgia da Palavra", o: ["Ritos Iniciais", "Liturgia Eucarística", "Ritos Finais"] },
+                    { q: "O que fazemos no Ato Penitencial?", a: "Pedimos perdão a Deus", o: ["Damos dinheiro", "Cumprimentamos todos", "Vamos embora"] },
+                    { q: "Quem lê o Evangelho?", a: "O Padre ou Diácono", o: ["Qualquer pessoa", "O coroinha", "O cantor"] }
+                ]
+            },
+            13: {
+                id: 13,
+                title: "🏆 PROVA INTERMEDIÁRIA",
+                bible_ref: "Revisão Geral",
+                points: 500,
+                content: [
+                    "**Hora de Testar!**\nChegamos na metade do curso. Esta prova reúne perguntas de tudo o que vimos até agora.",
+                    "**Temas:**\nOração, Trindade, Jesus, Morte e Ressurreição, Maria, Igreja e Espírito Santo.",
+                    "**Concentração!**\nRespire fundo, peça luz ao Espírito Santo e mostre que você é um fera na fé!",
+                    "**Boa Sorte!**\nVocê precisa de um bom desempenho para desbloquear a próxima etapa."
+                ],
+                quiz_questions: [
+                    { q: "Quem é a Terceira Pessoa da Trindade?", a: "Espírito Santo", o: ["Maria", "O Papa", "Jesus"] },
+                    { q: "Jesus é...", a: "Deus e Homem", o: ["Só Deus", "Só Homem", "Anjo"] },
+                    { q: "O que celebramos no Domingo?", a: "A Ressurreição", o: ["A Morte", "O Batismo", "A Ceia"] },
+                    { q: "Qual oração Jesus nos ensinou?", a: "Pai Nosso", o: ["Ave Maria", "Credo", "Salve Rainha"] },
+                    { q: "Quem é a Mãe da Igreja?", a: "Maria", o: ["Santa Rita", "Santa Luzia", "Madalena"] },
+                    { q: "Quem fundou a Igreja Católica?", a: "Jesus", o: ["Pedro", "Lutero", "Constantino"] },
+                    { q: "Onde Jesus nasceu?", a: "Belém", o: ["Nazaré", "Egito", "Roma"] },
+                    { q: "O que é a Eucaristia?", a: "Corpo de Cristo", o: ["Pão simbólico", "Lanche", "Hóstia vazia"] },
+                    { q: "Qual sacramento nos dá o Espírito Santo?", a: "Crisma", o: ["Casamento", "Unção", "Confissão"] },
+                    { q: "Deus é...", a: "Amor", o: ["Ódio", "Distante", "Castigador"] },
+                    { q: "Quantos deuses existem?", a: "Um", o: ["Três", "Vários", "Nenhum"] },
+                    { q: "O Papa é sucessor de...", a: "São Pedro", o: ["São Paulo", "São João", "Judas"] },
+                    { q: "A Bíblia na Missa é lida na...", a: "Liturgia da Palavra", o: ["Ofertorio", "Comunhão", "Final"] },
+                    { q: "Imaculada Conceição refere-se a...", a: "Maria sem pecado", o: ["Jesus nascer", "Batismo", "Anjos"] },
+                    { q: "Jesus prometeu voltar para...", a: "Julgar", o: ["Passear", "Morrer de novo", "Dormir"] }
+                ]
+            },
+            14: {
+                id: 14,
+                title: "Sacramentos de Iniciação",
+                bible_ref: "Mateus 28,19",
+                points: 200,
+                content: [
+                    "**A Porta de Entrada**\nOs Sacramentos de Iniciação Cristã colocam os fundamentos da vida cristã: Batismo, Crisma e Eucaristia.",
+                    "**Batismo**\nÉ o nascimento. Apaga o pecado original, nos faz filhos de Deus e membros da Igreja.",
+                    "**Crisma (Confirmação)**\nÉ o crescimento. Nos dá a força do Espírito Santo para espalhar e defender a fé.",
+                    "**Eucaristia**\nÉ o alimento. Nutre nossa caminhada até o céu. Sem ela, desfalecemos no caminho."
+                ],
+                quiz_questions: [
+                    { q: "Quais são os sacramentos de iniciação?", a: "Batismo, Crisma e Eucaristia", o: ["Ordem e Matrimônio", "Unção e Confissão", "Apenas Batismo"] },
+                    { q: "O que o Batismo faz?", a: "Nos torna filhos de Deus", o: ["Nos dá dinheiro", "Nos torna padres", "Nada"] },
+                    { q: "A Crisma é o sacramento do...", a: "Crescimento e maturidade", o: ["Perdão", "Nascimento", "Casamento"] },
+                    { q: "Qual sacramento nos alimenta?", a: "Eucaristia", o: ["Batismo", "Crisma", "Ordem"] }
+                ]
+            },
+            15: {
+                id: 15,
+                title: "Sacramentos de Cura",
+                bible_ref: "Tiago 5,14-15",
+                points: 200,
+                content: [
+                    "**Reconciliação (Confissão)**\nÉ o remédio para a alma. Jesus deu aos padres o poder de perdoar: 'A quem perdoardes os pecados, serão perdoados'.",
+                    "**Como Confessar?**\n1. Exame de consciência; 2. Arrependimento sincero; 3. Confessar ao padre; 4. Cumprir a penitência.",
+                    "**Unção dos Enfermos**\nNão é só para quem está morrendo! É para dar força, paz e coragem aos doentes e idosos.",
+                    "**Efeitos**\nEsses sacramentos curam nossa relação com Deus (perdão) e nos dão força física e espiritual na dor."
+                ],
+                quiz_questions: [
+                    { q: "Quem tem poder para perdoar pecados?", a: "Padres e Bispos (em nome de Jesus)", o: ["Qualquer pessoa", "Apenas Deus direto", "Os anjos"] },
+                    { q: "O que é necessário para uma boa confissão?", a: "Arrependimento sincero", o: ["Pagar uma taxa", "Chorar alto", "Escrever um livro"] },
+                    { q: "A Unção dos Enfermos serve para...", a: "Dar força espiritual e física", o: ["Apenas enterrar", "Curar gripe", "Ficar rico"] },
+                    { q: "O pecado mortal nos tira...", a: "A graça santificante", o: ["A cidadania", "O nome", "A inteligência"] }
+                ]
+            },
+            16: {
+                id: 16,
+                title: "Sacramentos de Serviço",
+                bible_ref: "Mateus 19,6",
+                points: 200,
+                content: [
+                    "**A Serviço da Comunidade**\nEstes dois sacramentos não são para salvação pessoal, mas para servir aos outros: Ordem e Matrimônio.",
+                    "**Ordem**\nÉ o sacramento dos Diáconos, Padres e Bispos. Eles entregam sua vida para servir a Igreja e o povo de Deus.",
+                    "**Matrimônio**\nÉ a união entre homem e mulher. Eles recebem a graça para se amarem como Cristo ama a Igreja e para educar os filhos.",
+                    "**Igreja Doméstica**\nA família é chamada de 'Igreja Doméstica', o primeiro lugar onde se aprende a fé."
+                ],
+                quiz_questions: [
+                    { q: "Quais são os sacramentos de serviço?", a: "Ordem e Matrimônio", o: ["Batismo e Crisma", "Eucaristia e Unção", "Confissão e Ordem"] },
+                    { q: "Quem recebe o sacramento da Ordem?", a: "Diáconos, Padres e Bispos", o: ["Freiras", "Coroinhas", "Todos os homens"] },
+                    { q: "Qual a missão dos casados?", a: "Amar-se e educar os filhos na fé", o: ["Ficar ricos", "Viajar o mundo", "Não ter responsabilidade"] },
+                    { q: "Como chamamos a família cristã?", a: "Igreja Doméstica", o: ["Clube social", "Hotel", "Escola"] }
+                ]
+            },
+            17: {
+                id: 17,
+                title: "Bíblia - Antigo Testamento",
+                bible_ref: "Gênesis 1,1",
+                points: 200,
+                content: [
+                    "**Uma Biblioteca**\nA Bíblia católica tem 73 livros. O Antigo Testamento (46 livros) conta a história antes de Jesus.",
+                    "**A Criação e a Queda**\nDeus criou tudo bom. O homem desobedeceu (pecado original), mas Deus prometeu um Salvador.",
+                    "**A Aliança**\nDeus fez alianças com Noé, Abraão e Moisés. Ele formou o povo de Israel para preparar a vinda de Cristo.",
+                    "**Os Profetas**\nHomens como Isaías e Jeremias falavam em nome de Deus, denunciando pecados e anunciando o Messias."
+                ],
+                quiz_questions: [
+                    { q: "Quantos livros tem o Antigo Testamento católico?", a: "46", o: ["39", "27", "100"] },
+                    { q: "Quem são os Profetas?", a: "Porta-vozes de Deus", o: ["Adivinhos", "Mágicos", "Reis"] },
+                    { q: "Com quem Deus fez alianças?", a: "Noé, Abraão e Moisés", o: ["Pedro e Paulo", "Judas", "Pilatos"] },
+                    { q: "O Antigo Testamento prepara...", a: "A vinda de Jesus", o: ["O fim do mundo", "A guerra", "O dilúvio apenas"] }
+                ]
+            },
+            18: {
+                id: 18,
+                title: "Bíblia - Novo Testamento",
+                bible_ref: "Marcos 1,1",
+                points: 200,
+                content: [
+                    "**A Nova Aliança**\nO Novo Testamento (27 livros) narra a vida de Jesus e o início da Igreja. É o cumprimento das promessas.",
+                    "**Os Evangelhos**\nMateus, Marcos, Lucas e João. São o coração da Bíblia, pois contam o que Jesus fez e ensinou.",
+                    "**Atos e Cartas**\n'Atos dos Apóstolos' conta a história da Igreja primitiva. As Cartas (Paulo, Pedro...) ensinam como viver a fé.",
+                    "**Apocalipse**\nO último livro. Não é sobre terror, mas sobre a vitória final de Cristo e a esperança do céu."
+                ],
+                quiz_questions: [
+                    { q: "Quantos são os Evangelhos?", a: "Quatro", o: ["Três", "Dois", "Dez"] },
+                    { q: "Quais são os evangelistas?", a: "Mateus, Marcos, Lucas e João", o: ["Pedro, Tiago, João e Judas", "Paulo e Barnabé", "Isaías e Daniel"] },
+                    { q: "O que conta o livro de Atos?", a: "O início da Igreja e os Apóstolos", o: ["O fim do mundo", "A criação", "O dilúvio"] },
+                    { q: "Qual o último livro da Bíblia?", a: "Apocalipse", o: ["Gênesis", "Salmos", "Êxodo"] }
+                ]
+            },
+            19: {
+                id: 19,
+                title: "Mandamentos (1º, 2º e 3º)",
+                bible_ref: "Êxodo 20",
+                points: 200,
+                content: [
+                    "**Amar a Deus sobre tudo**\n1º Mandamento: Não ter outros deuses (dinheiro, fama, superstição). Deus deve ser o centro.",
+                    "**O Santo Nome**\n2º Mandamento: Não falar o nome de Deus em vão. Devemos usar o nome Dele para rezar, não para xingar ou jurar falso.",
+                    "**O Dia do Senhor**\n3º Mandamento: Guardar domingos e festas. Para nós, cristãos, o Domingo é o dia da Ressurreição. Missa é sagrada!"
+                ],
+                quiz_questions: [
+                    { q: "Qual o primeiro mandamento?", a: "Amar a Deus sobre todas as coisas", o: ["Honrar pai e mãe", "Não matar", "Não roubar"] },
+                    { q: "O que proíbe o 2º mandamento?", a: "Usar o nome de Deus em vão", o: ["Falar muito", "Cantar", "Rezar"] },
+                    { q: "Qual o dia sagrado para os cristãos?", a: "Domingo", o: ["Sábado", "Sexta-feira", "Segunda-feira"] },
+                    { q: "Faltar à missa dominical sem motivo é...", a: "Pecado", o: ["Opcional", "Virtude", "Caridade"] }
+                ]
+            },
+            20: {
+                id: 20,
+                title: "Mandamentos (4º e 5º)",
+                bible_ref: "Êxodo 20,12-13",
+                points: 200,
+                content: [
+                    "**Família e Vida**\nEstes mandamentos protegem a base da sociedade e o dom da vida.",
+                    "**Honrar Pai e Mãe (4º)**\nDevemos respeito, gratidão e obediência (enquanto moramos juntos) aos pais. E cuidar deles na velhice.",
+                    "**Não Matar (5º)**\nA vida é sagrada desde a concepção até a morte natural. O aborto, o suicídio e o homicídio são pecados graves.",
+                    "**Cuidar da Vida**\nTambém inclui evitar drogas, excesso de álcool, ódio e violência verbal."
+                ],
+                quiz_questions: [
+                    { q: "O 4º mandamento pede para...", a: "Honrar pai e mãe", o: ["Ganhar dinheiro", "Ser famoso", "Viajar"] },
+                    { q: "O 5º mandamento protege...", a: "A vida humana", o: ["Os animais", "As plantas", "Os bens materiais"] },
+                    { q: "Quando a vida é sagrada?", a: "Da concepção à morte natural", o: ["Só depois de nascer", "Só quando adulto", "Só se for rico"] },
+                    { q: "O uso de drogas ofende qual mandamento?", a: "5º (Não Matar/Cuidar da vida)", o: "7º (Não roubar)", o: ["2º (Nome de Deus)", "1º (Amar a Deus)"] }
+                ]
+            },
+            21: {
+                id: 21,
+                title: "Mandamentos (6º e 9º)",
+                bible_ref: "Mateus 5,27",
+                points: 200,
+                content: [
+                    "**Pureza e Castidade**\nReferem-se ao amor humano e à sexualidade.",
+                    "**Não pecar contra a castidade (6º)**\nEvitar atos impuros. O sexo é um dom de Deus para ser vivido dentro do casamento, aberto à vida e ao amor.",
+                    "**Não desejar a mulher do próximo (9º)**\nTrata da pureza do olhar e do coração. Jesus disse que quem olha com desejo impuro já pecou no coração.",
+                    "**O Corpo é Templo**\nDevemos respeitar nosso corpo e o dos outros, pois o Espírito Santo habita nele."
+                ],
+                quiz_questions: [
+                    { q: "O 6º mandamento protege...", a: "A castidade e a família", o: ["A propriedade", "A verdade", "O nome de Deus"] },
+                    { q: "O 9º mandamento fala sobre...", a: "A pureza dos pensamentos e desejos", o: ["Roubo", "Mentira", "Preguiça"] },
+                    { q: "Nosso corpo é...", a: "Templo do Espírito Santo", o: ["Uma máquina", "Um objeto", "Lixo"] },
+                    { q: "Onde a sexualidade deve ser vivida plenamente?", a: "No Matrimônio", o: ["No namoro", "Com amigos", "Sozinho"] }
+                ]
+            },
+            22: {
+                id: 22,
+                title: "Mandamentos (7º, 8º e 10º)",
+                bible_ref: "Êxodo 20,15-17",
+                points: 200,
+                content: [
+                    "**Justiça e Verdade**\nTratam da honestidade e das relações sociais.",
+                    "**Não Roubar (7º)**\nPegar o que não é seu, não pagar dívidas, estragar bens públicos ou de outros.",
+                    "**Não Levantar Falso Testemunho (8º)**\nMentir, fofocar, caluniar ou difamar alguém. A verdade é fundamental.",
+                    "**Não Cobiçar as Coisas Alheias (10º)**\nEvitar a inveja e a ganância. Devemos ser felizes com o que temos."
+                ],
+                quiz_questions: [
+                    { q: "O que proíbe o 7º mandamento?", a: "Roubar", o: ["Matar", "Mentir", "Adulterar"] },
+                    { q: "Fofoca e mentira ferem qual mandamento?", a: "8º (Falso Testemunho)", o: ["5º (Não matar)", "6º (Castidade)", "3º (Domingo)"] },
+                    { q: "O que é cobiçar as coisas alheias?", a: "Ter inveja e ganância", o: ["Admirar", "Elogiar", "Trabalhar"] },
+                    { q: "Devemos amar a...", a: "Verdade e Justiça", o: ["Mentira", "Preguiça", "Inveja"] }
+                ]
+            },
+            23: {
+                id: 23,
+                title: "Os Santos e a Intercessão",
+                bible_ref: "Apocalipse 5,8",
+                points: 200,
+                content: [
+                    "**Modelos de Vida**\nOs santos são nossos irmãos mais velhos que já chegaram ao céu. Eles nos ensinam como amar a Deus.",
+                    "**Não Adoramos Santos!**\nNós ADORAMOS só a Deus. Aos santos, nós VENERAMOS (respeitamos) e pedimos que rezem por nós.",
+                    "**Intercessão**\nAssim como você pede oração a um amigo, pedimos aos santos. Eles estão vivos em Deus e apresentam nossas orações.",
+                    "**Comunhão dos Santos**\nSomos uma família unida: a Igreja na terra, as almas no purgatório e os santos no céu."
+                ],
+                quiz_questions: [
+                    { q: "Nós adoramos os santos?", a: "Não, só a Deus", o: ["Sim, claro", "Às vezes", "Só a Maria"] },
+                    { q: "O que significa 'venerar'?", a: "Respeitar e honrar", o: ["Adorar como deuses", "Ignorar", "Desprezar"] },
+                    { q: "O que é intercessão?", a: "Pedir que rezem por nós", o: ["Fazer mágica", "Pagar promessa", "Adivinhar futuro"] },
+                    { q: "Quem são os santos?", a: "Amigos de Deus no céu", o: ["Anjos", "Deuses menores", "Fantasmas"] }
+                ]
+            },
+            24: {
+                id: 24,
+                title: "O Pai Nosso - A Oração Perfeita",
+                bible_ref: "Mateus 6,9-13",
+                points: 200,
+                content: [
+                    "**Ensinada por Jesus**\nÉ o resumo de todo o Evangelho. Jesus nos ensina a chamar Deus de 'Pai'.",
+                    "**7 Pedidos**\nOs 3 primeiros são para glória de Deus (Nome, Reino, Vontade). Os 4 últimos são para nossas necessidades (Pão, Perdão, Tentação, Mal).",
+                    "**Seja feita a vossa vontade**\nÉ o ponto mais difícil e importante: confiar que o plano de Deus é melhor que o nosso.",
+                    "**Perdoai as nossas ofensas**\nDeus nos perdoa, mas coloca uma condição: 'assim como nós perdoamos a quem nos tem ofendido'."
+                ],
+                quiz_questions: [
+                    { q: "Quem ensinou o Pai Nosso?", a: "Jesus", o: ["Moisés", "O Papa", "Davi"] },
+                    { q: "Quantos pedidos tem o Pai Nosso?", a: "Sete", o: ["Dez", "Três", "Cinco"] },
+                    { q: "Qual a condição para ser perdoado?", a: "Perdoar os outros", o: ["Pagar dízimo", "Rezar muito", "Jejuar"] },
+                    { q: "O que pedimos sobre o pão?", a: "O pão nosso de cada dia", o: ["O pão para o mês todo", "Bolo e festa", "Riquezas"] }
+                ]
+            },
+            25: {
+                id: 25,
+                title: "Os Anjos de Deus",
+                bible_ref: "Hebreus 1,14",
+                points: 200,
+                content: [
+                    "**Espíritos Puros**\nOs anjos são criaturas espirituais, inteligentes e livres. Não têm corpo humano (só aparecem assim às vezes).",
+                    "**Mensageiros**\nA palavra 'Anjo' significa mensageiro. Eles servem a Deus e protegem os homens.",
+                    "**Anjo da Guarda**\nDeus deu a cada um de nós um companheiro celeste para nos iluminar, guardar, reger e governar.",
+                    "**Arcanjos**\nConhecemos três pelos nomes na Bíblia: Miguel (Quem como Deus?), Gabriel (Força de Deus) e Rafael (Cura de Deus)."
+                ],
+                quiz_questions: [
+                    { q: "O que significa a palavra 'Anjo'?", a: "Mensageiro", o: ["Guerreiro", "Luz", "Vento"] },
+                    { q: "O que faz o Anjo da Guarda?", a: "Nos protege e guia", o: ["Nos atrapalha", "Nos julga", "Dorme"] },
+                    { q: "Quem são os 3 Arcanjos bíblicos?", a: "Miguel, Gabriel e Rafael", o: ["Pedro, Tiago e João", "Gaspar, Belchior e Baltazar", "Lúcifer e Satanás"] },
+                    { q: "Os anjos têm corpo físico?", a: "Não, são espíritos puros", o: ["Sim, igual ao nosso", "Sim, de fumaça", "Sim, de ouro"] }
+                ]
+            },
+            26: {
+                id: 26,
+                title: "Dons do Espírito Santo",
+                bible_ref: "Isaías 11,2",
+                points: 200,
+                content: [
+                    "**Ferramentas para a Santidade**\nSão presentes que o Espírito Santo nos dá para nos ajudar a viver como cristãos corajosos.",
+                    "**Sabedoria e Entendimento**\nSabedoria para gostar das coisas de Deus. Entendimento para compreender as verdades da fé.",
+                    "**Conselho e Fortaleza**\nConselho para saber o que fazer. Fortaleza para ter coragem de fazer o certo, mesmo sendo difícil.",
+                    "**Ciência, Piedade e Temor**\nCiência para ver Deus no mundo. Piedade para amar a Deus como Pai. Temor para ter medo de ofender a Deus."
+                ],
+                quiz_questions: [
+                    { q: "Quantos são os dons do Espírito Santo?", a: "Sete", o: ["Três", "Doze", "Dez"] },
+                    { q: "O dom da Fortaleza nos dá...", a: "Coragem para testemunhar", o: ["Força para levantar peso", "Poder de voar", "Riqueza"] },
+                    { q: "O que é o Temor de Deus?", a: "Receio de ofender a Deus por amor", o: ["Ter pavor de Deus", "Fugir de Deus", "Medo de castigo"] },
+                    { q: "Qual dom nos ajuda a entender a fé?", a: "Entendimento (Inteligência)", o: ["Fortaleza", "Piedade", "Temor"] }
+                ]
+            },
+            27: {
+                id: 27,
+                title: "O Ano Litúrgico",
+                bible_ref: "Eclesiastes 3,1",
+                points: 200,
+                content: [
+                    "**O Tempo da Igreja**\nNão seguimos apenas o calendário civil. Temos o Ano Litúrgico que celebra a vida de Jesus.",
+                    "**Cores Litúrgicas**\nBranco/Dourado (Alegria: Páscoa/Natal), Roxo (Penitência: Quaresma/Advento), Vermelho (Sangue/Fogo: Mártires/Pentecostes), Verde (Tempo Comum).",
+                    "**Advento e Quaresma**\nAdvento: 4 semanas preparando o Natal. Quaresma: 40 dias preparando a Páscoa.",
+                    "**Páscoa**\nÉ a maior festa da nossa fé! Celebramos a Ressurreição do Senhor."
+                ],
+                quiz_questions: [
+                    { q: "Qual a cor usada na Quaresma?", a: "Roxo", o: ["Branco", "Verde", "Vermelho"] },
+                    { q: "O que celebramos no Natal?", a: "O nascimento de Jesus", o: ["A morte de Jesus", "A vinda do Espírito", "Os reis magos"] },
+                    { q: "Qual a maior festa cristã?", a: "A Páscoa", o: ["O Natal", "O Ano Novo", "Corpus Christi"] },
+                    { q: "O que significa o Tempo Comum (Verde)?", a: "Caminhada e Esperança", o: ["Tristeza", "Luto", "Festa"] }
+                ]
+            },
+            28: {
+                id: 28,
+                title: "🏆 PROVA FINAL",
+                bible_ref: "Envio Missionário",
+                points: 1000,
+                content: [
+                    "**Parabéns!**\nVocê chegou ao fim da trilha. Você aprendeu sobre Deus, Jesus, a Igreja, os Sacramentos e a vida cristã.",
+                    "**A Crisma**\nAgora você está pronto para receber o selo do Espírito Santo. Não é o fim, é o começo da sua missão!",
+                    "**O Desafio Final**\nEsta prova reúne perguntas de todo o curso. Mostre que você está preparado.",
+                    "**Ide e Evangelizai**\nQue o Espírito Santo ilumine suas respostas e sua vida. Boa sorte!"
+                ],
+                quiz_questions: [
+                    { q: "Quem é a Terceira Pessoa da Trindade?", a: "Espírito Santo", o: ["Jesus", "Maria", "Pedro"] },
+                    { q: "Quantos sacramentos existem?", a: "Sete", o: ["Três", "Dez", "Cinco"] },
+                    { q: "O que é a Eucaristia?", a: "Corpo e Sangue de Cristo", o: ["Símbolo", "Pão bento", "Lembrança"] },
+                    { q: "Quem fundou a Igreja?", a: "Jesus Cristo", o: ["Pedro", "Paulo", "Constantino"] },
+                    { q: "Qual o dia da Ressurreição?", a: "Domingo", o: ["Sexta", "Sábado", "Quarta"] },
+                    { q: "O que o Batismo apaga?", a: "O Pecado Original", o: ["A fome", "A preguiça", "Nada"] },
+                    { q: "Quem são os sucessores dos apóstolos?", a: "Os Bispos", o: ["Os Padres", "Os Diáconos", "Os Coroinhas"] },
+                    { q: "O que é confissão?", a: "Pedir perdão dos pecados", o: ["Conversar", "Fazer terapia", "Reclamar"] },
+                    { q: "Maria é...", a: "Mãe de Deus e nossa", o: ["Uma deusa", "Apenas uma mulher", "Irmã de Jesus"] },
+                    { q: "Onde está escrito a Palavra de Deus?", a: "Na Bíblia", o: ["No jornal", "Na revista", "No Facebook"] },
+                    { q: "Qual o mandamento sobre a vida?", a: "Não matar (5º)", o: ["Não roubar", "Honrar pais", "Não mentir"] },
+                    { q: "O que é a Crisma?", a: "Sacramento da confirmação", o: ["Festa de formatura", "Aula de religião", "Batismo 2"] },
+                    { q: "Jesus é...", a: "Verdadeiro Deus e Homem", o: ["Só homem", "Anjo", "Profeta"] },
+                    { q: "O que pedimos no Pai Nosso?", a: "O pão de cada dia", o: ["Dinheiro", "Sucesso", "Fama"] },
+                    { q: "Quem é nosso anjo protetor?", a: "Anjo da Guarda", o: ["Cupido", "Querubim", "Arcanjo"] },
+                    { q: "Qual a cor da Páscoa?", a: "Branco", o: ["Roxo", "Verde", "Preto"] },
+                    { q: "Deus é...", a: "Amor", o: ["Vingança", "Ódio", "Indiferença"] },
+                    { q: "O que é pecado mortal?", a: "Ofensa grave a Deus", o: ["Erro pequeno", "Esquecimento", "Mentirinha"] },
+                    { q: "Onde Jesus está presente?", a: "Na Eucaristia e no irmão", o: ["Só no céu", "Só na imagem", "Em lugar nenhum"] },
+                    { q: "Qual a missão do crismado?", a: "Ser testemunha de Cristo", o: ["Ficar em casa", "Sair da igreja", "Criticar tudo"] }
+                ]
+            }
         };
-        
-        courseData[13].title = "🏆 PROVA INTERMEDIÁRIA";
-        courseData[28].title = "🏆 PROVA FINAL";
 
         // --- APP LOGIC ---
         window.App = {
