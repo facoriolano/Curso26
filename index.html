@@ -150,18 +150,17 @@
         import { getFirestore, doc, setDoc, onSnapshot, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ==========================================
-        // 🔴 COLE SUAS CHAVES DO FIREBASE AQUI 🔴
+        // 🔴 CHAVES DO FIREBASE CONFIGURADAS 🔴
         // ==========================================
         const appId = 'crisma-2026';
         
-        // Substitua pelo seu código do Firebase
         const firebaseConfig = {
-            apiKey: "SUA_API_KEY_AQUI", 
-            authDomain: "seu-projeto.firebaseapp.com",
-            projectId: "seu-projeto",
-            storageBucket: "seu-projeto.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            apiKey: "AIzaSyCoR6nlyCfsozUpwLo7iB8bUgQ-fdQ_14o",
+            authDomain: "curso26-bcabf.firebaseapp.com",
+            projectId: "curso26-bcabf",
+            storageBucket: "curso26-bcabf.firebasestorage.app",
+            messagingSenderId: "691991061470",
+            appId: "1:691991061470:web:7a5fa026c4f836069d734f"
         };
         // ==========================================
 
@@ -169,9 +168,9 @@
         let unsubscribeUser;
 
         window.initializeFirebase = async () => {
-            if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "SUA_API_KEY_AQUI") {
-                 alert("ERRO: Você precisa abrir o código e colar suas chaves do Firebase onde está indicado!");
-                 document.getElementById('loading-screen').innerHTML = "<p class='p-4 text-red-500'>Erro: Chaves do Firebase não configuradas no código.</p>";
+            if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("SUA_API_KEY")) {
+                 alert("ERRO: Chaves do Firebase inválidas.");
+                 document.getElementById('loading-screen').innerHTML = "<p class='p-4 text-red-500'>Erro: Chaves do Firebase não configuradas.</p>";
                  return;
             }
 
@@ -189,6 +188,7 @@
                 });
             } catch (error) {
                 console.error("Erro Geral:", error);
+                document.getElementById('loading-screen').innerHTML = `<p class='p-4 text-red-500'>Erro de Conexão: ${error.message}</p>`;
             }
         };
 
