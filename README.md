@@ -1,8 +1,8 @@
 <div align="center">
 
-<!-- TÍTULO GIGANTE ESTÁTICO (Estilo Pixel Art) -->
+<!-- TÍTULO GIGANTE ANIMADO (Efeito de Digitação) -->
 <a href="https://github.com/facoriolano">
-<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=1&pause=10000&color=7C3AED&background=00000000&center=true&vCenter=true&width=1200&height=200&lines=%40FACORIOLANO" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Press+Start+2P&weight=400&size=80&duration=4000&pause=1000&color=7C3AED&background=00000000&center=true&vCenter=true&width=1200&height=200&lines=%40FACORIOLANO" alt="Typing SVG" />
 </a>
 
 <!-- Badges (Incluindo Instagram) -->
@@ -15,7 +15,6 @@
 
 <br>
 
-
 ### 📖 Sobre o Projeto
 
 O **Fé Power-Up** é uma aplicação web progressiva (PWA) desenvolvida para modernizar o ensino da Catequese de Crisma. Utilizando a metodologia de **gamificação** (estilo Duolingo), o projeto transforma o aprendizado teológico em uma jornada interativa e divertida.
@@ -25,4 +24,3 @@ O objetivo é aumentar o engajamento dos crismandos através de:
 2.  **Quizzes Desafiadores:** Perguntas de fixação ao final de cada módulo.
 3.  **Sistema de Vidas:** O aluno possui 5 corações; errou, perdeu vida!
 4.  **Ranking Global:** Uma tabela de liderança em tempo real para incentivar a competição saudável.
-
